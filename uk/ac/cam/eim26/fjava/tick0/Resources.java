@@ -45,7 +45,7 @@ public class Resources {
 
     public static void allocateResources(String f) throws IOException {
         long maxMemory = Runtime.getRuntime().maxMemory();
-        long usableMemory = (maxMemory / 10) * 5;
+        long usableMemory = (maxMemory / 10) * 6;
 
         System.out.println("Memory = " + maxMemory + " i.e. " + ((double)(maxMemory) / 1000000.0) + "MB");
 
