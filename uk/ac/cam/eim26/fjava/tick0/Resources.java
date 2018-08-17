@@ -27,7 +27,7 @@ public class Resources {
                 break;
             }
 
-            totalSize += len / 4;
+            totalSize += len;
 
             for (int i = 0; i < len; i += 4) {
                 Resources.count[ Resources.arr[i]&0xff ]++;

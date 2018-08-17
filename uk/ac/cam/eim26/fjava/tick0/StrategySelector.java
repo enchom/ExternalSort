@@ -15,7 +15,7 @@ public class StrategySelector {
 
         System.out.println("The maximum value is " + maxValue);
 
-        if (Resources.totalSize <= Resources.blockSize) {
+        if (Resources.totalSize / 4 <= Resources.blockSize) {
             System.out.println("So using internal radix sort");
             return new InternalRadixSort();
         }

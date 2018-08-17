@@ -17,9 +17,13 @@ public class InternalRadixSort implements ExternalSortBase {
 
         RadixByteSort.sortByteArray(Resources.arr, len / 4);
 
+        inputStream.close();
+
         BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(f1));
 
         outputStream.write(Resources.arr, 0, len);
+
+        outputStream.close();
     }
 
     @Override
