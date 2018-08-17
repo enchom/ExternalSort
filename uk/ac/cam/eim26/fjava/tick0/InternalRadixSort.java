@@ -11,8 +11,10 @@ public class InternalRadixSort implements ExternalSortBase {
         InputStream inputStream = new FileInputStream(f1);
         int len = inputStream.read(Resources.arr);
 
-        System.out.println("Read " + len);
-        System.out.println(Resources.arr.length);
+        if (len == -1) {
+            return;
+        }
+
         RadixByteSort.sortByteArray(Resources.arr, len / 4);
 
         BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(f1));
