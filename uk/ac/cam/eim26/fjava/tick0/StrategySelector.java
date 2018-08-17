@@ -35,10 +35,8 @@ public class StrategySelector {
         System.out.println("The maximum value is " + maxValue);
 
         if (maxValue > Resources.blockSize) {
-            System.out.println("So using external merge sort");
             return new ExternalMergeSort();
         } else {
-            System.out.println("So using external bucket sort");
             return new ExternalBucketSort();
         }
     }

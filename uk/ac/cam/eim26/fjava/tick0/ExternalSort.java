@@ -21,6 +21,7 @@ public class ExternalSort {
 
     public static void sort(String f1, String f2) throws Exception {
         externalSortStrategy = StrategySelector.selectStrategy(f1);
+        System.out.println("Chosen strategy = " + externalSortStrategy.getStrategy());
         externalSortStrategy.sort(f1, f2);
     }
 
