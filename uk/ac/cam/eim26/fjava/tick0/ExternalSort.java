@@ -56,8 +56,11 @@ public class ExternalSort {
     }
 
     public static void main(String[] args) throws Exception {
-        String f1 = args[0];
-        String f2 = args[1];
+        //String f1 = args[0];
+        //String f2 = args[1];
+
+        String f1 = "test6a.dat";
+        String f2 = "test6b.dat";
 
         startTime = System.nanoTime();
 

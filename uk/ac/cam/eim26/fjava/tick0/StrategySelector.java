@@ -15,7 +15,11 @@ public class StrategySelector {
 
         System.out.println("The maximum value is " + maxValue);
 
-        if (maxValue > Resources.blockSize) {
+        if (Resources.totalSize <= Resources.blockSize) {
+            System.out.println("So using internal radix sort");
+            return new InternalRadixSort();
+        }
+        else if (maxValue > Resources.blockSize) {
             System.out.println("So using external merge sort");
             return new ExternalMergeSort();
         }

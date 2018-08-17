@@ -117,6 +117,7 @@ public class ExternalBucketSort implements ExternalSortBase {
         System.out.println("Wrote " + writeCounter + " times. Waiting.");
 
         while (handler.getSuccessCounter() != writeCounter) {
+            yield();
             //System.out.println(handler.getSuccessCounter() + " +vs- " + handler.getFailCounter());
         }
 

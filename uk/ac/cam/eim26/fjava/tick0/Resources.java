@@ -14,11 +14,11 @@ public class Resources {
     public static int blockSize;
     public static byte[] arr;
     public static int[] count = new int[256];
+    public static int totalSize = 0;
 
     public static void computeCount(String f) throws IOException {
         int len;
         InputStream d = new FileInputStream(f);
-        int sz = 0;
 
         while(true) {
             len = d.read(Resources.arr);
@@ -27,14 +27,18 @@ public class Resources {
                 break;
             }
 
-            sz += len;
+            totalSize += len / 4;
 
             for (int i = 0; i < len; i += 4) {
                 Resources.count[ Resources.arr[i]&0xff ]++;
             }
         }
 
-        System.out.println("File size = " + sz + " bytes; = " + (sz/1000000) + "MB");
+        if (totalSize > 1000000) {
+            System.out.println("File size = " + totalSize + " bytes; = " + (totalSize/1000000) + "MB");
+        } else {
+            System.out.println("File size = " + totalSize + " bytes; = " + (totalSize/1000) + "KB");
+        }
 
         d.close();
     }
