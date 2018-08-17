@@ -20,7 +20,7 @@ public class InternalRadixSort implements ExternalSortBase {
         }
 
         for (int i = minValue; i <= maxValue; i++) {
-            for (int j = 1; j <= countingSortArr[i]; j++) {
+            for (int j = 1; j <= countingSortArr[i - minValue]; j++) {
                 Resources.arr[ptr] = (byte)(i >> 24);
                 Resources.arr[ptr+1] = (byte)((i >> 16) & (0xff));
                 Resources.arr[ptr+2] = (byte)((i >> 8) & (0xff));
