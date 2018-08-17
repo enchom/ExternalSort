@@ -10,10 +10,10 @@ public class StrategySelector {
     public static ExternalSortBase selectStrategy(String f1) throws IOException {
         Resources.allocateVitalResources(f1);
 
-        if (Resources.totalSize > 1000000) {
-            System.out.println("File size = " + Resources.totalSize + " bytes; = " + (Resources.totalSize / 1000000) + "MB");
+        if (Resources.totalSize >= 250000) {
+            System.out.println("File size = " + Resources.totalSize * 4 + " bytes; = " + (Resources.totalSize / 250000) + "MB");
         } else {
-            System.out.println("File size = " + Resources.totalSize + " bytes; = " + (Resources.totalSize / 1000) + "KB");
+            System.out.println("File size = " + Resources.totalSize * 4 + " bytes; = " + (Resources.totalSize / 250) + "KB");
         }
 
         //Return early to avoid pointless resource allocation
