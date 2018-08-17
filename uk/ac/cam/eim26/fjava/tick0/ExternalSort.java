@@ -61,6 +61,10 @@ public class ExternalSort {
 
         startTime = System.nanoTime();
 
+        if (Runtime.getRuntime().availableProcessors() == 1) {
+            throw new RuntimeException("Only one processor");
+        }
+
         System.out.println("Total mem = " + Runtime.getRuntime().totalMemory());
 
         sort(f1, f2);

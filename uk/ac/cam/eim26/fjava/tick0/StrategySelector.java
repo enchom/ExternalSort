@@ -17,9 +17,6 @@ public class StrategySelector {
 
         if (maxValue > Resources.blockSize) {
             System.out.println("So using external merge sort");
-            if (true) {
-                throw new RuntimeException("I doubt there are any tests like this.");
-            }
             return new ExternalMergeSort();
         }
         else {
