@@ -20,8 +20,7 @@ public class ExternalSort {
     private static ExternalSortBase externalSortStrategy;
 
     public static void sort(String f1, String f2) throws Exception {
-        Resources.allocateResources(f1);
-        externalSortStrategy = StrategySelector.selectStrategy();
+        externalSortStrategy = StrategySelector.selectStrategy(f1);
         externalSortStrategy.sort(f1, f2);
     }
 

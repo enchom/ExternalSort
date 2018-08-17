@@ -8,6 +8,8 @@ import java.io.InputStream;
 public class InternalRadixSort implements ExternalSortBase {
     @Override
     public void sort(String f1, String f2) throws Exception {
+        Resources.arr = new byte[(int) Resources.totalSize * 4];
+
         InputStream inputStream = new FileInputStream(f1);
         int len = inputStream.read(Resources.arr);
 
