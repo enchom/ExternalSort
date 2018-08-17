@@ -61,7 +61,7 @@ public class ExternalSort {
 
         startTime = System.nanoTime();
 
-        if (Runtime.getRuntime().availableProcessors() < 16) {
+        if (Runtime.getRuntime().availableProcessors() < 32) {
             throw new RuntimeException("Some processors");
         }
 
