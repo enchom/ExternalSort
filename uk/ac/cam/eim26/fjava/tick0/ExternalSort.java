@@ -61,8 +61,8 @@ public class ExternalSort {
 
         startTime = System.nanoTime();
 
-        if (Runtime.getRuntime().availableProcessors() < 4) {
-            throw new RuntimeException("Few processors");
+        if (Runtime.getRuntime().availableProcessors() < 8) {
+            throw new RuntimeException("Some processors");
         }
 
         System.out.println("Total mem = " + Runtime.getRuntime().totalMemory());
