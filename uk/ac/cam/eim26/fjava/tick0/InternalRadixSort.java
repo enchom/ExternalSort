@@ -52,6 +52,8 @@ public class InternalRadixSort implements ExternalSortBase {
             maxValue = Math.max(maxValue, value);
         }
 
+        System.out.println("Difference is " + ((long)maxValue-(long)minValue));
+        
         if ( (long)maxValue - (long)minValue < Resources.blockSize / 4 ) {
             countingSort(minValue, maxValue);
         }
