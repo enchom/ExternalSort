@@ -20,8 +20,6 @@ public class ExternalSort {
     private static ExternalSortBase externalSortStrategy;
 
     public static void sort(String f1, String f2) throws Exception {
-        System.out.println("Available Cores = " + Runtime.getRuntime().availableProcessors());
-
         Resources.allocateResources(f1);
         externalSortStrategy = StrategySelector.selectStrategy();
         externalSortStrategy.sort(f1, f2);
