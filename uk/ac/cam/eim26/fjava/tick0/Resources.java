@@ -16,9 +16,13 @@ public class Resources {
     public static int[] count = new int[256];
     public static int totalSize = 0;
 
+    public static int minValue = Integer.MAX_VALUE;
+    public static int maxValue = Integer.MIN_VALUE;
+
     public static void computeCount(String f) throws IOException {
         int len;
         InputStream d = new FileInputStream(f);
+        int val;
 
         while(true) {
             len = d.read(Resources.arr);
@@ -31,8 +35,15 @@ public class Resources {
 
             for (int i = 0; i < len; i += 4) {
                 Resources.count[ Resources.arr[i]&0xff ]++;
+
+                val = PartialByteHeapSort.bytesToInteger(Resources.arr, i/4);
+
+                minValue = Math.min(minValue, val);
+                maxValue = Math.max(maxValue, val);
             }
         }
+
+        System.out.println("Value range " + minValue + " to " + maxValue + " with length " + (maxValue - minValue));
 
         if (totalSize > 1000000) {
             System.out.println("File size = " + totalSize + " bytes; = " + (totalSize/1000000) + "MB");

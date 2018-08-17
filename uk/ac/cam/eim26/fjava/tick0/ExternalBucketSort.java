@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import static java.lang.Thread.yield;
 
-//TODO - Test if working with 3 bytes after sorting first one is better
 //TODO - Make buffer memory dynamic
 public class ExternalBucketSort implements ExternalSortBase {
     private File firstFile;
@@ -118,7 +117,6 @@ public class ExternalBucketSort implements ExternalSortBase {
 
         while (handler.getSuccessCounter() != writeCounter) {
             yield();
-            //System.out.println(handler.getSuccessCounter() + " +vs- " + handler.getFailCounter());
         }
 
         System.out.println("Wrote all");
