@@ -18,6 +18,7 @@ public class Resources {
     public static void computeCount(String f) throws IOException {
         int len;
         InputStream d = new FileInputStream(f);
+        int sz = 0;
 
         while(true) {
             len = d.read(Resources.arr);
@@ -26,10 +27,14 @@ public class Resources {
                 break;
             }
 
+            sz += len;
+
             for (int i = 0; i < len; i += 4) {
                 Resources.count[ Resources.arr[i]&0xff ]++;
             }
         }
+
+        System.out.println("File size = " + sz + " bytes; = " + (sz/1000000) + "MB");
 
         d.close();
     }
