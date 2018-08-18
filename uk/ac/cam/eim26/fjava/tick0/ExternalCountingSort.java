@@ -5,7 +5,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class ExternalCountingSort extends ExternalSortBase {
+public class ExternalCountingSort implements ExternalSortBase {
 
     private int[] counting;
 
