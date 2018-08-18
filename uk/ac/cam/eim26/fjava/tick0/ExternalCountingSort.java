@@ -42,6 +42,7 @@ public class ExternalCountingSort implements ExternalSortBase {
 
                 if (ptr == Resources.arr.length) {
                     outputStream.write(Resources.arr);
+                    ptr = 0;
                 }
             }
         }
