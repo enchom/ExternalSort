@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This class simulates global state across all classes in order to reduce memory and
@@ -19,6 +21,9 @@ public class Resources {
 
     public static int minValue = Integer.MAX_VALUE;
     public static int maxValue = Integer.MIN_VALUE;
+
+    public static Set<Integer> diversitySet = new HashSet<>();
+    public static int SET_SIZE_LIMIT = 10000; //TODO: Do dynamically
 
     public static void computeCount(String f) throws IOException {
         int len;
@@ -41,10 +46,21 @@ public class Resources {
 
                 minValue = Math.min(minValue, val);
                 maxValue = Math.max(maxValue, val);
+
+                if (diversitySet.size() < SET_SIZE_LIMIT) {
+                    diversitySet.add(val);
+                }
             }
         }
 
         System.out.println("Value range " + minValue + " to " + maxValue + " with length " + (maxValue - minValue));
+
+        if (diversitySet.size() >= SET_SIZE_LIMIT) {
+            System.out.println("SET LIMIT REACHED");
+        }
+        else {
+            System.out.println("SET FINE, SIZE = " + diversitySet.size());
+        }
 
         d.close();
     }

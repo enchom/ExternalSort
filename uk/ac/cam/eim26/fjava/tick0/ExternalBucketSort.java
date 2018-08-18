@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import static java.lang.Thread.yield;
 
+@Deprecated //Asynchronous IO is slower - only one core is used
 //TODO - Make buffer memory dynamic
 public class ExternalBucketSort implements ExternalSortBase {
     private File firstFile;
