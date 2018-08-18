@@ -38,6 +38,7 @@ public class Resources {
             maxValues[i] = Integer.MIN_VALUE;
         }
 
+        int ictr = 0;
         while(true) {
             len = d.read(Resources.arr);
 
@@ -59,18 +60,17 @@ public class Resources {
                     diversitySet.add(val);
                 }
 
+                if (ictr < 100) {
+                    System.out.print(val + " ");
+                }
+                ictr++;
+
                 minValues[ Resources.arr[i]&0xff ] = Math.min(minValues[ Resources.arr[i]&0xff ], val);
                 maxValues[ Resources.arr[i]&0xff ] = Math.max(maxValues[ Resources.arr[i]&0xff ], val);
             }
         }
 
         System.out.println("Value range " + minValue + " to " + maxValue + " with length " + (maxValue - minValue));
-
-        for (int i = 0; i < 256; i++) {
-            if (minValues[i] < maxValues[i]) {
-                System.out.println("For " + i + " we have values at " + minValues[i] + " to " + maxValues[i]);
-            }
-        }
 
         if (diversitySet.size() >= SET_SIZE_LIMIT) {
             System.out.println("SET LIMIT REACHED");
