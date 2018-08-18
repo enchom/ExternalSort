@@ -62,6 +62,12 @@ public class Resources {
             System.out.println("SET FINE, SIZE = " + diversitySet.size());
         }
 
+        int iter = 0;
+        for (Integer num : diversitySet) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+
         d.close();
     }
 
