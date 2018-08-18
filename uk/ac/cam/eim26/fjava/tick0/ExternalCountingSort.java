@@ -1,9 +1,6 @@
 package uk.ac.cam.eim26.fjava.tick0;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 public class ExternalCountingSort implements ExternalSortBase {
 
@@ -29,7 +26,7 @@ public class ExternalCountingSort implements ExternalSortBase {
 
         inputStream.close();
 
-        OutputStream outputStream = new FileOutputStream(f1);
+        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(f1));
         int ptr = 0;
 
         for (int i = Resources.minValue; i <= Resources.maxValue; i++) {
