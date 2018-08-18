@@ -3,6 +3,9 @@ package uk.ac.cam.eim26.fjava.tick0;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 public class Pass {
     public static void wasteTime(String f) throws IOException {
@@ -16,5 +19,7 @@ public class Pass {
 
             inputStream.close();
         }
+
+        System.out.println(Runtime.getRuntime().availableProcessors());
     }
 }

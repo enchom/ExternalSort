@@ -59,7 +59,7 @@ public class ExternalSort {
         String f1 = args[0];
         String f2 = args[1];
 
-        
+
         //String f1 = "test2a.dat";
         //String f2 = "test2b.dat";
 
