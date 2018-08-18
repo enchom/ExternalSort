@@ -25,10 +25,18 @@ public class Resources {
     public static Set<Integer> diversitySet = new HashSet<>();
     public static int SET_SIZE_LIMIT = 10000; //TODO: Do dynamically
 
+    public static int[] minValues = new int[256];
+    public static int[] maxValues = new int[256];
+
     public static void computeCount(String f) throws IOException {
         int len;
         InputStream d = new FileInputStream(f);
         int val;
+
+        for (int i = 0; i < 256; i++) {
+            minValues[i] = Integer.MAX_VALUE;
+            maxValues[i] = Integer.MIN_VALUE;
+        }
 
         while(true) {
             len = d.read(Resources.arr);
@@ -50,10 +58,19 @@ public class Resources {
                 if (diversitySet.size() < SET_SIZE_LIMIT) {
                     diversitySet.add(val);
                 }
+
+                minValues[ Resources.arr[i]&0xff ] = Math.min(minValues[ Resources.arr[i]&0xff ], val);
+                maxValues[ Resources.arr[i]&0xff ] = Math.max(maxValues[ Resources.arr[i]&0xff ], val);
             }
         }
 
         System.out.println("Value range " + minValue + " to " + maxValue + " with length " + (maxValue - minValue));
+
+        for (int i = 0; i < 256; i++) {
+            if (minValues[i] < maxValues[i]) {
+                System.out.println("For " + i + " we have values at " + minValues[i] + " to " + maxValues[i]);
+            }
+        }
 
         if (diversitySet.size() >= SET_SIZE_LIMIT) {
             System.out.println("SET LIMIT REACHED");
@@ -61,12 +78,6 @@ public class Resources {
         else {
             System.out.println("SET FINE, SIZE = " + diversitySet.size());
         }
-
-        int iter = 0;
-        for (Integer num : diversitySet) {
-            System.out.print(num + " ");
-        }
-        System.out.println();
 
         d.close();
     }
