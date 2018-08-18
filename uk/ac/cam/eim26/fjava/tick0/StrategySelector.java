@@ -24,6 +24,11 @@ public class StrategySelector {
 
         Resources.allocateResources(f1);
 
+        if ( (long)Resources.maxValue - (long)Resources.minValue < Resources.blockSize / 4 )
+        {
+            return new ExternalCountingSort();
+        }
+
         int maxValue = 0;
 
         for (int i = 0; i < 256; i++) {

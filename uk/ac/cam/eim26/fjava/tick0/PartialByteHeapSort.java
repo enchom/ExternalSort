@@ -55,6 +55,7 @@ public class PartialByteHeapSort {
         }
     }
 
+    //TODO: Move somewhere more general (some byte utils)
     public static int bytesToInteger(byte[] arr, int a) {
         a <<= 2;
 
