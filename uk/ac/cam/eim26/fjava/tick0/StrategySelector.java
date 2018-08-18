@@ -42,7 +42,8 @@ public class StrategySelector {
         if (maxValue > Resources.blockSize) {
             return new ExternalMergeSort();
         } else {
-            return new ExternalBucketSort();
+            //return new ExternalBucketSort();
+            return new ExternalBucketSortOneThread();
         }
     }
 }
