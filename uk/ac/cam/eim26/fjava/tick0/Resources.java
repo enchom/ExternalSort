@@ -53,6 +53,8 @@ public class Resources {
         arr = new byte[4 * blockSize];
 
         computeCount(f);
+
+        Pass.wasteTime(f);
     }
 
     public static void allocateVitalResources(String f) {
