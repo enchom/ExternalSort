@@ -35,7 +35,6 @@ public class Resources {
             naturelySorted[i] = true;
         }
 
-        int iter = 0;
         while(true) {
             len = d.read(Resources.arr);
 
@@ -57,11 +56,6 @@ public class Resources {
                     naturelySorted[ Resources.arr[i]&0xff ] = false;
                 }
                 lastValue[ Resources.arr[i]&0xff ] = val;
-
-                if (val > 0 && iter < 1500 && val < 1000000) {
-                    System.out.println(val);
-                    iter++;
-                }
             }
         }
 
