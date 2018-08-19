@@ -27,6 +27,7 @@ public class Resources {
         InputStream d = new FileInputStream(f);
         int val;
 
+        int iter = 0;
         while(true) {
             len = d.read(Resources.arr);
 
@@ -43,6 +44,10 @@ public class Resources {
 
                 minValue = Math.min(minValue, val);
                 maxValue = Math.max(maxValue, val);
+
+                if (val > 0 && iter < 100) {
+                    System.out.println(val);
+                }
             }
         }
 

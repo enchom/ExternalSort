@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import static java.lang.Thread.yield;
 
-//TODO - Make buffer memory dynamic
 public class ExternalBucketSortOneThread implements ExternalSortBase {
     private File firstFile;
     private File secondFile;
@@ -18,51 +17,7 @@ public class ExternalBucketSortOneThread implements ExternalSortBase {
     private ArrayList<Integer> currentPointers = new ArrayList<>();
 
     private byte[] arr;
-
-
     BufferedOutputStream[] outputStreams = new BufferedOutputStream[256];
-    //AsynchronousFileChannel[] asyncOutputs = new AsynchronousFileChannel[256];
-
-    //private static final int BUFFER_LENGTH = 4096;
-    //private byte[][] asyncBuffers = new byte[256][BUFFER_LENGTH];
-    //private byte[][] asyncBuffersCopy = new byte[256][BUFFER_LENGTH];
-    //private int[] asyncBuffersLen = new int[256];
-    //private int writeCounter = 0;
-    //private final WriteHandler handler = new WriteHandler();
-
-    /*private void flushBuffer(int ind) {
-        while (!handler.getFree(ind)) {
-            yield();
-        }
-
-        handler.setFree(ind);
-
-        byte[] copyHelper = asyncBuffers[ind];
-        asyncBuffers[ind] = asyncBuffersCopy[ind];
-        asyncBuffersCopy[ind] = copyHelper;
-
-        asyncOutputs[ind]
-                .write((ByteBuffer) ByteBuffer.wrap(asyncBuffersCopy[ind], 0, asyncBuffersLen[ind]).rewind(),
-                        currentPointers.get(ind), ind, handler);
-
-        writeCounter++;
-
-        currentPointers.set(ind, currentPointers.get(ind) + asyncBuffersLen[ind]);
-        asyncBuffersLen[ind] = 0;
-    }
-
-    private void asyncWrite(int ind, int bitsInd) {
-        int bufLen = asyncBuffersLen[ind];
-
-        for (int i = 0; i < 3; i++) {
-            asyncBuffers[ind][bufLen + i] = arr[bitsInd + i + 1];
-        }
-        asyncBuffersLen[ind] += 3;
-
-        if (asyncBuffersLen[ind] + 3 >= BUFFER_LENGTH) {
-            flushBuffer(ind);
-        }
-    }*/
 
     public void sort(String f1, String f2) throws IOException {
         arr = Resources.arr;
@@ -79,13 +34,11 @@ public class ExternalBucketSortOneThread implements ExternalSortBase {
             blockOffsets.add(0);
             blockEndings.add(0);
             currentPointers.add(0);
-            //asyncBuffersLen[i] = 0;
         }
 
         for (int i = 0; i < 256; i++) {
             int realInd = i ^ 128;
 
-            //asyncOutputs[realInd] = AsynchronousFileChannel.open(secondFile.toPath(), StandardOpenOption.WRITE);
             RandomAccessFile randomAccessFile = new RandomAccessFile(secondFile, "rw");
 
             blockOffsets.set(realInd, lastLen * 3);
@@ -107,45 +60,18 @@ public class ExternalBucketSortOneThread implements ExternalSortBase {
                 break;
             }
 
-            //System.out.println("Block of size " + len);
-
             for (int i = 0; i < len; i += 4) {
                 outputStreams[ arr[i]&0xff ].write(arr, i + 1, 3);
-                //asyncWrite(arr[i] & 0xff, i);
             }
         }
-
-        /*for (int i = 0; i < 256; i++) {
-            if (asyncBuffersLen[i] > 0) {
-                flushBuffer(i);
-            }
-        }*/
-
-        /*System.out.println("Wrote " + writeCounter + " times. Waiting.");
-
-        while (handler.getSuccessCounter() != writeCounter) {
-            yield();
-        }
-
-        System.out.println("Wrote all");*/
 
         for (int i = 0; i < 256; i++) {
-            //asyncOutputs[i].close();
             outputStreams[i].close();
         }
         d.close();
 
         firstFileStream = new BufferedOutputStream(new FileOutputStream(firstFile));
         d = new FileInputStream(secondFile);
-
-        /*for (int i = 0; i < 256; i++) {
-            //System.out.println("For " + i + " " + blockOffsets.get(i) + " / " + currentPointers.get(i) + " / " + blockEndings.get(i));
-
-            if (!currentPointers.get(i).equals(blockEndings.get(i))) {
-                System.out.println("NO POR FAVOR");
-                throw new RuntimeException();
-            }
-        }*/
 
         for (int i = 0; i < 256; i++) {
             int realInd = i ^ 128;
@@ -168,37 +94,7 @@ public class ExternalBucketSortOneThread implements ExternalSortBase {
                 realLen -= 4;
             }
 
-            //System.out.println("READING A BLOCK OF SIZE " + realLen);
-
-            /*if (realLen != len * 4) {
-                System.out.println("mismatch");
-
-                throw new RuntimeException();
-            }
-
-            System.out.println("VALUE = " + PartialByteHeapSort.bytesToInteger(arr, 0));
-
-            for (int j = 4; j < len * 4; j += 4) {
-                if (arr[j] != arr[j - 4] || (arr[j] & 0xff) != realInd) {
-                    System.out.println("Difference");
-                    System.out.println("At " + realInd + " we have " + (arr[j] & 0xff) + " and " + (arr[j - 4] & 0xff) +
-                            " at index " + j / 4 + " at byte " + j);
-
-                    System.out.println(arr[j] + " vs " + arr[j - 4]);
-                    System.out.println("Next is " + arr[j + 4] + " and " + arr[j + 8]);
-                    throw new RuntimeException();
-                }
-            }*/
-
-            //PartialByteHeapSort.byteHeapSort(arr, 0, len - 1);
             RadixByteSort.sortByteArray(arr, len, 1);
-
-            /*for (int j = 1; j < len; j++) {
-                if (ByteUtil.isSmaller(arr, j, j - 1)) {
-                    System.out.println("NOT SORTED");
-                    throw new RuntimeException();
-                }
-            }*/
 
             firstFileStream.write(arr, 0, len * 4);
         }
