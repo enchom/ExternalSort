@@ -47,6 +47,7 @@ public class Resources {
 
                 if (val > 0 && iter < 100) {
                     System.out.println(val);
+                    iter++;
                 }
             }
         }
