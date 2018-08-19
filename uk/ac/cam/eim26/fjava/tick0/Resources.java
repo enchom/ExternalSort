@@ -22,10 +22,18 @@ public class Resources {
     public static int minValue = Integer.MAX_VALUE;
     public static int maxValue = Integer.MIN_VALUE;
 
+    public static int[] lastValue = new int[256];
+    public static boolean[] naturelySorted = new boolean[256];
+
     public static void computeCount(String f) throws IOException {
         int len;
         InputStream d = new FileInputStream(f);
         int val;
+
+        for (int i = 0; i < 256; i++) {
+            lastValue[i] = Integer.MIN_VALUE;
+            naturelySorted[i] = true;
+        }
 
         int iter = 0;
         while(true) {
@@ -45,11 +53,20 @@ public class Resources {
                 minValue = Math.min(minValue, val);
                 maxValue = Math.max(maxValue, val);
 
+                if (lastValue[ Resources.arr[i]&0xff ] > val) {
+                    naturelySorted[ Resources.arr[i]&0xff ] = false;
+                }
+                lastValue[ Resources.arr[i]&0xff ] = val;
+
                 if (val > 0 && iter < 1500 && val < 1000000) {
                     System.out.println(val);
                     iter++;
                 }
             }
+        }
+
+        for (int i = 0; i < 256; i++) {
+            System.out.println("Byte group " + i + " has naturely_sorted status = " + naturelySorted[i]);
         }
 
         System.out.println("Value range " + minValue + " to " + maxValue + " with length " + (maxValue - minValue));
