@@ -45,7 +45,7 @@ public class Resources {
                 minValue = Math.min(minValue, val);
                 maxValue = Math.max(maxValue, val);
 
-                if (val > 0 && iter < 100) {
+                if (val > 0 && val < 1000000 && iter < 100) {
                     System.out.println(val);
                     iter++;
                 }
