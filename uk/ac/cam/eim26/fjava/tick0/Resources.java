@@ -1,6 +1,7 @@
 package uk.ac.cam.eim26.fjava.tick0;
 
 //TODO - Experiment with blockSize formula
+//TODO - Remove Resources. class reference
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,6 +25,8 @@ public class Resources {
 
     public static int[] lastValue = new int[256];
     public static boolean[] naturelySorted = new boolean[256];
+    public static int[] minVals = new int[256];
+    public static int[] maxVals = new int[256];
 
     public static void computeCount(String f) throws IOException {
         int len;
@@ -33,9 +36,11 @@ public class Resources {
         for (int i = 0; i < 256; i++) {
             lastValue[i] = Integer.MIN_VALUE;
             naturelySorted[i] = true;
+            minVals[i] = Integer.MAX_VALUE;
+            maxVals[i] = Integer.MIN_VALUE;
         }
 
-        while(true) {
+        while (true) {
             len = d.read(Resources.arr);
 
             if (len == -1) {
@@ -45,23 +50,29 @@ public class Resources {
             totalSize += len;
 
             for (int i = 0; i < len; i += 4) {
-                Resources.count[ Resources.arr[i]&0xff ]++;
+                Resources.count[Resources.arr[i] & 0xff]++;
 
-                val = PartialByteHeapSort.bytesToInteger(Resources.arr, i/4);
+                val = PartialByteHeapSort.bytesToInteger(Resources.arr, i / 4);
 
                 minValue = Math.min(minValue, val);
                 maxValue = Math.max(maxValue, val);
 
-                if (lastValue[ Resources.arr[i]&0xff ] > val) {
-                    naturelySorted[ Resources.arr[i]&0xff ] = false;
+                if (lastValue[Resources.arr[i] & 0xff] > val) {
+                    naturelySorted[Resources.arr[i] & 0xff] = false;
                 }
-                lastValue[ Resources.arr[i]&0xff ] = val;
+
+                minVals[ arr[i]&0xff ] = Math.min(minVals[ arr[i]&0xff ], val);
+                maxVals[ arr[i]&0xff ] = Math.max(maxVals[ arr[i]&0xff ], val);
+
+                lastValue[Resources.arr[i] & 0xff] = val;
             }
         }
 
         for (int i = 0; i < 256; i++) {
             if (Resources.count[i] > 0) {
                 System.out.println("Byte group " + i + " has naturely_sorted status = " + naturelySorted[i]);
+                System.out.println("It also has " + count[i] + " members in the range [" + minVals[i] + ", " + maxVals[i] + "]");
+                System.out.println();
             }
         }
 
@@ -82,9 +93,9 @@ public class Resources {
 
         totalSize = (new File(f)).length() / 4;
 
-        System.out.println("Memory = " + maxMemory + " i.e. " + ((double)(maxMemory) / 1000000.0) + "MB");
+        System.out.println("Memory = " + maxMemory + " i.e. " + ((double) (maxMemory) / 1000000.0) + "MB");
 
-        blockSize = (int)(usableMemory / 6);
+        blockSize = (int) (usableMemory / 6);
 
         System.out.println("Block size = " + blockSize);
     }
