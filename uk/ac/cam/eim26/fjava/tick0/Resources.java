@@ -60,7 +60,9 @@ public class Resources {
         }
 
         for (int i = 0; i < 256; i++) {
-            System.out.println("Byte group " + i + " has naturely_sorted status = " + naturelySorted[i]);
+            if (Resources.count[i] > 0) {
+                System.out.println("Byte group " + i + " has naturely_sorted status = " + naturelySorted[i]);
+            }
         }
 
         System.out.println("Value range " + minValue + " to " + maxValue + " with length " + (maxValue - minValue));
