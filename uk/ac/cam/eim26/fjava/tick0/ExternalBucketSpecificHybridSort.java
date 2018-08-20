@@ -9,7 +9,7 @@ public class ExternalBucketSpecificHybridSort extends ExternalBucketSortBase {
         sortByFirstByte(f1, f2);
 
         BufferedOutputStream firstFileStream = new BufferedOutputStream(new FileOutputStream(firstFile));
-        FileInputStream d = new FileInputStream(secondFile); //TODO - More descriptive name
+        InputStream d = new FileInputStream(secondFile); //TODO - More descriptive name
 
         for (int i = 0; i < 256; i++) {
             int realInd = i ^ 128;
