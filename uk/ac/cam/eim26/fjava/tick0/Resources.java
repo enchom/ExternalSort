@@ -27,6 +27,7 @@ public class Resources {
     public static boolean[] naturelySorted = new boolean[256];
     public static int[] minVals = new int[256];
     public static int[] maxVals = new int[256];
+    public static long[] averageValue = new long[256];
 
     public static void computeCount(String f) throws IOException {
         int len;
@@ -65,6 +66,7 @@ public class Resources {
                 maxVals[ arr[i]&0xff ] = Math.max(maxVals[ arr[i]&0xff ], val);
 
                 lastValue[Resources.arr[i] & 0xff] = val;
+                averageValue[Resources.arr[i] & 0xff] += (long)val;
             }
         }
 
@@ -72,6 +74,7 @@ public class Resources {
             if (Resources.count[i] > 0) {
                 System.out.println("Byte group " + i + " has naturely_sorted status = " + naturelySorted[i]);
                 System.out.println("It also has " + count[i] + " members in the range [" + minVals[i] + ", " + maxVals[i] + "]");
+                System.out.println("Average value = " + (averageValue[i] / count[i]));
                 System.out.println();
             }
         }

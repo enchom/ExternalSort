@@ -5,9 +5,7 @@
 
 package uk.ac.cam.eim26.fjava.tick0;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -56,11 +54,11 @@ public class ExternalSort {
     }
 
     public static void main(String[] args) throws Exception {
-        String f1 = args[0];
-        String f2 = args[1];
+        //String f1 = args[0];
+        //String f2 = args[1];
 
-        //String f1 = "test17a.dat";
-        //String f2 = "test17b.dat";
+        String f1 = "test17a.dat";
+        String f2 = "test17b.dat";
 
         startTime = System.nanoTime();
 
