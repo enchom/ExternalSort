@@ -28,6 +28,7 @@ public class Resources {
     public static int[] minVals = new int[256];
     public static int[] maxVals = new int[256];
     public static long[] averageValue = new long[256];
+    public static int criticals = 0;
 
     public static void computeCount(String f) throws IOException {
         int len;
@@ -51,15 +52,15 @@ public class Resources {
             totalSize += len;
 
             for (int i = 0; i < len; i += 4) {
-                Resources.count[Resources.arr[i] & 0xff]++;
+                Resources.count[arr[i] & 0xff]++;
 
-                val = PartialByteHeapSort.bytesToInteger(Resources.arr, i / 4);
+                val = PartialByteHeapSort.bytesToInteger(arr, i / 4);
 
                 minValue = Math.min(minValue, val);
                 maxValue = Math.max(maxValue, val);
 
-                if (lastValue[Resources.arr[i] & 0xff] > val) {
-                    naturelySorted[Resources.arr[i] & 0xff] = false;
+                if (lastValue[arr[i] & 0xff] > val) {
+                    naturelySorted[arr[i] & 0xff] = false;
                 }
 
                 minVals[ arr[i]&0xff ] = Math.min(minVals[ arr[i]&0xff ], val);
@@ -71,15 +72,20 @@ public class Resources {
         }
 
         for (int i = 0; i < 256; i++) {
-            if (Resources.count[i] > 0) {
+            if (count[i] > 0) {
                 System.out.println("Byte group " + i + " has naturely_sorted status = " + naturelySorted[i]);
                 System.out.println("It also has " + count[i] + " members in the range [" + minVals[i] + ", " + maxVals[i] + "]");
                 System.out.println("Average value = " + (averageValue[i] / count[i]));
                 System.out.println();
             }
+
+            if (count[i] > 0 && !naturelySorted[i]) {
+                criticals++;
+            }
         }
 
         System.out.println("Value range " + minValue + " to " + maxValue + " with length " + (maxValue - minValue));
+        System.out.println("Critical bytes = " + criticals);
 
         d.close();
     }

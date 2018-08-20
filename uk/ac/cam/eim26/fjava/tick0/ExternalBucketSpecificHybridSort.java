@@ -2,9 +2,7 @@ package uk.ac.cam.eim26.fjava.tick0;
 
 import java.io.*; //TODO - split
 
-import static java.lang.Thread.yield;
-
-public class ExternalBucketSort extends ExternalBucketSortBase {
+public class ExternalBucketSpecificHybridSort extends ExternalBucketSortBase {
     public void sort(String f1, String f2) throws IOException {
         int len;
 
@@ -45,6 +43,6 @@ public class ExternalBucketSort extends ExternalBucketSortBase {
 
     @Override
     public String getStrategy() {
-        return "External bucket sort (one thread)";
+        return "External bucket specific hybrid sort";
     }
 }

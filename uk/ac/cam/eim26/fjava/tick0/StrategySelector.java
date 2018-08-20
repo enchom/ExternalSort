@@ -1,6 +1,5 @@
 package uk.ac.cam.eim26.fjava.tick0;
 
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -40,10 +39,14 @@ public class StrategySelector {
         System.out.println("The maximum value is " + maxValue);
 
         if (maxValue > Resources.blockSize) {
-            return new ExternalMergeSort();
+            if (Resources.criticals <= 2) {
+                return new ExternalBucketSpecificHybridSort();
+            }
+            else {
+                return new ExternalMergeSort();
+            }
         } else {
-            //return new ExternalBucketSort();
-            return new ExternalBucketSortOneThread();
+            return new ExternalBucketSort();
         }
     }
 }
