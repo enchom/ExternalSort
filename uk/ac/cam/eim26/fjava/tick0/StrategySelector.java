@@ -46,7 +46,8 @@ public class StrategySelector {
                 return new ExternalMergeSort();
             }
         } else {
-            return new ExternalBucketSort();
+            //return new ExternalBucketSort();
+            return new ExternalBucketSpecificHybridSort();
         }
     }
 }

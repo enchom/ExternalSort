@@ -85,11 +85,15 @@ public class ExternalMergeSort implements ExternalSortBase {
     }
 
     @Override
-    public void sort(String f1, String f2) throws IOException, NoNumbersLeftException {
-        arr = Resources.arr;
-
+    public void setFiles(String f1, String f2) {
         firstFile = new File(f1);
         secondFile = new File(f2);
+    }
+
+    @Override
+    public void sort() throws IOException, NoNumbersLeftException {
+        arr = Resources.arr;
+
         int len = 0;
 
         BufferedInputStream d = new BufferedInputStream(new FileInputStream(firstFile));

@@ -3,10 +3,10 @@ package uk.ac.cam.eim26.fjava.tick0;
 import java.io.*; //TODO - split
 
 public class ExternalBucketSort extends ExternalBucketSortBase {
-    public void sort(String f1, String f2) throws IOException {
+    public void sort() throws IOException {
         int len;
 
-        sortByFirstByte(f1, f2);
+        sortByFirstByte();
 
         BufferedOutputStream firstFileStream = new BufferedOutputStream(new FileOutputStream(firstFile));
         FileInputStream d = new FileInputStream(secondFile); //TODO - More descriptive name

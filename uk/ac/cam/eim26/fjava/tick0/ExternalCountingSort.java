@@ -3,12 +3,17 @@ package uk.ac.cam.eim26.fjava.tick0;
 import java.io.*;
 
 public class ExternalCountingSort implements ExternalSortBase {
-
+    private File firstFile;
     private int[] counting;
 
     @Override
-    public void sort(String f1, String f2) throws Exception {
-        InputStream inputStream = new FileInputStream(f1);
+    public void setFiles(String f1, String f2) {
+        firstFile = new File(f1);
+    }
+
+    @Override
+    public void sort() throws Exception {
+        InputStream inputStream = new FileInputStream(firstFile);
 
         counting = new int[Resources.maxValue - Resources.minValue + 1];
 
@@ -26,7 +31,7 @@ public class ExternalCountingSort implements ExternalSortBase {
 
         inputStream.close();
 
-        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(f1));
+        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(firstFile));
         int ptr = 0;
 
         for (int i = Resources.minValue; i <= Resources.maxValue; i++) {

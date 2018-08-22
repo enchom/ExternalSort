@@ -14,11 +14,15 @@ public abstract class ExternalBucketSortBase implements ExternalSortBase {
     protected byte[] arr;
     protected BufferedOutputStream[] outputStreams = new BufferedOutputStream[256];
 
-    public void sortByFirstByte(String f1, String f2) throws IOException {
-        arr = Resources.arr;
-
+    @Override
+    public void setFiles(String f1, String f2) {
         firstFile = new File(f1);
         secondFile = new File(f2);
+    }
+
+    public void sortByFirstByte() throws IOException {
+        arr = Resources.arr;
+
         int len = 0;
         int lastLen = 0;
 

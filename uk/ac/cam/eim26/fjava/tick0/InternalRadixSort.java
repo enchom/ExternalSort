@@ -1,12 +1,10 @@
 package uk.ac.cam.eim26.fjava.tick0;
 
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.*;
 
 public class InternalRadixSort implements ExternalSortBase {
-    int[] countingSortArr;
+    private int[] countingSortArr;
+    private File firstFile;
 
     private void countingSort(int minValue, int maxValue) {
         int value;
@@ -33,10 +31,15 @@ public class InternalRadixSort implements ExternalSortBase {
     }
 
     @Override
-    public void sort(String f1, String f2) throws Exception {
+    public void setFiles(String f1, String f2) {
+        firstFile = new File(f1);
+    }
+
+    @Override
+    public void sort() throws Exception {
         Resources.arr = new byte[(int) Resources.totalSize * 4];
 
-        InputStream inputStream = new FileInputStream(f1);
+        InputStream inputStream = new FileInputStream(firstFile);
         int len = inputStream.read(Resources.arr);
         int minValue = Integer.MAX_VALUE;
         int maxValue = Integer.MIN_VALUE;
@@ -63,7 +66,7 @@ public class InternalRadixSort implements ExternalSortBase {
 
         inputStream.close();
 
-        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(f1));
+        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(firstFile));
 
         outputStream.write(Resources.arr, 0, len);
 
