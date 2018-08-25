@@ -3,14 +3,22 @@ package uk.ac.cam.eim26.fjava.tick0;
 import java.io.*; //TODO - split
 
 public class ExternalBucketSpecificHybridSort extends ExternalBucketSortBase {
+    private int[] countingSortArr;
+    private int COUNTING_SIZE;
+    private byte[] arr;
+
     public void sort() throws IOException {
-        int len;
+        arr = Resources.arr;
+
+        int skipped = 0;
+
+        COUNTING_SIZE = Resources.blockSize / 4;
+        countingSortArr = new int[COUNTING_SIZE];
 
         sortByFirstByte();
 
-        BufferedOutputStream firstFileStream = new BufferedOutputStream(new FileOutputStream(firstFile));
-        InputStream d = new FileInputStream(secondFile); //TODO - More descriptive name
-
+        BufferedOutputStream firstFileOutputStream = new BufferedOutputStream(new FileOutputStream(firstFile));
+        InputStream secondFileInputStream = new BufferedInputStream(new FileInputStream(secondFile));
 
         for (int i = 0; i < 256; i++) {
             int realInd = i ^ 128;
@@ -19,16 +27,17 @@ public class ExternalBucketSpecificHybridSort extends ExternalBucketSortBase {
                 continue;
             }
 
-            if ( (long)Resources.maxVals[realInd] - (long)Resources.minVals[realInd] < Resources.count[realInd] / 4 ) {
-                //Counting sort
+            int len = 0, leftEnd = 0, rightEnd;
+
+            while(leftEnd <  0) {
+
             }
-            else {
-                //Bad counting sort
-            }
+
+            skipped += Resources.count[realInd] * 3;
         }
 
-        d.close();
-        firstFileStream.close();
+        firstFileOutputStream.close();
+        secondFileInputStream.close();
     }
 
     @Override

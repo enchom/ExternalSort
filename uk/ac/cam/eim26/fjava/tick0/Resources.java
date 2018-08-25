@@ -100,8 +100,6 @@ public class Resources {
         long maxMemory = Runtime.getRuntime().maxMemory();
         long usableMemory = (maxMemory / 10) * 6;
 
-
-
         totalSize = (new File(f)).length() / 4;
 
         System.out.println("Memory = " + maxMemory + " i.e. " + ((double) (maxMemory) / 1000000.0) + "MB");
