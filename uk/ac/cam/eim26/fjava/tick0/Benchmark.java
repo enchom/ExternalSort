@@ -5,6 +5,8 @@ import java.nio.IntBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.zip.Deflater;
+import java.util.zip.DeflaterOutputStream;
 
 //1576483782260
 public class Benchmark {
@@ -97,5 +99,31 @@ public class Benchmark {
         }
 
         System.out.println("SUM = " + sum);
+    }
+
+    public static void writeStream(String f) throws IOException {
+        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(f));
+        for (int i = 1; i <= 1000; i++) {
+            for (int j = 0; j < (1<<19); j++) {
+                byteArray[j] = (byte)j;
+            }
+            outputStream.write(byteArray, 0, (1<<19));
+        }
+    }
+
+    public static void writeCompressedStream(String f) throws IOException {
+        Deflater deflater = new Deflater();
+        deflater.setLevel(Deflater.HUFFMAN_ONLY);
+
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(f));
+        DeflaterOutputStream outputStream = new DeflaterOutputStream(bufferedOutputStream, deflater);
+
+        for (int i = 1; i <= 1000; i++) {
+            for (int j = 0; j < (1<<19); j++) {
+                byteArray[j] = (byte)j;
+            }
+
+            outputStream.write(byteArray, 0, (1<<19));
+        }
     }
 }

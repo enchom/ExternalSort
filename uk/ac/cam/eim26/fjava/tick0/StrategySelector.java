@@ -17,7 +17,6 @@ public class StrategySelector {
 
         //Return early to avoid pointless resource allocation
         if (Resources.totalSize <= Resources.blockSize) {
-
             return new InternalRadixSort();
         }
 
@@ -40,8 +39,8 @@ public class StrategySelector {
 
         if (maxValue > Resources.blockSize) {
             if (Resources.criticals <= 2) {
-                //return new ExternalBucketSpecificHybridSort();
-                return new ExternalBucketSort();
+                return new ExternalBucketSpecificHybridSort();
+                //return new ExternalBucketSort();
             }
             else {
                 return new ExternalMergeSort();

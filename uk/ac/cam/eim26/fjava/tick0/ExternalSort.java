@@ -58,8 +58,9 @@ public class ExternalSort {
         //String f1 = args[0];
         //String f2 = args[1];
 
-        String f1 = "test17a.dat";
-        String f2 = "test17b.dat";
+        String f1 = "test14a.dat";
+        String f2 = "test14b.dat";
+
 
         startTime = System.nanoTime();
 
