@@ -77,8 +77,11 @@ public class ExternalBucketSpecificHybridSort extends ExternalBucketSortBase {
                 leftEnd = rightEnd + 1;
 
                 if (leftEnd <= Resources.maxVals[realInd]) {
-                    secondFileInputStream = new FileInputStream(secondFile);
-                    secondFileInputStream.skip(skipped);
+                    secondFileInputStream.close();
+
+                    RandomAccessFile randomAccessFile = new RandomAccessFile(secondFile, "r");
+                    randomAccessFile.skipBytes(skipped);
+                    secondFileInputStream = new FileInputStream(randomAccessFile.getFD());
                 }
             }
 
