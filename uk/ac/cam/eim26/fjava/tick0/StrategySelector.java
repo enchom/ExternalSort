@@ -40,14 +40,12 @@ public class StrategySelector {
         if (maxValue > Resources.blockSize) {
             if (Resources.criticals <= 2) {
                 return new ExternalBucketSpecificHybridSort();
-                //return new ExternalBucketSort();
             }
             else {
                 return new ExternalMergeSort();
             }
         } else {
             return new ExternalBucketSort();
-            //return new ExternalBucketSpecificHybridSort();
         }
     }
 }

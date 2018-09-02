@@ -1,6 +1,7 @@
+//TODO - FIX THIS THING, CURRENTLY GIVES WRONG ANSWERS
 package uk.ac.cam.eim26.fjava.tick0;
 
-import java.io.*; //TODO - split
+import java.io.*; //TODO - split (in all files)
 
 public class ExternalBucketSpecificHybridSort extends ExternalBucketSortBase {
     private int[] countingSortArr;
@@ -25,9 +26,12 @@ public class ExternalBucketSpecificHybridSort extends ExternalBucketSortBase {
                 continue;
             }
 
-            int len, leftEnd = Resources.minVals[realInd], rightEnd;
+            int len;
+            long leftEnd = Resources.minVals[realInd], rightEnd;
 
             while(leftEnd <= Resources.maxVals[realInd]) {
+                int dataLeft = Resources.count[realInd] * 3;
+
                 rightEnd = leftEnd + COUNTING_SIZE - 1;
 
                 while(true) {
@@ -36,7 +40,12 @@ public class ExternalBucketSpecificHybridSort extends ExternalBucketSortBase {
                         len--;
                     }
 
+                    if (dataLeft < len) {
+                        len = dataLeft;
+                    }
+
                     len = secondFileInputStream.read(arr, 0, len);
+                    dataLeft -= len;
 
                     if (len <= 0) {
                         break;
@@ -49,19 +58,20 @@ public class ExternalBucketSpecificHybridSort extends ExternalBucketSortBase {
                                 (arr[j+2]&0xff);
 
                         if (num >= leftEnd && num <= rightEnd) {
-                            countingSortArr[num - leftEnd]++;
+                            countingSortArr[num - (int)leftEnd]++;
                         }
                     }
                 }
 
-                for (int j = leftEnd; j <= rightEnd; j++) {
-                    for (int in = 0; in < countingSortArr[j - leftEnd]; in++) {
-                        firstFileOutputStream.write( ((j>>>24)&0xff) );
-                        firstFileOutputStream.write( ((j>>>16)&0xff) );
-                        firstFileOutputStream.write( ((j>>>8)&0xff) );
-                        firstFileOutputStream.write( (j&0xff) );
+                for (long j = leftEnd; j <= rightEnd; j++) {
+                    for (int in = 0; in < countingSortArr[(int)(j - leftEnd)]; in++) {
+                        int jint = (int)j;
+                        firstFileOutputStream.write( ((jint>>24)&0xff) );
+                        firstFileOutputStream.write( ((jint>>16)&0xff) );
+                        firstFileOutputStream.write( ((jint>>8)&0xff) );
+                        firstFileOutputStream.write( (jint&0xff) );
                     }
-                    countingSortArr[j - leftEnd] = 0;
+                    countingSortArr[(int)(j - leftEnd)] = 0;
                 }
 
                 leftEnd = rightEnd + 1;
@@ -73,7 +83,7 @@ public class ExternalBucketSpecificHybridSort extends ExternalBucketSortBase {
             }
 
             skipped += Resources.count[realInd] * 3;
-            System.out.println("SKIPPED " + skipped);
+            //System.out.println("SKIPPED " + skipped);
         }
 
         firstFileOutputStream.close();

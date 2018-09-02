@@ -54,13 +54,29 @@ public class ExternalSort {
         return "<error computing checksum>";
     }
 
+    public static void printFile(String f) throws IOException {
+        DataInputStream inputStream = new DataInputStream(new BufferedInputStream(new FileInputStream(f)));
+
+        System.out.println("FILE " + f);
+        while(true) {
+            try {
+                int num = inputStream.readInt();
+                System.out.println(num);
+            } catch(EOFException e) {
+                break;
+            }
+        }
+        System.out.println("-------------------");
+
+        inputStream.close();
+    }
+
     public static void main(String[] args) throws Exception {
         //String f1 = args[0];
         //String f2 = args[1];
 
         String f1 = "test14a.dat";
         String f2 = "test14b.dat";
-
 
         startTime = System.nanoTime();
 
