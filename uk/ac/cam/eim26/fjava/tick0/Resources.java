@@ -56,6 +56,10 @@ public class Resources {
 
                 val = PartialByteHeapSort.bytesToInteger(arr, i / 4);
 
+                if (Resources.count[ arr[i]&0xff ] < 10) {
+                    System.out.println("Group " + (arr[i]&0xff) + " sees " + val);
+                }
+
                 minValue = Math.min(minValue, val);
                 maxValue = Math.max(maxValue, val);
 
