@@ -137,6 +137,8 @@ public class Resources {
 
         blockSize = (int) (usableMemory / 6);
 
+        blockSize /= 2; ///Integer reduce check
+
         System.out.println("Block size = " + blockSize);
     }
 }
