@@ -89,6 +89,34 @@ public class RadixByteSort {
     }
 
     public static byte[] sortByteArray(byte[] arr, int len) {
+        ///Check for perfect reflection
+        boolean fullySorted = true;
+        for (int i = 0; i < len / 2; i++) {
+            if (ByteUtil.isSmaller(arr, len - i - 1, i)) {
+                byteSwap(arr, i, len - i - 1, 0);
+            } else {
+                fullySorted = false;
+                break;
+            }
+        }
+
+        if (fullySorted) {
+            return arr;
+        }
+
+        //Check for perfect sort
+        fullySorted = true;
+        for (int i = 1; i < len; i++) {
+            if (ByteUtil.isSmaller(arr, i, i - 1)) {
+                fullySorted = false;
+                break;
+            }
+        }
+
+        if (fullySorted) {
+            return arr;
+        }
+
         return sortByteArray(arr, len, 0);
     }
 }
