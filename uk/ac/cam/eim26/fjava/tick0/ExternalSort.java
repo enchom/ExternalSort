@@ -22,6 +22,9 @@ public class ExternalSort {
         long myTime = System.nanoTime();
 
         externalSortStrategy = StrategySelector.selectStrategy(f1);
+
+        System.out.println("STRATEGY CHOSEN IN " + (myTime - System.nanoTime()));
+
         System.out.println("Chosen strategy = " + externalSortStrategy.getStrategy());
         externalSortStrategy.setFiles(f1, f2);
         externalSortStrategy.sort();

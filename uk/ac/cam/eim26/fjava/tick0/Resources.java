@@ -66,7 +66,7 @@ public class Resources {
                 val = PartialByteHeapSort.bytesToInteger(arr, i / 4);
 
                 if (Resources.count[ arr[i]&0xff ] < 30 /*|| ( (arr[i]&0xff)==127 && fakectr < 30 && (arr[i+1] & 0xff) != 255 )*/) {
-                    System.out.println("Group " + (arr[i]&0xff) + " sees " + val + " with second bit " + (arr[i+1]&0xff) );
+                    //System.out.println("Group " + (arr[i]&0xff) + " sees " + val + " with second bit " + (arr[i+1]&0xff) );
 
                     if ( (arr[i] & 0xff) == 127 && (arr[i+1] & 0xff) != 255 ) {
                         fakectr++;
@@ -98,16 +98,16 @@ public class Resources {
 
         for (int i = 0; i < 256; i++) {
             if (auxMaxInd[i] != 0) {
-                System.out.println("Range for bit " + i + " is [" + auxMinInd[i] + "; " + auxMaxInd[i] + "]");
+                //System.out.println("Range for bit " + i + " is [" + auxMinInd[i] + "; " + auxMaxInd[i] + "]");
             }
         }
 
         for (int i = 0; i < 256; i++) {
             if (count[i] > 0) {
-                System.out.println("Byte group " + i + " has naturely_sorted status = " + naturelySorted[i]);
-                System.out.println("It also has " + count[i] + " members in the range [" + minVals[i] + ", " + maxVals[i] + "]");
-                System.out.println("Average value = " + (averageValue[i] / count[i]));
-                System.out.println();
+                //System.out.println("Byte group " + i + " has naturely_sorted status = " + naturelySorted[i]);
+                //System.out.println("It also has " + count[i] + " members in the range [" + minVals[i] + ", " + maxVals[i] + "]");
+                //System.out.println("Average value = " + (averageValue[i] / count[i]));
+                //System.out.println();
             }
 
             if (count[i] > 0 && !naturelySorted[i]) {
