@@ -61,6 +61,10 @@ public class ExternalBucketSort extends ExternalBucketSortBase {
         System.out.println("Writing " + T4/1000000 + "ms");
 
         localTime = System.nanoTime();
+        firstFileStream.flush();
+        System.out.println("Flushing took " + (System.nanoTime() - localTime)/1000000 + "ms");
+
+        localTime = System.nanoTime();
         firstFileStream.close();
         System.out.println("Closing first file stream is " + (System.nanoTime() - localTime)/1000000 + "ms");
 
