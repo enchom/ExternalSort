@@ -99,9 +99,13 @@ public class ExternalMergeSort implements ExternalSortBase {
         BufferedInputStream d = new BufferedInputStream(new FileInputStream(firstFile));
         BufferedOutputStream dOut = new BufferedOutputStream(new FileOutputStream(secondFile));
 
+        long T1 = 0, T2 = 0, T3 = 0, localTime;
+
         //First pass - sort blocks
         while(true) {
+            localTime = System.nanoTime();
             len = d.read(arr);
+            T1 += System.nanoTime() - localTime;
 
             if (len == -1) {
                 break;
@@ -109,13 +113,17 @@ public class ExternalMergeSort implements ExternalSortBase {
 
             blocks++;
 
+            localTime = System.nanoTime();
             arr = RadixByteSort.sortByteArray(arr, len / 4);
+            T2 += System.nanoTime() - localTime;
 
             blockOffsets.add((blocks - 1) * Resources.blockSize);
             blockEndings.add((blocks - 1) * Resources.blockSize + (len >> 2));
 
             dOut.write(arr, 0, len);
         }
+
+        System.out.println("First pass into blocks gives " + T1/1000000 + "ms in reading and " + T2/1000000 + "ms in sorting");
 
         dOut.close();
         d.close();
@@ -137,6 +145,7 @@ public class ExternalMergeSort implements ExternalSortBase {
 
         System.out.println("Size is " + bufferSize);
 
+        localTime = System.nanoTime();
         for (int i = 0; i < blocks; i++) {
             BufferedInputStream stream = new BufferedInputStream( new FileInputStream(secondFile) );
 
@@ -147,10 +156,14 @@ public class ExternalMergeSort implements ExternalSortBase {
             currentPointers.add(blockOffsets.get(i));
             currentIntegers.add(readNextInteger(i));
         }
+        T3 = System.nanoTime() - localTime;
+
+        System.out.println("Skipping and aligning streams takes " + T3/1000000 + "ms");
 
         dOut = new BufferedOutputStream( new FileOutputStream(firstFile) );
         pq = new CustomPriorityQueue(blocks, currentIntegers);
 
+        localTime = System.nanoTime();
         //TODO - Do without an exception
         while(true) {
             try {
@@ -159,6 +172,7 @@ public class ExternalMergeSort implements ExternalSortBase {
                 break;
             }
         }
+        System.out.println("All actual merging is done in " + (System.nanoTime() - localTime)/1000000 + "ms");
 
         dOut.close();
 
