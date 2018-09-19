@@ -41,6 +41,8 @@ public class Resources {
         int val;
 
         for (int i = 0; i < 256; i++) {
+            auxMinInd[i] = 1000000000;
+
             lastValue[i] = Integer.MIN_VALUE;
             naturelySorted[i] = true;
             minVals[i] = Integer.MAX_VALUE;
@@ -91,7 +93,7 @@ public class Resources {
 
         for (int i = 0; i < 256; i++) {
             if (auxMaxInd[i] != 0) {
-                System.out.println("Range for bit " + i + " is [" + auxMaxInd[i] + "; " + auxMinInd[i] + "]");
+                System.out.println("Range for bit " + i + " is [" + auxMinInd[i] + "; " + auxMaxInd[i] + "]");
             }
         }
 
