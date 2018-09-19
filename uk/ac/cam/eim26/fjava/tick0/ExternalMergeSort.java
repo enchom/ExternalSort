@@ -92,6 +92,8 @@ public class ExternalMergeSort implements ExternalSortBase {
 
     @Override
     public void sort() throws IOException, NoNumbersLeftException {
+        long endToEnd = System.nanoTime();
+
         arr = Resources.arr;
 
         int len = 0;
@@ -172,13 +174,15 @@ public class ExternalMergeSort implements ExternalSortBase {
                 break;
             }
         }
-        System.out.println("All actual merging is done in " + (System.nanoTime() - localTime)/1000000 + "ms");
-
         dOut.close();
 
         for (BufferedInputStream stream : streamsToMerge) {
             stream.close();
         }
+
+        System.out.println("All actual merging is done in " + (System.nanoTime() - localTime)/1000000 + "ms");
+
+        System.out.println("END TO END IS " + (System.nanoTime() - endToEnd)/1000000);
     }
 
     @Override
