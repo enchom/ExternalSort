@@ -101,6 +101,7 @@ public class RadixByteSort {
         }
 
         if (fullySorted) {
+            System.out.println("INVERSE SORTING");
             return arr;
         }
 
@@ -114,6 +115,7 @@ public class RadixByteSort {
         }
 
         if (fullySorted) {
+            System.out.println("STRAIGHT SORTING");
             return arr;
         }
 
