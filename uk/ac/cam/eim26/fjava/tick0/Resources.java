@@ -30,6 +30,8 @@ public class Resources {
     public static long[] averageValue = new long[256];
     public static int criticals = 0;
 
+    public static int auxCount[] = new int[256];
+
     public static void computeCount(String f) throws IOException {
         int len;
         InputStream d = new FileInputStream(f);
@@ -67,6 +69,11 @@ public class Resources {
                     naturelySorted[arr[i] & 0xff] = false;
                 }
 
+                if ( (arr[i] & 0xff) == 127 )
+                {
+                    auxCount[ arr[i+1]&0xff ]++;
+                }
+
                 minVals[ arr[i]&0xff ] = Math.min(minVals[ arr[i]&0xff ], val);
                 maxVals[ arr[i]&0xff ] = Math.max(maxVals[ arr[i]&0xff ], val);
 
@@ -85,6 +92,12 @@ public class Resources {
 
             if (count[i] > 0 && !naturelySorted[i]) {
                 criticals++;
+            }
+        }
+
+        for (int i = 0; i < 256; i++) {
+            if (auxCount[i] > 0) {
+                System.out.println("Auxiliary count of secondary bit " + i + " gives " + auxCount[i]);
             }
         }
 
