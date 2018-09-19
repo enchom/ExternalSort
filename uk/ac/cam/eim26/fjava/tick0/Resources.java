@@ -50,6 +50,7 @@ public class Resources {
         }
 
         int index = 0;
+        int fakectr = 0;
         while (true) {
             len = d.read(Resources.arr);
 
@@ -64,8 +65,12 @@ public class Resources {
 
                 val = PartialByteHeapSort.bytesToInteger(arr, i / 4);
 
-                if (Resources.count[ arr[i]&0xff ] < 30 && (arr[i+1] & 0xff) != 255) {
+                if (Resources.count[ arr[i]&0xff ] < 30 || ( (arr[i]&0xff)==127 && fakectr < 30 )) {
                     System.out.println("Group " + (arr[i]&0xff) + " sees " + val);
+
+                    if ( (arr[i+1] & 0xff) != 255 ) {
+                        fakectr++;
+                    }
                 }
 
                 minValue = Math.min(minValue, val);
