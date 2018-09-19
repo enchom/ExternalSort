@@ -135,9 +135,7 @@ public class Resources {
 
         System.out.println("Memory = " + maxMemory + " i.e. " + ((double) (maxMemory) / 1000000.0) + "MB");
 
-        blockSize = (int) (usableMemory / 6);
-
-        blockSize /= 2; ///Integer reduce check
+        blockSize = (int) (usableMemory / 4);
 
         System.out.println("Block size = " + blockSize);
     }
