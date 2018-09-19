@@ -30,12 +30,14 @@ public class Resources {
     public static long[] averageValue = new long[256];
     public static int criticals = 0;
 
-    public static int auxCount[] = new int[256];
+    public static int pairCount[][] = new int[256][256];
 
     public static void computeCount(String f) throws IOException {
         int len;
         InputStream d = new FileInputStream(f);
         int val;
+        boolean secondaryOrder = true;
+        int lb2 = 0;
 
         for (int i = 0; i < 256; i++) {
             lastValue[i] = Integer.MIN_VALUE;
@@ -69,9 +71,14 @@ public class Resources {
                     naturelySorted[arr[i] & 0xff] = false;
                 }
 
-                if ( (arr[i] & 0xff) == 127 )
-                {
-                    auxCount[ arr[i+1]&0xff ]++;
+                pairCount[ arr[i]&0xff ][ arr[i+1]&0xff ]++;
+
+                if ( (arr[i]&0xff) == 127) {
+                    if ( (arr[i+1]&0xff) < lb2 ) {
+                        secondaryOrder = false;
+                    }
+
+                    lb2 = (arr[i+1] & 0xff);
                 }
 
                 minVals[ arr[i]&0xff ] = Math.min(minVals[ arr[i]&0xff ], val);
@@ -81,6 +88,8 @@ public class Resources {
                 averageValue[Resources.arr[i] & 0xff] += (long)val;
             }
         }
+
+        System.out.println("SECONDARY BIT ORDER = " + secondaryOrder);
 
         for (int i = 0; i < 256; i++) {
             if (count[i] > 0) {
@@ -92,12 +101,6 @@ public class Resources {
 
             if (count[i] > 0 && !naturelySorted[i]) {
                 criticals++;
-            }
-        }
-
-        for (int i = 0; i < 256; i++) {
-            if (auxCount[i] > 0) {
-                System.out.println("Auxiliary count of secondary bit " + i + " gives " + auxCount[i]);
             }
         }
 
