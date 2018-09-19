@@ -30,10 +30,10 @@ public class Resources {
     public static long[] averageValue = new long[256];
     public static int criticals = 0;
 
-    public static int pairCount[][] = new int[256][256];
+    //public static int pairCount[][] = new int[256][256];
 
-    public static int auxMinInd[] = new int[256];
-    public static int auxMaxInd[] = new int[256];
+    //public static int auxMinInd[] = new int[256];
+    //public static int auxMaxInd[] = new int[256];
 
     public static void computeCount(String f) throws IOException {
         int len;
@@ -41,7 +41,7 @@ public class Resources {
         int val;
 
         for (int i = 0; i < 256; i++) {
-            auxMinInd[i] = 1000000000;
+            //auxMinInd[i] = 1000000000;
 
             lastValue[i] = Integer.MIN_VALUE;
             naturelySorted[i] = true;
@@ -49,8 +49,8 @@ public class Resources {
             maxVals[i] = Integer.MIN_VALUE;
         }
 
-        int index = 0;
-        int fakectr = 0;
+        //int index = 0;
+        //int fakectr = 0;
         while (true) {
             len = d.read(Resources.arr);
 
@@ -65,12 +65,12 @@ public class Resources {
 
                 val = PartialByteHeapSort.bytesToInteger(arr, i / 4);
 
-                if (Resources.count[ arr[i]&0xff ] < 30 || ( (arr[i]&0xff)==127 && fakectr < 30 && (arr[i+1] & 0xff) != 255 )) {
+                if (Resources.count[ arr[i]&0xff ] < 30 /*|| ( (arr[i]&0xff)==127 && fakectr < 30 && (arr[i+1] & 0xff) != 255 )*/) {
                     System.out.println("Group " + (arr[i]&0xff) + " sees " + val + " with second bit " + (arr[i+1]&0xff) );
 
-                    if ( (arr[i] & 0xff) == 127 && (arr[i+1] & 0xff) != 255 ) {
+                    /*if ( (arr[i] & 0xff) == 127 && (arr[i+1] & 0xff) != 255 ) {
                         fakectr++;
-                    }
+                    }*/
                 }
 
                 minValue = Math.min(minValue, val);
@@ -80,13 +80,13 @@ public class Resources {
                     naturelySorted[arr[i] & 0xff] = false;
                 }
 
-                pairCount[ arr[i]&0xff ][ arr[i+1]&0xff ]++;
+                /*pairCount[ arr[i]&0xff ][ arr[i+1]&0xff ]++;
 
                 index++;
                 if ( (arr[i]&0xff) == 127) {
                     auxMaxInd[ arr[i+1]&0xff ] = Math.max(auxMaxInd[ arr[i+1]&0xff ], index);
                     auxMinInd[ arr[i+1]&0xff ] = Math.min(auxMinInd[ arr[i+1]&0xff ], index);
-                }
+                }*/
 
                 minVals[ arr[i]&0xff ] = Math.min(minVals[ arr[i]&0xff ], val);
                 maxVals[ arr[i]&0xff ] = Math.max(maxVals[ arr[i]&0xff ], val);
@@ -96,11 +96,11 @@ public class Resources {
             }
         }
 
-        for (int i = 0; i < 256; i++) {
+        /*for (int i = 0; i < 256; i++) {
             if (auxMaxInd[i] != 0) {
                 System.out.println("Range for bit " + i + " is [" + auxMinInd[i] + "; " + auxMaxInd[i] + "]");
             }
-        }
+        }*/
 
         for (int i = 0; i < 256; i++) {
             if (count[i] > 0) {
