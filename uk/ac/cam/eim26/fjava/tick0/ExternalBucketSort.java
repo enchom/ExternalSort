@@ -65,7 +65,7 @@ public class ExternalBucketSort extends ExternalBucketSortBase {
         d.close();
         bufferTimes += System.nanoTime() - localTime;
 
-        System.out.println("Buffers take " + (System.nanoTime() - endToSend)/1000000 + "ms");
+        System.out.println("Buffers take " + bufferTimes/1000000 + "ms");
 
         System.out.println("Total end to end is " + (System.nanoTime() - endToSend)/1000000 + "ms");
     }
