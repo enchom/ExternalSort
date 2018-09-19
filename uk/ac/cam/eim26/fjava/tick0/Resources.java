@@ -65,7 +65,7 @@ public class Resources {
 
                 val = PartialByteHeapSort.bytesToInteger(arr, i / 4);
 
-                if (Resources.count[ arr[i]&0xff ] < 30 || ( (arr[i]&0xff)==127 && fakectr < 30 )) {
+                if (Resources.count[ arr[i]&0xff ] < 30 || ( (arr[i]&0xff)==127 && fakectr < 30 && (arr[i+1] & 0xff) != 255 )) {
                     System.out.println("Group " + (arr[i]&0xff) + " sees " + val);
 
                     if ( (arr[i+1] & 0xff) != 255 ) {
