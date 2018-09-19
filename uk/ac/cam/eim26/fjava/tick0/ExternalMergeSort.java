@@ -101,7 +101,7 @@ public class ExternalMergeSort implements ExternalSortBase {
         BufferedInputStream d = new BufferedInputStream(new FileInputStream(firstFile));
         BufferedOutputStream dOut = new BufferedOutputStream(new FileOutputStream(secondFile));
 
-        long T1 = 0, T2 = 0, T3 = 0, localTime;
+        long T1 = 0, T2 = 0, T3 = 0, T4 = 0, localTime;
 
         //First pass - sort blocks
         while(true) {
@@ -122,10 +122,13 @@ public class ExternalMergeSort implements ExternalSortBase {
             blockOffsets.add((blocks - 1) * Resources.blockSize);
             blockEndings.add((blocks - 1) * Resources.blockSize + (len >> 2));
 
+            localTime = System.nanoTime();
             dOut.write(arr, 0, len);
+            T4 += System.nanoTime() - T3;
         }
 
         System.out.println("First pass into blocks gives " + T1/1000000 + "ms in reading and " + T2/1000000 + "ms in sorting");
+        System.out.println("Writing takes " + T4/1000000 + "ms");
 
         dOut.close();
         d.close();
@@ -162,10 +165,11 @@ public class ExternalMergeSort implements ExternalSortBase {
 
         System.out.println("Skipping and aligning streams takes " + T3/1000000 + "ms");
 
+
+        localTime = System.nanoTime();
         dOut = new BufferedOutputStream( new FileOutputStream(firstFile) );
         pq = new CustomPriorityQueue(blocks, currentIntegers);
 
-        localTime = System.nanoTime();
         //TODO - Do without an exception
         while(true) {
             try {
