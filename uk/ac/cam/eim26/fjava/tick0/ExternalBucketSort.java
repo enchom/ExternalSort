@@ -4,6 +4,7 @@ import java.io.*; //TODO - split
 
 public class ExternalBucketSort extends ExternalBucketSortBase {
     public void sort() throws IOException {
+        long endToSend = System.nanoTime();
         long T1 = 0, T2 = 0, T3 = 0, T4 = 0, localTime;
 
         int len;
@@ -56,6 +57,8 @@ public class ExternalBucketSort extends ExternalBucketSortBase {
 
         firstFileStream.close();
         d.close();
+
+        System.out.println("Total end to end is " + (System.nanoTime() - endToSend)/1000000 + "ms");
     }
 
     @Override
