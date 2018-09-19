@@ -11,7 +11,8 @@ public class ExternalBucketSpecificHybridSort extends ExternalBucketSortBase {
         int num;
         int skipped = 0;
 
-        /*COUNTING_SIZE = Resources.blockSize / 4;
+        /*
+        COUNTING_SIZE = Resources.blockSize / 4;
         countingSortArr = new int[COUNTING_SIZE];
 
         sortByFirstByte();
