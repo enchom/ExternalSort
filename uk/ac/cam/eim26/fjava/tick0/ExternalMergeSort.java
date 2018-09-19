@@ -124,7 +124,7 @@ public class ExternalMergeSort implements ExternalSortBase {
 
             localTime = System.nanoTime();
             dOut.write(arr, 0, len);
-            T4 += System.nanoTime() - T3;
+            T4 += System.nanoTime() - localTime;
         }
 
         System.out.println("First pass into blocks gives " + T1/1000000 + "ms in reading and " + T2/1000000 + "ms in sorting");
