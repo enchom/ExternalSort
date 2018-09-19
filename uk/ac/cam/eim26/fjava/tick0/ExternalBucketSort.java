@@ -13,8 +13,12 @@ public class ExternalBucketSort extends ExternalBucketSortBase {
         sortByFirstByte();
         System.out.println("First byte sort is " + (System.nanoTime() - localTime)/1000000 + "ms");
 
+        long bufferTimes = 0;
+
+        localTime = System.nanoTime();
         BufferedOutputStream firstFileStream = new BufferedOutputStream(new FileOutputStream(firstFile));
         FileInputStream d = new FileInputStream(secondFile); //TODO - More descriptive name
+        bufferTimes += System.nanoTime() - localTime;
 
         for (int i = 0; i < 256; i++) {
             int realInd = i ^ 128;
@@ -50,6 +54,8 @@ public class ExternalBucketSort extends ExternalBucketSortBase {
             T4 += System.nanoTime() - localTime;
         }
 
+        localTime = System.nanoTime();
+
         System.out.println("Reading " + T1/1000000 + "ms");
         System.out.println("Converting " + T2/1000000 + "ms");
         System.out.println("Sorting " + T3/1000000 + "ms");
@@ -57,6 +63,9 @@ public class ExternalBucketSort extends ExternalBucketSortBase {
 
         firstFileStream.close();
         d.close();
+        bufferTimes += System.nanoTime() - localTime;
+
+        System.out.println("Buffers take " + (System.nanoTime() - endToSend)/1000000 + "ms");
 
         System.out.println("Total end to end is " + (System.nanoTime() - endToSend)/1000000 + "ms");
     }
