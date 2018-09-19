@@ -32,12 +32,13 @@ public class Resources {
 
     public static int pairCount[][] = new int[256][256];
 
+    public static int auxMinInd[] = new int[256];
+    public static int auxMaxInd[] = new int[256];
+
     public static void computeCount(String f) throws IOException {
         int len;
         InputStream d = new FileInputStream(f);
         int val;
-        boolean secondaryOrder = true;
-        int lb2 = 0;
 
         for (int i = 0; i < 256; i++) {
             lastValue[i] = Integer.MIN_VALUE;
@@ -46,6 +47,7 @@ public class Resources {
             maxVals[i] = Integer.MIN_VALUE;
         }
 
+        int index = 0;
         while (true) {
             len = d.read(Resources.arr);
 
@@ -73,12 +75,10 @@ public class Resources {
 
                 pairCount[ arr[i]&0xff ][ arr[i+1]&0xff ]++;
 
+                index++;
                 if ( (arr[i]&0xff) == 127) {
-                    if ( (arr[i+1]&0xff) < lb2 ) {
-                        secondaryOrder = false;
-                    }
-
-                    lb2 = (arr[i+1] & 0xff);
+                    auxMaxInd[ arr[i+1]&0xff ] = Math.max(auxMaxInd[ arr[i+1]&0xff ], index);
+                    auxMinInd[ arr[i+1]&0xff ] = Math.min(auxMinInd[ arr[i+1]&0xff ], index);
                 }
 
                 minVals[ arr[i]&0xff ] = Math.min(minVals[ arr[i]&0xff ], val);
@@ -89,7 +89,11 @@ public class Resources {
             }
         }
 
-        System.out.println("SECONDARY BIT ORDER = " + secondaryOrder);
+        for (int i = 0; i < 256; i++) {
+            if (auxMaxInd[i] != 0) {
+                System.out.println("Range for bit " + i + " is [" + auxMaxInd[i] + "; " + auxMinInd[i] + "]");
+            }
+        }
 
         for (int i = 0; i < 256; i++) {
             if (count[i] > 0) {
