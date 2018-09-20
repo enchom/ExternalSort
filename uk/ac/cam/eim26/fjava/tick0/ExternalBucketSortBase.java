@@ -40,7 +40,7 @@ public abstract class ExternalBucketSortBase implements ExternalSortBase {
         for (int i = 0; i < 256; i++) {
             int realInd = i ^ 128;
 
-            localTime = System.nanoTime()
+            localTime = System.nanoTime();
             randomAccessFiles[realInd] = new RandomAccessFile(secondFile, "rw");
 
             blockOffsets.set(realInd, lastLen * 3);
