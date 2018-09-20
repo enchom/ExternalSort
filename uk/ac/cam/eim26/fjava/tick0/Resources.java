@@ -107,7 +107,7 @@ public class Resources {
                 //System.out.println();
             }
 
-            if (count[i] > 0 && !naturelySorted[i]) {
+            if (count[i] > 0) {
                 criticals++;
             }
         }

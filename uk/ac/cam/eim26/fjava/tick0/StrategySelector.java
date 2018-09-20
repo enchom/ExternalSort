@@ -11,7 +11,8 @@ public class StrategySelector {
 
         if (Resources.totalSize >= 250000) {
             System.out.println("File size = " + Resources.totalSize * 4 + " bytes; = " + (Resources.totalSize / 250000) + "MB");
-        } else {
+        }
+        else {
             System.out.println("File size = " + Resources.totalSize * 4 + " bytes; = " + (Resources.totalSize / 250) + "KB");
         }
 
@@ -37,15 +38,13 @@ public class StrategySelector {
 
         System.out.println("The maximum value is " + maxValue);
 
-        if (maxValue > Resources.blockSize) {
-            if (Resources.criticals <= 2) {
-                //return new ExternalBucketSpecificHybridSort();
-                return new ExternalMergeSort();
-            }
-            else {
-                return new ExternalMergeSort();
-            }
-        } else {
+        if (Resources.criticals <= 3) {
+            return new ExternalBucketDoubleSort();
+        }
+        else if (maxValue > Resources.blockSize) {
+            return new ExternalMergeSort();
+        }
+        else {
             return new ExternalBucketSort();
         }
     }

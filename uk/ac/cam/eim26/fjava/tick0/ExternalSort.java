@@ -3,6 +3,8 @@
  * STYLE GUIDE AND IT MAY INCLUDE UNUSED CODE, BAD STRUCTURE OR GENERALLY BAD DESIGN.
  */
 
+//TODO: Add JavaDoc
+
 package uk.ac.cam.eim26.fjava.tick0;
 
 import java.io.*;
