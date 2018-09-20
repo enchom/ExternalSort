@@ -14,7 +14,8 @@ public class ExternalBucketSort extends ExternalBucketSortBase {
         System.out.println("First byte sort is " + (System.nanoTime() - localTime)/1000000 + "ms");
 
         localTime = System.nanoTime();
-        BufferedOutputStream firstFileStream = new BufferedOutputStream(new FileOutputStream(firstFile));
+        RandomAccessFile randomAccessFile = new RandomAccessFile(firstFile, "rw");
+        BufferedOutputStream firstFileStream = new BufferedOutputStream(new FileOutputStream(randomAccessFile.getFD()));
         System.out.println("BufferedOutputStream for first file takes " + (System.nanoTime() - localTime)/1000000 + "ms");
 
         localTime = System.nanoTime();
@@ -65,7 +66,8 @@ public class ExternalBucketSort extends ExternalBucketSortBase {
         System.out.println("Flushing took " + (System.nanoTime() - localTime)/1000000 + "ms");
 
         localTime = System.nanoTime();
-        //firstFileStream.close();
+        firstFileStream.close();
+        randomAccessFile.close();
         System.out.println("Closing first file stream is " + (System.nanoTime() - localTime)/1000000 + "ms");
 
         localTime = System.nanoTime();

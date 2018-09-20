@@ -130,9 +130,8 @@ public class ExternalMergeSort implements ExternalSortBase {
         System.out.println("First pass into blocks gives " + T1/1000000 + "ms in reading and " + T2/1000000 + "ms in sorting");
         System.out.println("Writing takes " + T4/1000000 + "ms");
 
-        //dOut.close();
-        //d.close();
-        dOut.flush();
+        dOut.close();
+        d.close();
         System.out.println("Total " + blocks + " blocks");
 
         System.out.println("Finished first pass");
@@ -179,8 +178,7 @@ public class ExternalMergeSort implements ExternalSortBase {
             }
         }
 
-        dOut.flush();
-        //dOut.close();
+        dOut.close();
 
         for (BufferedInputStream stream : streamsToMerge) {
             stream.close();
