@@ -98,7 +98,7 @@ public class ExternalMergeSort implements ExternalSortBase {
 
         int len = 0;
 
-        BufferedInputStream d = new BufferedInputStream(new FileInputStream(firstFile));
+        FileInputStream d = new FileInputStream(firstFile);
         BufferedOutputStream dOut = new BufferedOutputStream(new FileOutputStream(secondFile));
 
         long T1 = 0, T2 = 0, T3 = 0, T4 = 0, localTime;
@@ -130,9 +130,9 @@ public class ExternalMergeSort implements ExternalSortBase {
         System.out.println("First pass into blocks gives " + T1/1000000 + "ms in reading and " + T2/1000000 + "ms in sorting");
         System.out.println("Writing takes " + T4/1000000 + "ms");
 
-        dOut.close();
-        d.close();
-
+        //dOut.close();
+        //d.close();
+        dOut.flush();
         System.out.println("Total " + blocks + " blocks");
 
         System.out.println("Finished first pass");
@@ -178,7 +178,9 @@ public class ExternalMergeSort implements ExternalSortBase {
                 break;
             }
         }
-        dOut.close();
+
+        dOut.flush();
+        //dOut.close();
 
         for (BufferedInputStream stream : streamsToMerge) {
             stream.close();
