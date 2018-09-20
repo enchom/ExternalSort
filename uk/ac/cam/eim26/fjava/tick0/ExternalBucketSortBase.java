@@ -13,6 +13,7 @@ public abstract class ExternalBucketSortBase implements ExternalSortBase {
 
     protected byte[] arr;
     protected BufferedOutputStream[] outputStreams = new BufferedOutputStream[256];
+    protected RandomAccessFile[] randomAccessFiles = new RandomAccessFile[256];
 
     @Override
     public void setFiles(String f1, String f2) {
@@ -37,17 +38,17 @@ public abstract class ExternalBucketSortBase implements ExternalSortBase {
         for (int i = 0; i < 256; i++) {
             int realInd = i ^ 128;
 
-            RandomAccessFile randomAccessFile = new RandomAccessFile(secondFile, "rw");
+            randomAccessFiles[realInd] = new RandomAccessFile(secondFile, "rw");
 
             blockOffsets.set(realInd, lastLen * 3);
             blockEndings.set(realInd, lastLen * 3 + Resources.count[realInd] * 3);
             currentPointers.set(realInd, lastLen * 3);
 
-            randomAccessFile.skipBytes(lastLen * 3);
+            randomAccessFiles[realInd].skipBytes(lastLen * 3);
 
             lastLen += Resources.count[realInd];
 
-            outputStreams[realInd] = new BufferedOutputStream(new FileOutputStream(randomAccessFile.getFD()));
+            outputStreams[realInd] = new BufferedOutputStream(new FileOutputStream(randomAccessFiles[realInd].getFD()));
         }
 
         //First pass - sort blocks
@@ -65,6 +66,7 @@ public abstract class ExternalBucketSortBase implements ExternalSortBase {
 
         for (int i = 0; i < 256; i++) {
             outputStreams[i].close();
+            randomAccessFiles[i].close();
         }
         d.close();
     }

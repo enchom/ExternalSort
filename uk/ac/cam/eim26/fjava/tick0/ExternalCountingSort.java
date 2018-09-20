@@ -31,7 +31,8 @@ public class ExternalCountingSort implements ExternalSortBase {
 
         inputStream.close();
 
-        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(firstFile));
+        RandomAccessFile randomAccessFile = new RandomAccessFile(firstFile, "rw");
+        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(randomAccessFile.getFD()));
         int ptr = 0;
 
         for (int i = Resources.minValue; i <= Resources.maxValue; i++) {
@@ -54,6 +55,7 @@ public class ExternalCountingSort implements ExternalSortBase {
         }
 
         outputStream.close();
+        randomAccessFile.close();
     }
 
     @Override

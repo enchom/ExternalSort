@@ -66,11 +66,13 @@ public class InternalRadixSort implements ExternalSortBase {
 
         inputStream.close();
 
-        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(firstFile));
+        RandomAccessFile randomAccessFile = new RandomAccessFile(firstFile, "rw");
+        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(randomAccessFile.getFD()));
 
         outputStream.write(Resources.arr, 0, len);
 
         outputStream.close();
+        randomAccessFile.close();
     }
 
     @Override
