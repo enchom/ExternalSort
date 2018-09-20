@@ -22,6 +22,8 @@ public abstract class ExternalBucketSortBase implements ExternalSortBase {
     }
 
     public void sortByFirstByte() throws IOException {
+        long localTime, T1 = 0, T2 = 0, T3 = 0;
+
         arr = Resources.arr;
 
         int len = 0;
@@ -38,6 +40,7 @@ public abstract class ExternalBucketSortBase implements ExternalSortBase {
         for (int i = 0; i < 256; i++) {
             int realInd = i ^ 128;
 
+            localTime = System.nanoTime()
             randomAccessFiles[realInd] = new RandomAccessFile(secondFile, "rw");
 
             blockOffsets.set(realInd, lastLen * 3);
@@ -45,6 +48,7 @@ public abstract class ExternalBucketSortBase implements ExternalSortBase {
             currentPointers.set(realInd, lastLen * 3);
 
             randomAccessFiles[realInd].skipBytes(lastLen * 3);
+            T1 += System.nanoTime() - localTime;
 
             lastLen += Resources.count[realInd];
 
@@ -53,21 +57,30 @@ public abstract class ExternalBucketSortBase implements ExternalSortBase {
 
         //First pass - sort blocks
         while (true) {
+            localTime = System.nanoTime();
             len = d.read(arr);
+            T2 += System.nanoTime() - localTime;
 
             if (len == -1) {
                 break;
             }
 
+            localTime = System.nanoTime();
             for (int i = 0; i < len; i += 4) {
                 outputStreams[ arr[i]&0xff ].write(arr, i + 1, 3);
             }
+            T3 += System.nanoTime() - localTime;
         }
 
+        localTime = System.nanoTime();
         for (int i = 0; i < 256; i++) {
             outputStreams[i].close();
             randomAccessFiles[i].close();
         }
         d.close();
+        System.out.println("Closing buffers in " + (System.nanoTime() - localTime)/1000000 + "ms");
+        System.out.println("Buffer creating and skipping in " + T1/1000000 + "ms");
+        System.out.println("Reading in " + T2/1000000 + "ms");
+        System.out.println("Writing in " + T3/1000000 + "ms");
     }
 }
