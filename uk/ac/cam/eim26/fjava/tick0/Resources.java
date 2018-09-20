@@ -34,8 +34,7 @@ public class Resources {
 
     public static void computeCount(String f) throws IOException {
         int len;
-        RandomAccessFile randomAccessFile = new RandomAccessFile(f, "r");
-        InputStream d = new FileInputStream(randomAccessFile.getFD());
+        InputStream d = new FileInputStream(f);
         int val;
 
         for (int i = 0; i < 256; i++) {
