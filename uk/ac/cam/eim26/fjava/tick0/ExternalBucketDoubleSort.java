@@ -150,7 +150,7 @@ public class ExternalBucketDoubleSort implements ExternalSortBase {
 
                 lastLen += totalCount[index];
 
-                outputStreams[index] = new BufferedOutputStream(new FileOutputStream(randomAccessFiles[index].getFD()));
+                outputStreams[index] = new BufferedOutputStream(new FileOutputStream(randomAccessFiles[index].getFD()), 4096);
                 System.out.println("Allocated buffer, memory = " + Runtime.getRuntime().freeMemory());
             }
         }
