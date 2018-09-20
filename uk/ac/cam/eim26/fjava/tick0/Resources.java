@@ -3,10 +3,7 @@ package uk.ac.cam.eim26.fjava.tick0;
 //TODO - Experiment with blockSize formula
 //TODO - Remove Resources. class reference
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,7 +34,8 @@ public class Resources {
 
     public static void computeCount(String f) throws IOException {
         int len;
-        InputStream d = new FileInputStream(f);
+        RandomAccessFile randomAccessFile = new RandomAccessFile(f, "r");
+        InputStream d = new FileInputStream(randomAccessFile.getFD());
         int val;
 
         for (int i = 0; i < 256; i++) {
