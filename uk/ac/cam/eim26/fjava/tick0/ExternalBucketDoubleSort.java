@@ -100,9 +100,10 @@ public class ExternalBucketDoubleSort implements ExternalSortBase {
         InputStream inputStream = new FileInputStream(firstFile);
 
         for (int i = 0; i < 256; i++) {
-            if (Resources.count[i] > 0) {
-                bigToSmall[i] = firstBytes;
-                smallToBig[firstBytes] = i;
+            int realInd = i ^ 128;
+            if (Resources.count[realInd] > 0) {
+                bigToSmall[realInd] = firstBytes;
+                smallToBig[firstBytes] = realInd;
                 firstBytes++;
             }
         }
