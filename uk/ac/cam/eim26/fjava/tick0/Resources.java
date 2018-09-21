@@ -170,6 +170,11 @@ public class Resources {
         if (leftEnds.size() > 5) {
             specialStructure = false;
             System.out.println("[REASON] Too many left ends");
+
+            for (int i = 0; i < leftEnds.size() - 1; i++) {
+                System.out.println("Interval from " + leftEnds.get(i) + " to " + leftEnds.get(i + 1) +
+                                    " with values in the range [" + smallestValue.get(i) + "; " + largestValue.get(i) + "]");
+            }
         }
         else {
             for (int i = 0; i < leftEnds.size() - 1; i++) {
