@@ -86,7 +86,7 @@ public class ExternalSort {
     public static void generateFile() throws IOException {
         String fileName_A = "test_specialA.dat";
         String fileName_B = "test_specialB.dat";
-        Random random = new Random();
+        Random random = new Random(127);
         DataOutputStream outputStream = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(fileName_A)));
         int printed = 0;
 
@@ -176,8 +176,9 @@ public class ExternalSort {
         //String f1 = args[0];
         //String f2 = args[1];
 
-        //generateFile();
+        generateFile();
         //generateRandomFile();
+
         normalMain();
     }
 }

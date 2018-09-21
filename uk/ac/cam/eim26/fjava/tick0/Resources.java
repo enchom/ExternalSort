@@ -4,6 +4,7 @@ package uk.ac.cam.eim26.fjava.tick0;
 //TODO - Remove Resources. class reference
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,10 +28,19 @@ public class Resources {
     public static long[] averageValue = new long[256];
     public static int criticals = 0;
 
-    public static int pairCount[][] = new int[256][256];
+    //public static int pairCount[][] = new int[256][256];
 
-    public static int auxMinInd[] = new int[256];
-    public static int auxMaxInd[] = new int[256];
+    //public static int auxMinInd[] = new int[256];
+    //public static int auxMaxInd[] = new int[256];
+
+    public static ArrayList<Integer> leftEnds = new ArrayList<>();
+    public static ArrayList<Boolean> sorted = new ArrayList<>();
+    public static ArrayList<Boolean> reversed = new ArrayList<>();
+    public static ArrayList<Integer> smallestValue = new ArrayList<>();
+    public static ArrayList<Integer> largestValue = new ArrayList<>();
+
+    public static final long BLOCK_SEPPARATOR = 20000000;
+    public static boolean specialStructure = true;
 
     public static void computeCount(String f) throws IOException {
         int len;
@@ -38,7 +48,7 @@ public class Resources {
         int val;
 
         for (int i = 0; i < 256; i++) {
-            auxMinInd[i] = 1000000000;
+            //auxMinInd[i] = 1000000000;
 
             lastValue[i] = Integer.MIN_VALUE;
             naturelySorted[i] = true;
@@ -46,8 +56,10 @@ public class Resources {
             maxVals[i] = Integer.MIN_VALUE;
         }
 
+        int lastNumber = 0;
+        boolean isSorted = true, isReversed = true;
+        int smallValue = 0, largeValue = 0;
         int index = 0;
-        int fakectr = 0;
         while (true) {
             len = d.read(Resources.arr);
 
@@ -66,7 +78,7 @@ public class Resources {
                     //System.out.println("Group " + (arr[i]&0xff) + " sees " + val + " with second bit " + (arr[i+1]&0xff) );
 
                     if ( (arr[i] & 0xff) == 127 && (arr[i+1] & 0xff) != 255 ) {
-                        fakectr++;
+                        //fakectr++;
                     }
                 }
 
@@ -77,27 +89,70 @@ public class Resources {
                     naturelySorted[arr[i] & 0xff] = false;
                 }
 
-                pairCount[ arr[i]&0xff ][ arr[i+1]&0xff ]++;
+                //pairCount[ arr[i]&0xff ][ arr[i+1]&0xff ]++;
 
-                index++;
-                if ( (arr[i]&0xff) == 127) {
+                /*if ( (arr[i]&0xff) == 127) {
                     auxMaxInd[ arr[i+1]&0xff ] = Math.max(auxMaxInd[ arr[i+1]&0xff ], index);
                     auxMinInd[ arr[i+1]&0xff ] = Math.min(auxMinInd[ arr[i+1]&0xff ], index);
-                }
+                }*/
 
                 minVals[ arr[i]&0xff ] = Math.min(minVals[ arr[i]&0xff ], val);
                 maxVals[ arr[i]&0xff ] = Math.max(maxVals[ arr[i]&0xff ], val);
 
                 lastValue[Resources.arr[i] & 0xff] = val;
                 averageValue[Resources.arr[i] & 0xff] += (long)val;
+
+                if (leftEnds.size() <= 5) {
+                    if (leftEnds.isEmpty()) {
+                        leftEnds.add(index);
+                        isSorted = true;
+                        isReversed = true;
+
+                        smallValue = val;
+                        largeValue = val;
+                    }
+                    else if ( Math.abs((long)val - (long)lastNumber) > BLOCK_SEPPARATOR ) {
+                        leftEnds.add(index);
+                        sorted.add(isSorted);
+                        reversed.add(isReversed);
+                        smallestValue.add(smallValue);
+                        largestValue.add(largeValue);
+
+                        isSorted = true;
+                        isReversed = true;
+
+                        smallValue = val;
+                        largeValue = val;
+                    }
+                    else {
+                        smallValue = Math.min(smallValue, val);
+                        largeValue = Math.max(largeValue, val);
+
+                        if (val > lastNumber) {
+                            isReversed = false;
+                        }
+                        else if (val < lastNumber) {
+                            isSorted = false;
+                        }
+                    }
+                }
+
+                lastNumber = val;
+
+                index++;
             }
         }
+        leftEnds.add(index);
+        sorted.add(isSorted);
+        reversed.add(isReversed);
+        smallestValue.add(smallValue);
+        largestValue.add(largeValue);
 
-        for (int i = 0; i < 256; i++) {
+        /*for (int i = 0; i < 256; i++) {
             if (auxMaxInd[i] != 0) {
                 //System.out.println("Range for bit " + i + " is [" + auxMinInd[i] + "; " + auxMaxInd[i] + "]");
             }
-        }
+        }*/
 
         for (int i = 0; i < 256; i++) {
             if (count[i] > 0) {
@@ -109,6 +164,39 @@ public class Resources {
 
             if (count[i] > 0) {
                 criticals++;
+            }
+        }
+
+        if (leftEnds.size() > 5) {
+            specialStructure = false;
+        }
+        else {
+            for (int i = 0; i < leftEnds.size() - 1; i++) {
+                if (leftEnds.get(i + 1) - leftEnds.get(i) > blockSize && !sorted.get(i) && !reversed.get(i)) {
+                    specialStructure = false;
+                    break;
+                }
+
+                for (int j = i + 1; j < leftEnds.size() - 1; j++) {
+                    int firstLeft = smallestValue.get(i);
+                    int firstRight = largestValue.get(i);
+                    int secondLeft = smallestValue.get(j);
+                    int secondRight = largestValue.get(j);
+
+                    if (firstRight < secondLeft) {
+                        continue;
+                    }
+                    if (secondRight < firstLeft) {
+                        continue;
+                    }
+
+                    specialStructure = false;
+                    break;
+                }
+
+                if (!specialStructure) {
+                    break;
+                }
             }
         }
 

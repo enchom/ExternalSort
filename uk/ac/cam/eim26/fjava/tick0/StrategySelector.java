@@ -38,8 +38,9 @@ public class StrategySelector {
 
         System.out.println("The maximum value is " + maxValue);
 
-        if (Resources.criticals <= 3) {
-            return new ExternalBucketDoubleSort();
+        if (Resources.specialStructure) {
+            return new ExternalCustomSort();
+            //return new ExternalMergeSort();
         }
         else if (maxValue > Resources.blockSize) {
             return new ExternalMergeSort();
