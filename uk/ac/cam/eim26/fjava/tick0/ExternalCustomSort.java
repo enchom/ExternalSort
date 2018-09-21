@@ -114,7 +114,7 @@ public class ExternalCustomSort implements ExternalSortBase {
                 }
             }
 
-            randomAccessFile.write(arr, 0, len);
+            //randomAccessFile.write(arr, 0, len);
         }
 
         inputStream.close();
