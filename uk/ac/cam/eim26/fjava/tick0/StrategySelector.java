@@ -40,7 +40,6 @@ public class StrategySelector {
 
         if (Resources.specialStructure) {
             return new ExternalCustomSort();
-            //return new ExternalMergeSort();
         }
         else if (maxValue > Resources.blockSize) {
             return new ExternalMergeSort();

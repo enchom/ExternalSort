@@ -169,11 +169,13 @@ public class Resources {
 
         if (leftEnds.size() > 5) {
             specialStructure = false;
+            System.out.println("[REASON] Too many left ends");
         }
         else {
             for (int i = 0; i < leftEnds.size() - 1; i++) {
                 if (leftEnds.get(i + 1) - leftEnds.get(i) > blockSize && !sorted.get(i) && !reversed.get(i)) {
                     specialStructure = false;
+                    System.out.println("[REASON] Too big unsorted/unreversed interval");
                     break;
                 }
 
@@ -190,6 +192,8 @@ public class Resources {
                         continue;
                     }
 
+
+                    System.out.println("[REASON] Interval intersection");
                     specialStructure = false;
                     break;
                 }
