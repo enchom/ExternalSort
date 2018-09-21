@@ -21,6 +21,9 @@ public class ExternalSort {
     private static ExternalSortBase externalSortStrategy;
 
     public static void sort(String f1, String f2) throws Exception {
+        if (true) {
+            return;
+        }
         long myTime = System.nanoTime();
 
         externalSortStrategy = StrategySelector.selectStrategy(f1);
@@ -90,24 +93,23 @@ public class ExternalSort {
         DataOutputStream outputStream = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(fileName_A)));
         int printed = 0;
 
-        for (int i = 0; i < 7500; i++) {
+        for (int i = 0; i < 10000; i++) {
             printed++;
 
-            int min = -2147483648;
-            int max = -2147483549;
-            int randomInteger = random.nextInt(max - min + 1) + min;
+            if (i % 4 <= 2) {
+                int min = -2147483648;
+                int max = -2147483549;
+                int randomInteger = random.nextInt(max - min + 1) + min;
 
-            outputStream.writeInt(randomInteger);
-        }
+                outputStream.writeInt(randomInteger);
+            }
+            else {
+                int bit3 = random.nextInt(256);
+                int bit4 = random.nextInt(256);
+                int num = (127 << 24) | (255 << 16) | (bit3 << 8) | (bit4);
 
-        for (int i = 0; i < 2500; i++) {
-            printed++;
-
-            int bit3 = random.nextInt(256);
-            int bit4 = random.nextInt(256);
-            int num = (127 << 24) | (255 << 16) | (bit3 << 8) | (bit4);
-
-            outputStream.writeInt(num);
+                outputStream.writeInt(num);
+            }
         }
 
         for (int i = 10000; i < 10000 + 4990000; i++) {
