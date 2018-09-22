@@ -38,9 +38,26 @@ public class Resources {
     public static ArrayList<Boolean> reversed = new ArrayList<>();
     public static ArrayList<Integer> smallestValue = new ArrayList<>();
     public static ArrayList<Integer> largestValue = new ArrayList<>();
+    public static ArrayList<Integer> cornerCases = new ArrayList<>();
+    public static boolean passedCorners = false;
+    public static int cornerEnding = 0;
 
+    public static final int CORNER_LIMIT_COUNT = 100000;
+    public static final long MAX_PAD = 100000;
     public static final long BLOCK_SEPPARATOR = 20000000;
     public static boolean specialStructure = true;
+
+    private static boolean cornerNumber(int num) {
+        if (num < Integer.MIN_VALUE + MAX_PAD) {
+            return true;
+        }
+        else if (num > Integer.MAX_VALUE - MAX_PAD) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
     public static void computeCount(String f) throws IOException {
         int len;
@@ -102,37 +119,65 @@ public class Resources {
                 lastValue[Resources.arr[i] & 0xff] = val;
                 averageValue[Resources.arr[i] & 0xff] += (long)val;
 
-                if (leftEnds.size() <= 5) {
-                    if (leftEnds.isEmpty()) {
-                        leftEnds.add(index);
-                        isSorted = true;
-                        isReversed = true;
+                if (specialStructure) {
+                    if (cornerNumber(val)) {
+                        if (passedCorners) {
+                            specialStructure = false;
+                        }
+                        else {
+                            cornerCases.add(val);
 
-                        smallValue = val;
-                        largeValue = val;
-                    }
-                    else if ( Math.abs((long)val - (long)lastNumber) > BLOCK_SEPPARATOR ) {
-                        leftEnds.add(index);
-                        sorted.add(isSorted);
-                        reversed.add(isReversed);
-                        smallestValue.add(smallValue);
-                        largestValue.add(largeValue);
-
-                        isSorted = true;
-                        isReversed = true;
-
-                        smallValue = val;
-                        largeValue = val;
+                            if (cornerCases.size() > CORNER_LIMIT_COUNT || cornerCases.size() > blockSize) {
+                                specialStructure = false;
+                            }
+                        }
                     }
                     else {
-                        smallValue = Math.min(smallValue, val);
-                        largeValue = Math.max(largeValue, val);
-
-                        if (val > lastNumber) {
-                            isReversed = false;
+                        passedCorners = true;
+                        if (cornerEnding == 0) {
+                            cornerEnding = index;
                         }
-                        else if (val < lastNumber) {
-                            isSorted = false;
+                    }
+                }
+
+                if (passedCorners) {
+                    if (val < Integer.MIN_VALUE + MAX_PAD || val > Integer.MAX_VALUE - MAX_PAD) {
+                        specialStructure = false;
+                        System.out.println("HERE");
+                    }
+
+                    if (leftEnds.size() <= 5) {
+                        if (leftEnds.isEmpty()) {
+                            leftEnds.add(index);
+                            isSorted = true;
+                            isReversed = true;
+
+                            smallValue = val;
+                            largeValue = val;
+                        }
+                        else if ( Math.abs((long)val - (long)lastNumber) > BLOCK_SEPPARATOR ) {
+                            leftEnds.add(index);
+                            sorted.add(isSorted);
+                            reversed.add(isReversed);
+                            smallestValue.add(smallValue);
+                            largestValue.add(largeValue);
+
+                            isSorted = true;
+                            isReversed = true;
+
+                            smallValue = val;
+                            largeValue = val;
+                        }
+                        else {
+                            smallValue = Math.min(smallValue, val);
+                            largeValue = Math.max(largeValue, val);
+
+                            if (val > lastNumber) {
+                                isReversed = false;
+                            }
+                            else if (val < lastNumber) {
+                                isSorted = false;
+                            }
                         }
                     }
                 }

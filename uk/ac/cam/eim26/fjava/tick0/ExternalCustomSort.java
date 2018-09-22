@@ -4,13 +4,18 @@ package uk.ac.cam.eim26.fjava.tick0;
 import org.omg.SendingContext.RunTime;
 
 import java.io.*; //TODO - split (in all files)
+import java.net.ResponseCache;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ExternalCustomSort implements ExternalSortBase {
     private File firstFile;
     private File secondFile;
 
     private byte[] arr;
+
+    private ArrayList<Integer> smallPart = new ArrayList<>();
+    private ArrayList<Integer> bigPart = new ArrayList<>();
 
     @Override
     public void setFiles(String f1, String f2) {
@@ -23,11 +28,47 @@ public class ExternalCustomSort implements ExternalSortBase {
         arr = Resources.arr;
 
         FileInputStream inputStream = new FileInputStream(firstFile);
-        RandomAccessFile randomAccessFile = new RandomAccessFile(secondFile, "rw");;
+        RandomAccessFile randomAccessFile = new RandomAccessFile(secondFile, "rw");
+
+        inputStream.read(arr, 0, Resources.cornerEnding * 4);
+
+        for (int i = 0; i < Resources.cornerEnding * 4; i += 4) {
+            int num = PartialByteHeapSort.bytesToInteger(arr, i / 4);
+
+            if (num < Integer.MIN_VALUE + Resources.MAX_PAD) {
+                smallPart.add(num);
+            }
+            else {
+                bigPart.add(num);
+            }
+        }
+
+        Collections.sort(smallPart);
+        Collections.sort(bigPart);
+
+        randomAccessFile.seek(0);
+        for (int i = 0; i < smallPart.size(); i++) {
+            arr[4 * i] = (byte) ((smallPart.get(i) >>> 24) & 0xff);
+            arr[4 * i + 1] = (byte) ((smallPart.get(i) >>> 16) & 0xff);
+            arr[4 * i + 2] = (byte) ((smallPart.get(i) >>> 8) & 0xff);
+            arr[4 * i + 3] = (byte) ((smallPart.get(i)) & 0xff);
+        }
+        randomAccessFile.write(arr, 0, smallPart.size() * 4);
+
+        //
+
+        randomAccessFile.seek(firstFile.length() - bigPart.size() * 4);
+        for (int i = 0; i < bigPart.size(); i++) {
+            arr[4*i] = (byte)((bigPart.get(i) >>> 24) & 0xff);
+            arr[4*i + 1] = (byte)((bigPart.get(i) >> 16) & 0xff);
+            arr[4*i + 2] = (byte)((bigPart.get(i) >> 8) & 0xff);
+            arr[4*i + 3] = (byte)(bigPart.get(i) & 0xff);
+        }
+        randomAccessFile.write(arr, 0, bigPart.size() * 4);
 
         for (int i = 0; i < Resources.leftEnds.size() - 1; i++) {
             int totalLen = Resources.leftEnds.get(i + 1) - Resources.leftEnds.get(i);
-            int leftPointer = 0, rightPointer;
+            int leftPointer = smallPart.size(), rightPointer;
 
             //System.out.println("LEFT END IS " + Resources.leftEnds.get(i));
             for (int j = 0; j < Resources.leftEnds.size() - 1; j++) {
@@ -37,7 +78,11 @@ public class ExternalCustomSort implements ExternalSortBase {
                 }
             }
 
+            System.out.println("TOTAL LENGTH " + totalLen);
+
             rightPointer = leftPointer + totalLen;
+
+            System.out.println("Putting it between " + leftPointer + " to " + rightPointer);
 
             if (Resources.sorted.get(i)) {
                 randomAccessFile.seek(leftPointer * 4);
@@ -127,4 +172,4 @@ public class ExternalCustomSort implements ExternalSortBase {
     }
 }
 
-//bfd95fb6a9abcaa8695af957459ad77 - real
+//45df4a5fa95839d3d0ee6c4515877d - real

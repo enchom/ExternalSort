@@ -17,13 +17,10 @@ import java.util.Random;
  * The root class of the project
  */
 public class ExternalSort {
-    private static long startTime;
+        private static long startTime;
     private static ExternalSortBase externalSortStrategy;
 
     public static void sort(String f1, String f2) throws Exception {
-        if (true) {
-            return;
-        }
         long myTime = System.nanoTime();
 
         externalSortStrategy = StrategySelector.selectStrategy(f1);
