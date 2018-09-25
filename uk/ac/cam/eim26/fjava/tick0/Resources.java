@@ -85,8 +85,9 @@ public class Resources {
                 int firstByte = arr[i] & 0xff;
                 Resources.count[firstByte]++;
 
-                val = PartialByteHeapSort.bytesToInteger(arr, i / 4);
-
+                val = ( ((arr[i] & 0xff) << 24) | ((arr[i+1] & 0xff) << 16) |
+                        ((arr[i+2] & 0xff) << 8) | (arr[i+3] & 0xff) );
+                
                 minValue = Math.min(minValue, val);
                 maxValue = Math.max(maxValue, val);
 
