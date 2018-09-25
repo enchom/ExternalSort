@@ -54,6 +54,7 @@ public class Resources {
     public static void computeCount(String f) throws IOException {
         int len;
         InputStream d = new FileInputStream(f);
+        d.close();
         int val;
 
         for (int i = 0; i < 256; i++) {
@@ -73,7 +74,8 @@ public class Resources {
 
         long saveTime = System.nanoTime();
         long fileLength = (new File(f)).length();
-        DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(d));
+        DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(
+                new FileInputStream(new RandomAccessFile(f, "r").getFD())));
 
         for (int i = 0; i < fileLength / 4; i++) {
             int number = dataInputStream.readInt();
