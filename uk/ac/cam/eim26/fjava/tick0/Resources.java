@@ -22,10 +22,6 @@ public class Resources {
     public static int maxValue = Integer.MIN_VALUE;
 
     public static int[] lastValue = new int[256];
-    public static boolean[] naturelySorted = new boolean[256];
-    public static int[] minVals = new int[256];
-    public static int[] maxVals = new int[256];
-    public static long[] averageValue = new long[256];
     public static int criticals = 0;
 
     //public static int pairCount[][] = new int[256][256];
@@ -58,12 +54,7 @@ public class Resources {
         int val;
 
         for (int i = 0; i < 256; i++) {
-            //auxMinInd[i] = 1000000000;
-
             lastValue[i] = Integer.MIN_VALUE;
-            naturelySorted[i] = true;
-            minVals[i] = Integer.MAX_VALUE;
-            maxVals[i] = Integer.MIN_VALUE;
         }
 
         int lastNumber = 0;
@@ -71,26 +62,7 @@ public class Resources {
         int smallValue = 0, largeValue = 0;
         int index = 0;
 
-
         long saveTime = System.nanoTime();
-        long fileLength = (new File(f)).length();
-        DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(
-                new FileInputStream(new RandomAccessFile(f, "r").getFD()), (1<<16)));
-
-        for (int i = 0; i < fileLength / 4; i++) {
-            int number = dataInputStream.readInt();
-
-            Resources.count[number>>>24]++;
-        }
-
-        dataInputStream.close();
-        d.close();
-
-        System.out.println("TIME TAKEN FOR DATAINPUTSTREAM READ = " + (System.nanoTime() - saveTime)/1000000 + "ms");
-
-        d = new FileInputStream(f);
-
-        saveTime = System.nanoTime();
         while (true) {
             len = d.read(Resources.arr);
 
@@ -102,7 +74,7 @@ public class Resources {
 
             for (int i = 0; i < len; i += 4) {
                 int firstByte = arr[i] & 0xff;
-                //Resources.count[firstByte]++;
+                Resources.count[firstByte]++;
 
                 val = ( ((arr[i] & 0xff) << 24) | ((arr[i+1] & 0xff) << 16) |
                         ((arr[i+2] & 0xff) << 8) | (arr[i+3] & 0xff) );
@@ -110,80 +82,62 @@ public class Resources {
                 minValue = Math.min(minValue, val);
                 maxValue = Math.max(maxValue, val);
 
-                /*if (lastValue[firstByte] > val) {
-                    naturelySorted[firstByte] = false;
-                }*/
-
-                //minVals[firstByte] = Math.min(minVals[firstByte], val);
-                //maxVals[firstByte] = Math.max(maxVals[firstByte], val);
-
                 lastValue[firstByte] = val;
-                //averageValue[firstByte] += (long)val;
 
                 if (specialStructure) {
-                    if (cornerNumber(val)) {
-                        if (passedCorners) {
-                            specialStructure = false;
+                    if (passedCorners) {
+                        if (!cornerNumber(val)) {
+                            if (leftEnds.size() <= 5) {
+                                if ( Math.abs((long)val - (long)lastNumber) <= BLOCK_SEPPARATOR ) {
+                                    smallValue = Math.min(smallValue, val);
+                                    largeValue = Math.max(largeValue, val);
+
+                                    if (val > lastNumber) {
+                                        isReversed = false;
+                                    }
+                                    else if (val < lastNumber) {
+                                        isSorted = false;
+                                    }
+                                }
+                                else {
+                                    leftEnds.add(index);
+                                    sorted.add(isSorted);
+                                    reversed.add(isReversed);
+                                    smallestValue.add(smallValue);
+                                    largestValue.add(largeValue);
+
+                                    isSorted = true;
+                                    isReversed = true;
+
+                                    smallValue = val;
+                                    largeValue = val;
+                                }
+                            }
                         }
                         else {
+                            specialStructure = false;
+                        }
+                    }
+                    else {
+                        if (cornerNumber(val)) {
                             cornerCases.add(val);
 
                             if (cornerCases.size() > CORNER_LIMIT_COUNT || cornerCases.size() > blockSize) {
                                 specialStructure = false;
                             }
                         }
-                    }
-                    else {
-                        passedCorners = true;
-                        if (cornerEnding == 0) {
-                            cornerEnding = index;
-                        }
-                    }
-
-                    if (passedCorners) {
-                        if (val < Integer.MIN_VALUE + MAX_PAD || val > Integer.MAX_VALUE - MAX_PAD) {
-                            specialStructure = false;
-                        }
-
-                        if (leftEnds.size() <= 5) {
-                            if (leftEnds.isEmpty()) {
-                                leftEnds.add(index);
-                                isSorted = true;
-                                isReversed = true;
-
-                                smallValue = val;
-                                largeValue = val;
-                            }
-                            else if ( Math.abs((long)val - (long)lastNumber) > BLOCK_SEPPARATOR ) {
-                                leftEnds.add(index);
-                                sorted.add(isSorted);
-                                reversed.add(isReversed);
-                                smallestValue.add(smallValue);
-                                largestValue.add(largeValue);
-
-                                isSorted = true;
-                                isReversed = true;
-
-                                smallValue = val;
-                                largeValue = val;
-                            }
-                            else {
-                                smallValue = Math.min(smallValue, val);
-                                largeValue = Math.max(largeValue, val);
-
-                                if (val > lastNumber) {
-                                    isReversed = false;
-                                }
-                                else if (val < lastNumber) {
-                                    isSorted = false;
-                                }
-                            }
+                        else {
+                            passedCorners = true;
+                            isSorted = true;
+                            isReversed = true;
+                            smallValue = val;
+                            largeValue = val;
+                            leftEnds.add(index);
                         }
                     }
                 }
 
                 lastNumber = val;
-
                 index++;
             }
         }
