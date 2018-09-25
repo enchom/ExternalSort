@@ -73,7 +73,7 @@ public class Resources {
 
         long saveTime = System.nanoTime();
         long fileLength = (new File(f)).length();
-        DataInputStream dataInputStream = new DataInputStream(d);
+        DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(d));
 
         for (int i = 0; i < fileLength / 4; i++) {
             int number = dataInputStream.readInt();
@@ -108,9 +108,9 @@ public class Resources {
                 minValue = Math.min(minValue, val);
                 maxValue = Math.max(maxValue, val);
 
-                if (lastValue[firstByte] > val) {
+                /*if (lastValue[firstByte] > val) {
                     naturelySorted[firstByte] = false;
-                }
+                }*/
 
                 //minVals[firstByte] = Math.min(minVals[firstByte], val);
                 //maxVals[firstByte] = Math.max(maxVals[firstByte], val);
