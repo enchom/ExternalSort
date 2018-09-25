@@ -50,7 +50,6 @@ public class Resources {
     public static void computeCount(String f) throws IOException {
         int len;
         InputStream d = new FileInputStream(f);
-        d.close();
         int val;
 
         for (int i = 0; i < 256; i++) {
