@@ -100,7 +100,7 @@ public class Resources {
 
             for (int i = 0; i < len; i += 4) {
                 int firstByte = arr[i] & 0xff;
-                Resources.count[firstByte]++;
+                //Resources.count[firstByte]++;
 
                 val = ( ((arr[i] & 0xff) << 24) | ((arr[i+1] & 0xff) << 16) |
                         ((arr[i+2] & 0xff) << 8) | (arr[i+3] & 0xff) );
