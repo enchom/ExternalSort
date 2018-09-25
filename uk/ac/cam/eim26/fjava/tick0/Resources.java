@@ -70,8 +70,25 @@ public class Resources {
         int smallValue = 0, largeValue = 0;
         int index = 0;
 
-        long saveTime = System.nanoTime();
 
+        long saveTime = System.nanoTime();
+        long fileLength = (new File(f)).length();
+        DataInputStream dataInputStream = new DataInputStream(d);
+
+        for (int i = 0; i < fileLength / 4; i++) {
+            int number = dataInputStream.readInt();
+
+            Resources.count[number>>>24]++;
+        }
+
+        dataInputStream.close();
+        d.close();
+
+        System.out.println("TIME TAKEN FOR DATAINPUTSTREAM READ = " + (System.nanoTime() - saveTime)/1000000 + "ms");
+
+        d = new FileInputStream(f);
+
+        saveTime = System.nanoTime();
         while (true) {
             len = d.read(Resources.arr);
 
@@ -87,7 +104,7 @@ public class Resources {
 
                 val = ( ((arr[i] & 0xff) << 24) | ((arr[i+1] & 0xff) << 16) |
                         ((arr[i+2] & 0xff) << 8) | (arr[i+3] & 0xff) );
-                
+
                 minValue = Math.min(minValue, val);
                 maxValue = Math.max(maxValue, val);
 
@@ -101,7 +118,7 @@ public class Resources {
                 lastValue[firstByte] = val;
                 //averageValue[firstByte] += (long)val;
 
-                /**if (specialStructure) {
+                if (specialStructure) {
                     if (cornerNumber(val)) {
                         if (passedCorners) {
                             specialStructure = false;
@@ -161,21 +178,19 @@ public class Resources {
                             }
                         }
                     }
-                }**/
+                }
 
                 lastNumber = val;
 
                 index++;
             }
         }
-        specialStructure = false;
-        /**
+
         leftEnds.add(index);
         sorted.add(isSorted);
         reversed.add(isReversed);
         smallestValue.add(smallValue);
         largestValue.add(largeValue);
-         **/
 
         System.out.println("MAIN PART IS " + (System.nanoTime() - saveTime)/1000000 + "ms");
 
