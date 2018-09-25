@@ -87,12 +87,12 @@ public class Resources {
                 break;
             }
 
-            for (i = 0; i < len; i += 4) {
+            for (int i = 0; i < len; i += 4) {
                 Resources.count[arr[i] & 0xff]++;
             }
         }
         System.out.println("Simple read took " + (System.nanoTime() - saveTime)/1000000 + "ms");
-        
+
         while (true) {
             len = d.read(Resources.arr);
 
