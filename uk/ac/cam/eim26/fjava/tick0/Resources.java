@@ -78,24 +78,8 @@ public class Resources {
         int smallValue = 0, largeValue = 0;
         int index = 0;
 
-        ///READ FOR SPEED TEST
         long saveTime = System.nanoTime();
-        while(true) {
-            len = d.read(Resources.arr);
 
-            if (len == -1) {
-                break;
-            }
-
-            for (int i = 0; i < len; i += 4) {
-                Resources.count[arr[i] & 0xff]++;
-            }
-        }
-        System.out.println("Simple read took " + (System.nanoTime() - saveTime)/1000000 + "ms");
-
-        d.close();
-        d = new FileInputStream(f);
-        
         while (true) {
             len = d.read(Resources.arr);
 
@@ -202,6 +186,8 @@ public class Resources {
         reversed.add(isReversed);
         smallestValue.add(smallValue);
         largestValue.add(largeValue);
+
+        System.out.println("MAIN PART IS " + (System.nanoTime() - saveTime)/1000000 + "ms");
 
         /*for (int i = 0; i < 256; i++) {
             if (auxMaxInd[i] != 0) {
