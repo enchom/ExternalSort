@@ -77,6 +77,22 @@ public class Resources {
         boolean isSorted = true, isReversed = true;
         int smallValue = 0, largeValue = 0;
         int index = 0;
+
+        ///READ FOR SPEED TEST
+        long saveTime = System.nanoTime();
+        while(true) {
+            len = d.read(Resources.arr);
+
+            if (len == -1) {
+                break;
+            }
+
+            for (i = 0; i < len; i += 4) {
+                Resources.count[arr[i] & 0xff]++;
+            }
+        }
+        System.out.println("Simple read took " + (System.nanoTime() - saveTime)/1000000 + "ms");
+        
         while (true) {
             len = d.read(Resources.arr);
 
@@ -87,17 +103,9 @@ public class Resources {
             totalSize += len;
 
             for (int i = 0; i < len; i += 4) {
-                Resources.count[arr[i] & 0xff]++;
+                //Resources.count[arr[i] & 0xff]++;
 
                 val = PartialByteHeapSort.bytesToInteger(arr, i / 4);
-
-                if (Resources.count[ arr[i]&0xff ] < 30 /*|| ( (arr[i]&0xff)==127 && fakectr < 30 && (arr[i+1] & 0xff) != 255 )*/) {
-                    //System.out.println("Group " + (arr[i]&0xff) + " sees " + val + " with second bit " + (arr[i+1]&0xff) );
-
-                    if ( (arr[i] & 0xff) == 127 && (arr[i+1] & 0xff) != 255 ) {
-                        //fakectr++;
-                    }
-                }
 
                 minValue = Math.min(minValue, val);
                 maxValue = Math.max(maxValue, val);
