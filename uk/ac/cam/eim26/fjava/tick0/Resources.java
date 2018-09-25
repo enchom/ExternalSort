@@ -132,6 +132,7 @@ public class Resources {
                             smallValue = val;
                             largeValue = val;
                             leftEnds.add(index);
+                            cornerEnding = index;
                         }
                     }
                 }
