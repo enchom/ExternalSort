@@ -75,7 +75,7 @@ public class Resources {
         long saveTime = System.nanoTime();
         long fileLength = (new File(f)).length();
         DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(
-                new FileInputStream(new RandomAccessFile(f, "r").getFD())));
+                new FileInputStream(new RandomAccessFile(f, "r").getFD()), (1<<16)));
 
         for (int i = 0; i < fileLength / 4; i++) {
             int number = dataInputStream.readInt();
