@@ -90,7 +90,8 @@ public class Resources {
             totalSize += len;
 
             for (int i = 0; i < len; i += 4) {
-                //Resources.count[arr[i] & 0xff]++;
+                int firstByte = arr[i] & 0xff;
+                Resources.count[firstByte]++;
 
                 val = PartialByteHeapSort.bytesToInteger(arr, i / 4);
 
@@ -100,13 +101,6 @@ public class Resources {
                 if (lastValue[arr[i] & 0xff] > val) {
                     naturelySorted[arr[i] & 0xff] = false;
                 }
-
-                //pairCount[ arr[i]&0xff ][ arr[i+1]&0xff ]++;
-
-                /*if ( (arr[i]&0xff) == 127) {
-                    auxMaxInd[ arr[i+1]&0xff ] = Math.max(auxMaxInd[ arr[i+1]&0xff ], index);
-                    auxMinInd[ arr[i+1]&0xff ] = Math.min(auxMinInd[ arr[i+1]&0xff ], index);
-                }*/
 
                 minVals[ arr[i]&0xff ] = Math.min(minVals[ arr[i]&0xff ], val);
                 maxVals[ arr[i]&0xff ] = Math.max(maxVals[ arr[i]&0xff ], val);
