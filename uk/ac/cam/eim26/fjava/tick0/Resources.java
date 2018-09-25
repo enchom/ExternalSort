@@ -143,7 +143,6 @@ public class Resources {
                 if (passedCorners) {
                     if (val < Integer.MIN_VALUE + MAX_PAD || val > Integer.MAX_VALUE - MAX_PAD) {
                         specialStructure = false;
-                        System.out.println("HERE");
                     }
 
                     if (leftEnds.size() <= 5) {
