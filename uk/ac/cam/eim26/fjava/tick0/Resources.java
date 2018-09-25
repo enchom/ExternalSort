@@ -93,6 +93,9 @@ public class Resources {
         }
         System.out.println("Simple read took " + (System.nanoTime() - saveTime)/1000000 + "ms");
 
+        d.close();
+        d = new FileInputStream(f);
+        
         while (true) {
             len = d.read(Resources.arr);
 
