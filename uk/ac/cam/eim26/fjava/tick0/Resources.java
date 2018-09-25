@@ -70,15 +70,10 @@ public class Resources {
         int smallValue = 0, largeValue = 0;
         int index = 0;
 
-        long saveTime = System.nanoTime(), localSave;
-        long P1 = 0, P2 = 0, P3 = 0, P4 = 0;
+        long saveTime = System.nanoTime();
 
         while (true) {
-            localSave = System.nanoTime();
-
             len = d.read(Resources.arr);
-
-            P1 += System.nanoTime() - localSave;
 
             if (len == -1) {
                 break;
@@ -87,8 +82,6 @@ public class Resources {
             totalSize += len;
 
             for (int i = 0; i < len; i += 4) {
-                localSave = System.nanoTime();
-
                 int firstByte = arr[i] & 0xff;
                 Resources.count[firstByte]++;
 
@@ -101,16 +94,13 @@ public class Resources {
                     naturelySorted[firstByte] = false;
                 }
 
-                P2 += System.nanoTime() - localSave;
-
                 //minVals[firstByte] = Math.min(minVals[firstByte], val);
                 //maxVals[firstByte] = Math.max(maxVals[firstByte], val);
 
-                localSave = System.nanoTime();
                 lastValue[firstByte] = val;
                 //averageValue[firstByte] += (long)val;
 
-                if (specialStructure) {
+                /**if (specialStructure) {
                     if (cornerNumber(val)) {
                         if (passedCorners) {
                             specialStructure = false;
@@ -170,25 +160,23 @@ public class Resources {
                             }
                         }
                     }
-                }
-
-                P3 += System.nanoTime() - localSave;
+                }**/
 
                 lastNumber = val;
 
                 index++;
             }
         }
+        specialStructure = false;
+        /**
         leftEnds.add(index);
         sorted.add(isSorted);
         reversed.add(isReversed);
         smallestValue.add(smallValue);
         largestValue.add(largeValue);
+         **/
 
         System.out.println("MAIN PART IS " + (System.nanoTime() - saveTime)/1000000 + "ms");
-        System.out.println("P1(reading) is " + P1/1000000 + "ms");
-        System.out.println("P2(max values, count) is " + P2/1000000 + "ms");
-        System.out.println("P3(special structure) is " + P3/1000000 + "ms");
 
         /*for (int i = 0; i < 256; i++) {
             if (auxMaxInd[i] != 0) {
