@@ -15,6 +15,8 @@ import java.util.Set;
 public class Resources {
     public static int blockSize;
     public static byte[] arr;
+    public static int[] integerArr;
+
     public static int[] count = new int[256];
     public static long totalSize = 0;
 
@@ -242,6 +244,7 @@ public class Resources {
 
     public static void allocateResources(String f) throws IOException {
         arr = new byte[4 * blockSize];
+        integerArr = new int[blockSize];
 
         computeCount(f);
     }
@@ -254,7 +257,7 @@ public class Resources {
 
         System.out.println("Memory = " + maxMemory + " i.e. " + ((double) (maxMemory) / 1000000.0) + "MB");
 
-        blockSize = (int) (usableMemory / 6);
+        blockSize = (int) (usableMemory / 6) / 2;
 
         System.out.println("Block size = " + blockSize);
     }

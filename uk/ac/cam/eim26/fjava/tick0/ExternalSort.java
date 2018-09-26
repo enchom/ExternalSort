@@ -137,7 +137,7 @@ public class ExternalSort {
     public static void generateRandomFile() throws IOException {
         String fileName_A = "test_specialA.dat";
         String fileName_B = "test_specialB.dat";
-        Random random = new Random();
+        Random random = new Random(1337);
         DataOutputStream outputStream = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(fileName_A)));
 
         for (int i = 0; i < 10000000; i++) {
