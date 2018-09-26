@@ -24,7 +24,6 @@ public class Resources {
     public static int maxValue = Integer.MIN_VALUE;
 
     public static int[] lastValue = new int[256];
-    public static int criticals = 0;
 
     //public static int pairCount[][] = new int[256][256];
 
@@ -204,10 +203,6 @@ public class Resources {
                 //System.out.println("Average value = " + (averageValue[i] / count[i]));
                 //System.out.println();
             }
-
-            if (count[i] > 0) {
-                criticals++;
-            }
         }
 
         if (leftEnds.size() > 5) {
@@ -253,7 +248,6 @@ public class Resources {
         }
 
         System.out.println("Value range " + minValue + " to " + maxValue + " with length " + (maxValue - minValue));
-        System.out.println("Critical bytes = " + criticals);
 
         d.close();
     }
