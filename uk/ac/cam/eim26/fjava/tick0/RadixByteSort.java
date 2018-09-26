@@ -11,10 +11,15 @@ public class RadixByteSort {
     private static int[] blockBegin = new int[256];
     private static int[] blockPointer = new int[256];
     private static final int THRESHOLD = (1 << 4);
+    private static final int THRESHOLD_HEAP = (1 << 8);
 
     private static void recSolve(byte[] arr, int L, int R, int rad) {
         if (R - L < THRESHOLD) {
             PartialByteInsertionSort.byteInsertionSort(arr, L, R, rad);
+            return;
+        }
+        else if (R - L < THRESHOLD_HEAP) {
+            PartialByteHeapSort.byteHeapSort(arr, L, R);
             return;
         }
 
