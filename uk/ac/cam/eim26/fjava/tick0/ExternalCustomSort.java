@@ -149,7 +149,7 @@ public class ExternalCustomSort implements ExternalSortBase {
                 break;
             }
 
-            ind++;
+            /*ind++;
             for (int i = 4; i < len; i += 4) {
                 ind++;
 
@@ -157,7 +157,7 @@ public class ExternalCustomSort implements ExternalSortBase {
                     throw new RuntimeException("Not in right order numbers " + PartialByteHeapSort.bytesToInteger(arr, i/4) + " and " +
                                                 PartialByteHeapSort.bytesToInteger(arr, i/4 - 1) + " just before " + ind);
                 }
-            }
+            }*/
 
             randomAccessFile.write(arr, 0, len);
         }
