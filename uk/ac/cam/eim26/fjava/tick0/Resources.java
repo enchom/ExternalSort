@@ -42,6 +42,7 @@ public class Resources {
     public static final long MAX_PAD = 100000;
     public static final long BLOCK_SEPPARATOR = 20000000;
     public static boolean specialStructure = true;
+    public static boolean countingSortStructure = true;
 
     private static boolean cornerNumber(int num) {
         return (num < Integer.MIN_VALUE + MAX_PAD || num > Integer.MAX_VALUE - MAX_PAD);
@@ -71,74 +72,96 @@ public class Resources {
 
             totalSize += len;
 
-            for (int i = 0; i < len; i += 4) {
-                int firstByte = arr[i] & 0xff;
-                Resources.count[firstByte]++;
+            if (specialStructure) {
+                for (int i = 0; i < len; i += 4) {
+                    int firstByte = arr[i] & 0xff;
+                    Resources.count[firstByte]++;
 
-                val = ( ((arr[i] & 0xff) << 24) | ((arr[i+1] & 0xff) << 16) |
-                        ((arr[i+2] & 0xff) << 8) | (arr[i+3] & 0xff) );
+                    val = ( ((arr[i] & 0xff) << 24) | ((arr[i+1] & 0xff) << 16) |
+                            ((arr[i+2] & 0xff) << 8) | (arr[i+3] & 0xff) );
 
-                minValue = Math.min(minValue, val);
-                maxValue = Math.max(maxValue, val);
+                    minValue = Math.min(minValue, val);
+                    maxValue = Math.max(maxValue, val);
 
-                lastValue[firstByte] = val;
+                    lastValue[firstByte] = val;
 
-                if (specialStructure) {
-                    if (passedCorners) {
-                        if (!cornerNumber(val)) {
-                            if (leftEnds.size() <= 5) {
-                                if ( Math.abs((long)val - (long)lastNumber) <= BLOCK_SEPPARATOR ) {
-                                    smallValue = Math.min(smallValue, val);
-                                    largeValue = Math.max(largeValue, val);
+                    if (specialStructure) {
+                        if (passedCorners) {
+                            if (!cornerNumber(val)) {
+                                if (leftEnds.size() <= 5) {
+                                    if ( Math.abs((long)val - (long)lastNumber) <= BLOCK_SEPPARATOR ) {
+                                        smallValue = Math.min(smallValue, val);
+                                        largeValue = Math.max(largeValue, val);
 
-                                    if (val > lastNumber) {
-                                        isReversed = false;
+                                        if (val > lastNumber) {
+                                            isReversed = false;
+                                        }
+                                        else if (val < lastNumber) {
+                                            isSorted = false;
+                                        }
                                     }
-                                    else if (val < lastNumber) {
-                                        isSorted = false;
+                                    else {
+                                        leftEnds.add(index);
+                                        sorted.add(isSorted);
+                                        reversed.add(isReversed);
+                                        smallestValue.add(smallValue);
+                                        largestValue.add(largeValue);
+
+                                        isSorted = true;
+                                        isReversed = true;
+
+                                        smallValue = val;
+                                        largeValue = val;
                                     }
-                                }
-                                else {
-                                    leftEnds.add(index);
-                                    sorted.add(isSorted);
-                                    reversed.add(isReversed);
-                                    smallestValue.add(smallValue);
-                                    largestValue.add(largeValue);
-
-                                    isSorted = true;
-                                    isReversed = true;
-
-                                    smallValue = val;
-                                    largeValue = val;
                                 }
                             }
-                        }
-                        else {
-                            specialStructure = false;
-                        }
-                    }
-                    else {
-                        if (cornerNumber(val)) {
-                            cornerCases.add(val);
-
-                            if (cornerCases.size() > CORNER_LIMIT_COUNT || cornerCases.size() > blockSize) {
+                            else {
                                 specialStructure = false;
                             }
                         }
                         else {
-                            passedCorners = true;
-                            isSorted = true;
-                            isReversed = true;
-                            smallValue = val;
-                            largeValue = val;
-                            leftEnds.add(index);
-                            cornerEnding = index;
+                            if (cornerNumber(val)) {
+                                cornerCases.add(val);
+
+                                if (cornerCases.size() > CORNER_LIMIT_COUNT || cornerCases.size() > blockSize) {
+                                    specialStructure = false;
+                                }
+                            }
+                            else {
+                                passedCorners = true;
+                                isSorted = true;
+                                isReversed = true;
+                                smallValue = val;
+                                largeValue = val;
+                                leftEnds.add(index);
+                                cornerEnding = index;
+                            }
                         }
                     }
-                }
 
-                lastNumber = val;
-                index++;
+                    lastNumber = val;
+                    index++;
+                }
+            }
+            else if (countingSortStructure) {
+                for (int i = 0; i < len; i += 4) {
+                    Resources.count[arr[i] & 0xff]++;
+
+                    val = (((arr[i] & 0xff) << 24) | ((arr[i + 1] & 0xff) << 16) |
+                            ((arr[i + 2] & 0xff) << 8) | (arr[i + 3] & 0xff));
+
+                    minValue = Math.min(minValue, val);
+                    maxValue = Math.max(maxValue, val);
+                }
+            }
+            else {
+                for (int i = 0; i < len; i += 4) {
+                    Resources.count[arr[i] & 0xff]++;
+                }
+            }
+
+            if ( (long)maxValue - (long)minValue >= Resources.blockSize / 4 ) {
+                countingSortStructure = false;
             }
         }
 
