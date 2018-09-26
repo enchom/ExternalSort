@@ -50,6 +50,22 @@ public class Resources {
         return (num < Integer.MIN_VALUE + MAX_PAD || num > Integer.MAX_VALUE - MAX_PAD);
     }
 
+    public static void convertToIntegers(int len) {
+        for (int i = 0; i < len; i++) {
+            integerArr[i] = ( ((arr[i*4] & 0xff) << 24) | ((arr[i*4+1] & 0xff) << 16) |
+                                 ((arr[i*4+2] & 0xff) << 8) | (arr[i*4+3] & 0xff) );
+        }
+    }
+
+    public static void convertToBytes(int len) {
+        for (int i = 0; i < 4*len; i += 4) {
+            arr[i] = (byte)((integerArr[i>>2]>>>24)&0xff);
+            arr[i+1] = (byte)((integerArr[i>>2]>>>16)&0xff);
+            arr[i+2] = (byte)((integerArr[i>>2]>>>8)&0xff);
+            arr[i+3] = (byte)(integerArr[i>>2]&0xff);
+        }
+    }
+
     public static void computeCount(String f) throws IOException {
         int len;
         InputStream d = new FileInputStream(f);

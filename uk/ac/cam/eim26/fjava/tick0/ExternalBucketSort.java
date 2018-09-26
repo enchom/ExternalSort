@@ -48,7 +48,11 @@ public class ExternalBucketSort extends ExternalBucketSortBase {
             T2 += System.nanoTime() - localTime;
 
             localTime = System.nanoTime();
-            RadixByteSort.sortByteArray(arr, len, 1);
+            Resources.convertToIntegers(len);
+            RadixIntegerSort.sortByteArray(Resources.integerArr, len, 1);
+            Resources.convertToBytes(len);
+            //RadixByteSort.sortByteArray(arr, len, 1);
+
             T3 += System.nanoTime() - localTime;
 
             localTime = System.nanoTime();
