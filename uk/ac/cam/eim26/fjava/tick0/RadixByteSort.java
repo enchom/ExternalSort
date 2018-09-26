@@ -10,7 +10,7 @@ public class RadixByteSort {
     private static int[] counting = new int[256];
     private static int[] blockBegin = new int[256];
     private static int[] blockPointer = new int[256];
-    private static final int THRESHOLD = (1 << 8);
+    private static final int THRESHOLD = (1 << 4);
 
     private static void recSolve(byte[] arr, int L, int R, int rad) {
         if (R - L < THRESHOLD) {
