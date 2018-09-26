@@ -6,7 +6,7 @@ public class RadixIntegerSort {
     private static int[] counting = new int[256];
     private static int[] blockBegin = new int[256];
     private static int[] blockPointer = new int[256];
-    private static final int THRESHOLD = (1 << 8);
+    private static final int THRESHOLD = (1 << 5);
 
     private static void integerInsertionSort(int[] arr, int L, int R) {
         int swapVar;
