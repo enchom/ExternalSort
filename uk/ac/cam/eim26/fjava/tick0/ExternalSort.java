@@ -175,8 +175,8 @@ public class ExternalSort {
         //String f1 = args[0];
         //String f2 = args[1];
 
-        generateFile();
-        //generateRandomFile();
+        //generateFile();
+        generateRandomFile();
 
         normalMain();
     }
