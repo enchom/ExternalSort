@@ -29,7 +29,7 @@ public class ExternalSort {
 
         System.out.println("Chosen strategy = " + externalSortStrategy.getStrategy());
         externalSortStrategy.setFiles(f1, f2);
-        //externalSortStrategy.sort();
+        externalSortStrategy.sort();
 
         long myTotalTime = (System.nanoTime() - myTime) / 1000000;
 
