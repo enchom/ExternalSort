@@ -25,9 +25,56 @@ public class RadixIntegerSort {
         }
     }
 
+    private static void integerQuickSort(int[] arr, int L, int R) {
+        if (L >= R)
+            return;
+
+        int pivot = arr[R];
+        int lp = L, rp = R - 1;
+        int swapVal;
+        int pivotIndex;
+
+        while(lp < rp) {
+            if (arr[lp] <= pivot) {
+                lp++;
+            }
+            else if (arr[rp] > pivot) {
+                rp--;
+            }
+            else {
+                swapVal = arr[lp];
+                arr[lp] = arr[rp];
+                arr[rp] = swapVal;
+            }
+        }
+
+        if (arr[rp] > pivot) {
+            swapVal = arr[rp];
+            arr[rp] = arr[R];
+            arr[R] = swapVal;
+            pivotIndex = rp;
+        }
+        else if (rp < R && arr[rp+1] > pivot) {
+            swapVal = arr[rp+1];
+            arr[rp+1] = arr[R];
+            arr[R] = swapVal;
+            pivotIndex = rp+1;
+        }
+        else {
+            pivotIndex = R;
+        }
+
+        integerQuickSort(arr, L, pivotIndex - 1);
+        integerQuickSort(arr, pivotIndex +  1, R);
+    }
+
     private static void recSolve(int[] arr, int L, int R, int rad) {
         if (R - L < THRESHOLD) {
             integerInsertionSort(arr, L, R);
+            return;
+        }
+        if (R - L < (1<<8)) {
+            integerQuickSort(arr, L, R);
             return;
         }
 
