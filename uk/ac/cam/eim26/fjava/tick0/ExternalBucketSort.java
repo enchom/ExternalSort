@@ -49,12 +49,10 @@ public class ExternalBucketSort extends ExternalBucketSortBase {
 
             localTime = System.nanoTime();
             Resources.convertToIntegers(len);
-            //RadixIntegerSort.sortIntArray(Resources.integerArr, len, 1);
             int minVal = (realInd << 24);
             int maxVal = (realInd << 24) | (255 << 16) | (255 << 8) | 255;
             BucketIntegerSort.attemptBucketSort(Resources.integerArr, len, minVal, maxVal, Resources.secondIntegerArr);
             Resources.convertToBytes(len);
-            //RadixByteSort.sortByteArray(arr, len, 1);
 
             T3 += System.nanoTime() - localTime;
 

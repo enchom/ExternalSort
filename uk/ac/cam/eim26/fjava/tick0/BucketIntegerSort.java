@@ -86,17 +86,10 @@ public class BucketIntegerSort {
         rem = System.nanoTime();
         int ptr = 0;
         for (int i = 0; i < buckets; i++) {
-            //sortBucket(i, auxArr);
-            //Arrays.sort(auxArr, i * bucketSpace, bucketCounters[i]);
-
             System.arraycopy(auxArr, i * bucketSpace, arr, ptr, bucketCounters[i] - i * bucketSpace);
             ptr += bucketCounters[i] - i * bucketSpace;
-
-            //maxBucket = Math.max(maxBucket, bucketCounters[i] - i*bucketSpace);
         }
         sortTime += System.nanoTime() - rem;
-
-        //System.out.println("[INFO] Bucket sort succeeded. Maximum bucket was " + maxBucket);
 
         return arr;
     }

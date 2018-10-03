@@ -11,7 +11,7 @@ public class PartialByteInsertionSort {
         for (int i = L + 1; i <= R; i++) {
             int cur = i - 1;
             while(cur >= L && isSmaller(arr, cur + 1, cur, rad)) {
-                byteSwap(arr, cur, cur+1, rad);
+                ByteUtil.byteSwap(arr, cur, cur+1);
                 cur--;
             }
         }
