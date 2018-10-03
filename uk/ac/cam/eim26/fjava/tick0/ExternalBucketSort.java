@@ -66,6 +66,8 @@ public class ExternalBucketSort extends ExternalBucketSortBase {
         System.out.println("Reading " + T1/1000000 + "ms");
         System.out.println("Converting " + T2/1000000 + "ms");
         System.out.println("Sorting " + T3/1000000 + "ms");
+        System.out.println("Sorting.Preparing " + BucketIntegerSort.prepareTime/1000000 + "ms");
+        System.out.println("Sorting.Sorting " + BucketIntegerSort.sortTime/1000000 + "ms");
         System.out.println("Writing " + T4/1000000 + "ms");
 
         localTime = System.nanoTime();

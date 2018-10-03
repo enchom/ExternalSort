@@ -2,12 +2,16 @@ package uk.ac.cam.eim26.fjava.tick0;
 
 public class BucketIntegerSort {
     private static final int MAX_BUCKETS = 10000;
-    private static final int BUCKET_THRESHOLD = 5;
+    private static final int BUCKET_THRESHOLD = 4;
 
     private static int[] bucketCounters = new int [MAX_BUCKETS];
     private static int bucketRange;
     private static int bucketSpace;
     private static int buckets;
+
+    public static long sortTime = 0;
+    public static long prepareTime = 0;
+    public static long copyTime = 0;
 
     private static void sortBucket(int bucket, int[] arr) {
         int start = bucket * bucketSpace;
@@ -30,6 +34,9 @@ public class BucketIntegerSort {
     public static int[] attemptBucketSort(int[] arr, int len, int rangeLeft, int rangeRight, int[] auxArr) {
         int maxBucket = 0;
         int bucketRangeTwoPower;
+        long rem;
+
+        rem = System.nanoTime();
 
         buckets = len / BUCKET_THRESHOLD;
         bucketRange = (rangeRight - rangeLeft + 1) / buckets + 1;
@@ -52,7 +59,6 @@ public class BucketIntegerSort {
 
         for (int i = 0; i < len; i++) {
             int b = (arr[i] - rangeLeft)>>bucketRangeTwoPower;
-            //int b = (arr[i] - rangeLeft) / bucketRange;
 
             auxArr[ bucketCounters[b] ] = arr[i];
 
@@ -64,6 +70,9 @@ public class BucketIntegerSort {
             bucketCounters[b]++;
         }
 
+        prepareTime += System.nanoTime() - rem;
+
+        rem = System.nanoTime();
         int ptr = 0;
         for (int i = 0; i < buckets; i++) {
             sortBucket(i, auxArr);
@@ -73,10 +82,11 @@ public class BucketIntegerSort {
                 ptr++;
             }
 
-            maxBucket = Math.max(maxBucket, bucketCounters[i] - i*bucketSpace);
+            //maxBucket = Math.max(maxBucket, bucketCounters[i] - i*bucketSpace);
         }
+        sortTime += System.nanoTime() - rem;
 
-        System.out.println("[INFO] Bucket sort succeeded. Maximum bucket was " + maxBucket);
+        //System.out.println("[INFO] Bucket sort succeeded. Maximum bucket was " + maxBucket);
 
         return arr;
     }
