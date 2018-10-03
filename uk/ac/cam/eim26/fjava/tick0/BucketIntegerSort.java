@@ -2,7 +2,7 @@ package uk.ac.cam.eim26.fjava.tick0;
 
 public class BucketIntegerSort {
     private static final int MAX_BUCKETS = 10000;
-    private static final int BUCKET_THRESHOLD = 10;
+    private static final int BUCKET_THRESHOLD = 5;
 
     private static int[] bucketCounters = new int [MAX_BUCKETS];
     private static int bucketRange;
@@ -28,6 +28,8 @@ public class BucketIntegerSort {
     }
 
     public static int[] attemptBucketSort(int[] arr, int len, int rangeLeft, int rangeRight, int[] auxArr) {
+        int maxBucket = 0;
+
         buckets = len / BUCKET_THRESHOLD;
         bucketRange = (rangeRight - rangeLeft + 1) / buckets + 1;
         bucketSpace = auxArr.length / buckets;
@@ -64,9 +66,11 @@ public class BucketIntegerSort {
                 arr[ptr] = auxArr[j];
                 ptr++;
             }
+
+            maxBucket = Math.max(maxBucket, bucketCounters[i] - i*bucketSpace);
         }
 
-        //System.out.println("[INFO] Bucket sort succeeded.");
+        System.out.println("[INFO] Bucket sort succeeded. Maximum bucket was " + maxBucket);
 
         return arr;
     }
