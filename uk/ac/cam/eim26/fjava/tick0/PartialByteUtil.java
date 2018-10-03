@@ -7,7 +7,7 @@ package uk.ac.cam.eim26.fjava.tick0;
  */
 public class PartialByteUtil {
 
-    public static boolean isSmaller0(byte[] arr, int a, int b) {
+    private static boolean isSmaller0(byte[] arr, int a, int b) {
         return
                 ( ((arr[a] & 0xff) << 24) | ((arr[a+1] & 0xff) << 16) |
                         ((arr[a+2] & 0xff) << 8) | (arr[a+3] & 0xff) ) <
@@ -16,7 +16,7 @@ public class PartialByteUtil {
 
     }
 
-    public static boolean isSmaller1(byte[] arr, int a, int b) {
+    private static boolean isSmaller1(byte[] arr, int a, int b) {
         return
                 ( ((arr[a+1] & 0xff) << 16) |
                         ((arr[a+2] & 0xff) << 8) | (arr[a+3] & 0xff) ) <
@@ -25,14 +25,14 @@ public class PartialByteUtil {
 
     }
 
-    public static boolean isSmaller2(byte[] arr, int a, int b) {
+    private static boolean isSmaller2(byte[] arr, int a, int b) {
         return
                 ( ((arr[a+2] & 0xff) << 8) | (arr[a+3] & 0xff) ) <
                         ( ((arr[b+2] & 0xff) << 8) | (arr[b+3] & 0xff) );
 
     }
 
-    public static boolean isSmaller3(byte[] arr, int a, int b) {
+    private static boolean isSmaller3(byte[] arr, int a, int b) {
         return ( (arr[a+3] & 0xff) < (arr[b+3] & 0xff) );
 
     }
