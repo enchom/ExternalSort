@@ -90,12 +90,12 @@ public class RadixIntegerSort {
         recSolve(arr, start, R, rad + 1);
     }
 
-    public static int[] sortByteArray(int[] arr, int len, int rad) {
+    public static int[] sortIntArray(int[] arr, int len, int rad) {
         recSolve(arr, 0, len - 1, rad);
         return arr;
     }
 
-    public static int[] sortByteArray(int[] arr, int len) {
-        return sortByteArray(arr, len, 0);
+    public static int[] sortIntArray(int[] arr, int len) {
+        return sortIntArray(arr, len, 0);
     }
 }
