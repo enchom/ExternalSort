@@ -63,6 +63,15 @@ public class BucketIntegerSort {
             int b = (arr[i] - rangeLeft)>>bucketRangeTwoPower;
 
             auxArr[ bucketCounters[b] ] = arr[i];
+            int ind = bucketCounters[b];
+            int val = auxArr[ind];
+
+            ind--;
+            while(ind >= b * bucketSpace && val < auxArr[ind]) {
+                auxArr[ind+1] = auxArr[ind];
+                ind--;
+            }
+            auxArr[ind+1] = val;
 
             if (bucketCounters[b] >= (b+1) * bucketSpace) {
                 System.out.println("[INFO] Bucket sort failed: Not distributed enough. Falling back to radix sort");
@@ -78,7 +87,7 @@ public class BucketIntegerSort {
         int ptr = 0;
         for (int i = 0; i < buckets; i++) {
             //sortBucket(i, auxArr);
-            Arrays.sort(auxArr, i * bucketSpace, bucketCounters[i]);
+            //Arrays.sort(auxArr, i * bucketSpace, bucketCounters[i]);
 
             System.arraycopy(auxArr, i * bucketSpace, arr, ptr, bucketCounters[i] - i * bucketSpace);
             ptr += bucketCounters[i] - i * bucketSpace;
