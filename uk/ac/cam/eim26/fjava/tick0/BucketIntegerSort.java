@@ -77,10 +77,8 @@ public class BucketIntegerSort {
         for (int i = 0; i < buckets; i++) {
             sortBucket(i, auxArr);
 
-            for (int j = i * bucketSpace; j < bucketCounters[i]; j++) {
-                arr[ptr] = auxArr[j];
-                ptr++;
-            }
+            System.arraycopy(auxArr, i * bucketSpace, arr, ptr, bucketCounters[i] - i * bucketSpace);
+            ptr += bucketCounters[i] - i * bucketSpace;
 
             //maxBucket = Math.max(maxBucket, bucketCounters[i] - i*bucketSpace);
         }
