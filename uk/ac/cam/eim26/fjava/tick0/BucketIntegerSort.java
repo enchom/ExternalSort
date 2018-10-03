@@ -1,5 +1,7 @@
 package uk.ac.cam.eim26.fjava.tick0;
 
+import java.util.Arrays;
+
 public class BucketIntegerSort {
     private static final int MAX_BUCKETS = 10000;
     private static final int BUCKET_THRESHOLD = 4;
@@ -75,7 +77,8 @@ public class BucketIntegerSort {
         rem = System.nanoTime();
         int ptr = 0;
         for (int i = 0; i < buckets; i++) {
-            sortBucket(i, auxArr);
+            //sortBucket(i, auxArr);
+            Arrays.sort(auxArr, i * bucketSpace, bucketCounters[i]);
 
             System.arraycopy(auxArr, i * bucketSpace, arr, ptr, bucketCounters[i] - i * bucketSpace);
             ptr += bucketCounters[i] - i * bucketSpace;
