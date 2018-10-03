@@ -2,7 +2,7 @@ package uk.ac.cam.eim26.fjava.tick0;
 
 public class BucketIntegerSort {
     private static final int MAX_BUCKETS = 10000;
-    private static final int BUCKET_THRESHOLD = 5;
+    private static final int BUCKET_THRESHOLD = 20;
 
     private static int[] bucketCounters = new int [MAX_BUCKETS];
     private static int bucketRange;
