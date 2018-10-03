@@ -16,6 +16,7 @@ public class Resources {
     public static int blockSize;
     public static byte[] arr;
     public static int[] integerArr;
+    public static int[] secondIntegerArr;
 
     public static int[] count = new int[256];
     public static long totalSize = 0;
@@ -253,9 +254,10 @@ public class Resources {
     }
 
     public static void allocateResources(String f) throws IOException {
-        blockSize /= 2;
+        blockSize /= 3;
         arr = new byte[4 * blockSize];
         integerArr = new int[blockSize];
+        secondIntegerArr = new int[blockSize];
 
         computeCount(f);
     }
