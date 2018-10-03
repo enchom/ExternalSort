@@ -5,7 +5,7 @@ package uk.ac.cam.eim26.fjava.tick0;
  * integer arrays (4 bytes = 1 integer)
  */
 public class ByteUtil {
-    public static final boolean isSmaller(byte[] arr, int a, int b) {
+    public static boolean isSmaller(byte[] arr, int a, int b) {
         a <<= 2;
         b <<= 2;
 
@@ -16,7 +16,7 @@ public class ByteUtil {
                                 ((arr[b+2] & 0xff) << 8) | (arr[b+3] & 0xff) );
     }
 
-    public static final void byteSwap(byte[] arr, int a, int b) {
+    public static void byteSwap(byte[] arr, int a, int b) {
         a <<= 2;
         b <<= 2;
 
