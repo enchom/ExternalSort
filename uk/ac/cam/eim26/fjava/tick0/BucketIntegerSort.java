@@ -1,7 +1,5 @@
 package uk.ac.cam.eim26.fjava.tick0;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-
 public class BucketIntegerSort {
     private static final int MAX_BUCKETS = 10000;
     private static final int BUCKET_THRESHOLD = 10;
