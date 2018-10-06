@@ -277,10 +277,10 @@ public class Resources {
 
         totalSize = (new File(f)).length() / 4;
 
-        System.out.println("Memory = " + maxMemory + " i.e. " + ((double) (maxMemory) / 1000000.0) + "MB");
+        //System.out.println("Memory = " + maxMemory + " i.e. " + ((double) (maxMemory) / 1000000.0) + "MB");
 
         blockSize = (int) (usableMemory / 6);
 
-        System.out.println("Block size = " + blockSize);
+        //System.out.println("Block size = " + blockSize);
     }
 }

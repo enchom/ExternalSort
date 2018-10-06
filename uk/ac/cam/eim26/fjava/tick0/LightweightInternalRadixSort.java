@@ -1,32 +1,14 @@
 package uk.ac.cam.eim26.fjava.tick0;
 
-import java.io.*;
-import java.util.Arrays;
-import java.util.Random;
+import java.io.File;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 
 public class LightweightInternalRadixSort implements ExternalSortBase {
     private File firstFile;
     private int[] arr;
-
-    private void countingSort(int minValue, int maxValue) {
-        int value;
-        int ptr = 0;
-        int[] countingSortArr;
-        int len = (int)Resources.totalSize;
-
-        countingSortArr = new int[maxValue - minValue + 1];
-
-        for (int i = 0; i < len; i++) {
-            countingSortArr[ arr[i] - minValue ]++;
-        }
-
-        for (int i = minValue; i <= maxValue; i++) {
-            for (int j = 1; j <= countingSortArr[i - minValue]; j++) {
-                arr[ptr] = i;
-                ptr++;
-            }
-        }
-    }
 
     @Override
     public void setFiles(String f1, String f2) {
@@ -37,43 +19,34 @@ public class LightweightInternalRadixSort implements ExternalSortBase {
     public void sort() throws Exception {
         arr = new int[(int)Resources.totalSize];
 
-        RandomAccessFile randomAccessFile = new RandomAccessFile(firstFile, "r");
-        DataInputStream inputStream = new DataInputStream(
-                new BufferedInputStream(new FileInputStream(randomAccessFile.getFD())));
-        int minValue = Integer.MAX_VALUE;
-        int maxValue = Integer.MIN_VALUE;
+        DataInputStream inputStream = new DataInputStream(new FileInputStream(firstFile));
         int len = (int)Resources.totalSize;
+        int swp;
 
         for (int i = 0; i < len; i++) {
             arr[i] = inputStream.readInt();
 
-            minValue = Math.min(minValue, arr[i]);
-            maxValue = Math.max(maxValue, arr[i]);
-        }
-
-        System.out.println("Difference is " + ((long)maxValue-(long)minValue));
-
-        if ( (long)maxValue - (long)minValue < Resources.blockSize / 4 ) {
-            countingSort(minValue, maxValue);
-        }
-        else {
-            //arr = RadixIntegerSort.sortIntArray(arr, len);
-            Arrays.sort(arr);
+            for (int j = i - 1; j >= 0; j--) {
+                if (arr[j] > arr[j + 1]) {
+                    swp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = swp;
+                }
+                else {
+                    break;
+                }
+            }
         }
 
         inputStream.close();
-        randomAccessFile.close();
 
-        randomAccessFile = new RandomAccessFile(firstFile, "rw");
-        DataOutputStream outputStream = new DataOutputStream(
-                new BufferedOutputStream(new FileOutputStream(randomAccessFile.getFD())));
+        DataOutputStream outputStream = new DataOutputStream(new FileOutputStream(firstFile));
 
         for (int i = 0; i < len; i++) {
             outputStream.writeInt(arr[i]);
         }
 
         outputStream.close();
-        randomAccessFile.close();
     }
 
     @Override
