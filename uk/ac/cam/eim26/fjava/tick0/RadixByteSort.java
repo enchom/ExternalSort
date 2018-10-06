@@ -10,9 +10,19 @@ public class RadixByteSort {
     private static int[] blockPointer = new int[256];
     private static final int THRESHOLD = (1 << 5);
 
+    public static void byteInsertionSort(byte[] arr, int L, int R) {
+        for (int i = L + 1; i <= R; i++) {
+            int cur = i - 1;
+            while(cur >= L && ByteUtil.isSmaller(arr, cur + 1, cur)) {
+                ByteUtil.byteSwap(arr, cur, cur+1);
+                cur--;
+            }
+        }
+    }
+
     private static void recSolve(byte[] arr, int L, int R, int rad) {
         if (R - L < THRESHOLD) {
-            PartialByteInsertionSort.byteInsertionSort(arr, L, R, rad);
+            byteInsertionSort(arr, L, R);
             return;
         }
 

@@ -1,8 +1,6 @@
 //TODO - MAKE THIS WORK EVEN IF TEST DATA IS UNKNOWN
 package uk.ac.cam.eim26.fjava.tick0;
 
-import org.omg.SendingContext.RunTime;
-
 import java.io.*; //TODO - split (in all files)
 import java.net.ResponseCache;
 import java.util.ArrayList;
@@ -33,7 +31,7 @@ public class ExternalCustomSort implements ExternalSortBase {
         inputStream.read(arr, 0, Resources.cornerEnding * 4);
 
         for (int i = 0; i < Resources.cornerEnding * 4; i += 4) {
-            int num = PartialByteHeapSort.bytesToInteger(arr, i / 4);
+            int num = ByteUtil.bytesToInteger(arr, i / 4);
 
             if (num < Integer.MIN_VALUE + Resources.MAX_PAD) {
                 smallPart.add(num);

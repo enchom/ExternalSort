@@ -5,6 +5,7 @@ package uk.ac.cam.eim26.fjava.tick0;
  * integer arrays (4 bytes = 1 integer)
  * Functions are separated for efficiency
  */
+@Deprecated
 public class PartialByteUtil {
 
     private static boolean isSmaller0(byte[] arr, int a, int b) {

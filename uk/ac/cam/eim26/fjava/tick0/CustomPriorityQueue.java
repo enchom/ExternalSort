@@ -3,7 +3,7 @@ package uk.ac.cam.eim26.fjava.tick0;
 import java.util.List;
 
 /**
- * This class represents a priority queue implemented using a binary heap, supporting getting the minimum value,
+ * A priority queue implemented using a binary heap, supporting getting the minimum value,
  * popping the minimum value and changing the value of the current root (minimum value).
  * The class is expected to have very few elements and thus a built-in priority queue would most
  * likely perform worse (due to overhead)
@@ -72,14 +72,16 @@ public class CustomPriorityQueue {
         }
     }
 
+    /**
+     * Returns the top element of the priority queue without removing it.
+     */
     public int top() {
         return heap[0];
     }
 
-    public int topVal() {
-        return values[ heap[0] ];
-    }
-
+    /**
+     * Removes the top element of the priority queue.
+     */
     public void popTop() {
         heap[0] = heap[sz - 1];
         sz--;
@@ -87,12 +89,18 @@ public class CustomPriorityQueue {
         heapify(0);
     }
 
+    /**
+     * Replaces the top element of the priority queue and reorders it accordingly
+     */
     public void replaceTop(int value) {
         values[ heap[0] ] = value;
 
         heapify(0);
     }
 
+    /**
+     * Tests whether the priority queue is empty
+     */
     public boolean empty() {
         return sz == 0;
     }

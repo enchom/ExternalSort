@@ -13,7 +13,7 @@ public class InternalRadixSort implements ExternalSortBase {
         countingSortArr = new int[maxValue - minValue + 1];
 
         for (int i = 0; i < Resources.totalSize * 4; i += 4) {
-            value = PartialByteHeapSort.bytesToInteger(Resources.arr, i / 4);
+            value = ByteUtil.bytesToInteger(Resources.arr, i / 4);
             countingSortArr[value - minValue]++;
         }
 
@@ -50,7 +50,7 @@ public class InternalRadixSort implements ExternalSortBase {
         }
 
         for (int i = 0; i < len; i += 4) {
-            value = PartialByteHeapSort.bytesToInteger(Resources.arr, i / 4);
+            value = ByteUtil.bytesToInteger(Resources.arr, i / 4);
             minValue = Math.min(minValue, value);
             maxValue = Math.max(maxValue, value);
         }

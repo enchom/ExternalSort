@@ -3,6 +3,7 @@ package uk.ac.cam.eim26.fjava.tick0;
 /**
  * A heapsort working on a subarray of consecutive elements
  */
+@Deprecated
 public class PartialByteHeapSort {
 
     private static byte[] arr;
@@ -53,14 +54,6 @@ public class PartialByteHeapSort {
                 }
             }
         }
-    }
-
-    //TODO: Move somewhere more general (some byte utils)
-    public static int bytesToInteger(byte[] arr, int a) {
-        a <<= 2;
-
-        return ( ((arr[a] & 0xff) << 24) | ((arr[a+1] & 0xff) << 16) |
-                ((arr[a+2] & 0xff) << 8) | (arr[a+3] & 0xff) );
     }
 
     public static void byteHeapSort(byte[] localArr, int L, int R) {

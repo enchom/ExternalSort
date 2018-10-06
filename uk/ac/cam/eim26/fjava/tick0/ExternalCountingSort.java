@@ -1,6 +1,11 @@
 package uk.ac.cam.eim26.fjava.tick0;
 
-import java.io.*;
+import java.io.File;
+import java.io.InputStream;
+import java.io.RandomAccessFile;
+import java.io.FileInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 
 public class ExternalCountingSort implements ExternalSortBase {
     private File firstFile;
@@ -25,7 +30,7 @@ public class ExternalCountingSort implements ExternalSortBase {
             }
 
             for (int i = 0; i < len; i += 4) {
-                counting[ PartialByteHeapSort.bytesToInteger(Resources.arr, i / 4) - Resources.minValue ]++;
+                counting[ ByteUtil.bytesToInteger(Resources.arr, i / 4) - Resources.minValue ]++;
             }
         }
 

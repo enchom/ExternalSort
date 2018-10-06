@@ -3,6 +3,7 @@ package uk.ac.cam.eim26.fjava.tick0;
 /**
  * An insertion sort working on a subarray of consecutive elements
  */
+@Deprecated
 public class PartialByteInsertionSort {
     public static void byteInsertionSort(byte[] arr, int L, int R, int rad) {
         for (int i = L + 1; i <= R; i++) {

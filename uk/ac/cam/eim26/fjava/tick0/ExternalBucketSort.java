@@ -1,6 +1,10 @@
 package uk.ac.cam.eim26.fjava.tick0;
 
-import java.io.*; //TODO - split
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.io.FileInputStream;
 
 public class ExternalBucketSort extends ExternalBucketSortBase {
     public void sort() throws IOException {
@@ -36,6 +40,8 @@ public class ExternalBucketSort extends ExternalBucketSortBase {
             T1 += System.nanoTime() - localTime;
 
             int realLen = len * 4;
+            int minVal = (realInd << 24);
+            int maxVal = (realInd << 24) | (255 << 16) | (255 << 8) | 255;
 
             localTime = System.nanoTime();
             for (int j = 3 * len - 3; j >= 0; j -= 3) {
@@ -49,9 +55,9 @@ public class ExternalBucketSort extends ExternalBucketSortBase {
 
             localTime = System.nanoTime();
             Resources.convertToIntegers(len);
-            int minVal = (realInd << 24);
-            int maxVal = (realInd << 24) | (255 << 16) | (255 << 8) | 255;
-            BucketIntegerSort.attemptBucketSort(Resources.integerArr, len, minVal, maxVal, Resources.secondIntegerArr);
+            Resources.integerArr =
+                    BucketIntegerSort.attemptBucketSort(Resources.integerArr, len, minVal, maxVal,
+                                                                            Resources.secondIntegerArr);
             Resources.convertToBytes(len);
 
             T3 += System.nanoTime() - localTime;
