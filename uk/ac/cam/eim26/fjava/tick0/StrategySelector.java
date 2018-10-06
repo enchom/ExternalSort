@@ -18,7 +18,7 @@ public class StrategySelector {
 
         //Return early to avoid pointless resource allocation
         if (Resources.totalSize <= Resources.blockSize) {
-            if (Resources.totalSize <= 5000) {
+            if (Resources.totalSize <= 100) {
                 return new LightweightInternalRadixSort();
             }
             else {
@@ -27,6 +27,8 @@ public class StrategySelector {
         }
 
         Resources.allocateResources(dataFile);
+
+        return new ExternalMergeSort();
 
         if ( (long)Resources.maxValue - (long)Resources.minValue < Resources.blockSize / 4 )
         {

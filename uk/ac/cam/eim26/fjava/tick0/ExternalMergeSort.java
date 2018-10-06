@@ -1,6 +1,12 @@
 package uk.ac.cam.eim26.fjava.tick0;
 
-import java.io.*;
+import java.io.File;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.RandomAccessFile;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 //TODO - clean up to make it look like a proper separated class
@@ -96,23 +102,17 @@ public class ExternalMergeSort implements ExternalSortBase {
 
     @Override
     public void sort() throws IOException, NoNumbersLeftException {
-        long endToEnd = System.nanoTime();
-
         arr = Resources.arr;
 
         int len = 0;
 
-        FileInputStream d = new FileInputStream(firstFile);
+        FileInputStream inputStream = new FileInputStream(firstFile);
         RandomAccessFile randomAccessFile = new RandomAccessFile(secondFile, "rw");
-        BufferedOutputStream dOut = new BufferedOutputStream(new FileOutputStream(randomAccessFile.getFD()));
-
-        long T1 = 0, T2 = 0, T3 = 0, T4 = 0, localTime;
+        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(randomAccessFile.getFD()));
 
         //First pass - sort blocks
         while(true) {
-            localTime = System.nanoTime();
-            len = d.read(arr);
-            T1 += System.nanoTime() - localTime;
+            len = inputStream.read(arr);
 
             if (len == -1) {
                 break;
@@ -120,31 +120,22 @@ public class ExternalMergeSort implements ExternalSortBase {
 
             blocks++;
 
-            localTime = System.nanoTime();
+            Resources.convertToIntegers(len / 4);
+            RadixIntegerSort.sortIntArray(Resources.integerArr, len / 4);
+            Resources.convertToBytes(len / 4);
             RadixByteSort.sortByteArray(arr, len / 4);
-            T2 += System.nanoTime() - localTime;
 
             blockOffsets.add((blocks - 1) * Resources.blockSize);
-            blockEndings.add((blocks - 1) * Resources.blockSize + (len >> 2));
+            blockEndings.add((blocks - 1) * Resources.blockSize + (len / 4));
 
-            localTime = System.nanoTime();
-            dOut.write(arr, 0, len);
-            T4 += System.nanoTime() - localTime;
+            outputStream.write(arr, 0, len);
         }
 
-        System.out.println("First pass into blocks gives " + T1/1000000 + "ms in reading and " + T2/1000000 + "ms in sorting");
-        System.out.println("Writing takes " + T4/1000000 + "ms");
-
-        dOut.close();
+        outputStream.close();
         randomAccessFile.close();
-        d.close();
-        System.out.println("Total " + blocks + " blocks");
-
-        System.out.println("Finished first pass");
-        //startTime = System.nanoTime();
+        inputStream.close();
 
         //Second pass - merge results
-
         bufferSize = 4 * (Resources.blockSize / blocks);
         bufferMarks = new int[blocks];
         byteCache = new byte[blocks][4];
@@ -153,9 +144,6 @@ public class ExternalMergeSort implements ExternalSortBase {
             bufferMarks[i] = bufferSize + 1;
         }
 
-        System.out.println("Size is " + bufferSize);
-
-        localTime = System.nanoTime();
         for (int i = 0; i < blocks; i++) {
             BufferedInputStream stream = new BufferedInputStream( new FileInputStream(secondFile) );
 
@@ -166,34 +154,26 @@ public class ExternalMergeSort implements ExternalSortBase {
             currentPointers.add(blockOffsets.get(i));
             currentIntegers.add(readNextInteger(i));
         }
-        T3 = System.nanoTime() - localTime;
 
-        System.out.println("Skipping and aligning streams takes " + T3/1000000 + "ms");
-
-        localTime = System.nanoTime();
         randomAccessFile = new RandomAccessFile(firstFile, "rw");
-        dOut = new BufferedOutputStream( new FileOutputStream(randomAccessFile.getFD()) );
+        outputStream = new BufferedOutputStream( new FileOutputStream(randomAccessFile.getFD()) );
         pq = new CustomPriorityQueue(blocks, currentIntegers);
 
         //TODO - Do without an exception
         while(true) {
             try {
-                writeNextValue(dOut);
+                writeNextValue(outputStream);
             }catch(NoNumbersLeftException e) {
                 break;
             }
         }
 
-        dOut.close();
+        outputStream.close();
         randomAccessFile.close();
 
         for (BufferedInputStream stream : streamsToMerge) {
             stream.close();
         }
-
-        System.out.println("All actual merging is done in " + (System.nanoTime() - localTime)/1000000 + "ms");
-
-        System.out.println("END TO END IS " + (System.nanoTime() - endToEnd)/1000000);
     }
 
     @Override
