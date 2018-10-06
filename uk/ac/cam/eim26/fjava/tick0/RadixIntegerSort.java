@@ -38,7 +38,13 @@ public class RadixIntegerSort {
         }
 
         for (int i = L; i <= R; i++) {
-            counting[ (arr[i]>>>shift)&0xff ]++;
+            int bit = (arr[i]>>>shift)&0xff;
+
+            if (rad == 0) {
+                bit ^= 128;
+            }
+
+            counting[bit]++;
         }
 
         blockBegin[0] = L;
@@ -62,6 +68,10 @@ public class RadixIntegerSort {
             }
 
             val = (arr[cur]>>>shift)&0xff;
+
+            if (rad == 0) {
+                val ^= 128;
+            }
 
             if (blockPointer[val] != cur) {
                 swapVar = arr[cur];

@@ -56,7 +56,7 @@ public class LightweightInternalRadixSort implements ExternalSortBase {
             countingSort(minValue, maxValue);
         }
         else {
-            RadixIntegerSort.sortIntArray(arr, len);
+            arr = RadixIntegerSort.sortIntArray(arr, len);
         }
 
         inputStream.close();
@@ -76,6 +76,6 @@ public class LightweightInternalRadixSort implements ExternalSortBase {
 
     @Override
     public String getStrategy() {
-        return "Internal radix sort";
+        return "Lightweight internal radix sort";
     }
 }

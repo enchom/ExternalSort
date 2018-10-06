@@ -1,5 +1,9 @@
 package uk.ac.cam.eim26.fjava.tick0;
 
+/**
+ * Bucket sort working on integer array. Tries to use at most 10000 buckets due to memory constraints and falls
+ * back to integer radix sort if that's not possible.
+ */
 public class BucketIntegerSort {
     private static final int MAX_BUCKETS = 10000;
     private static final int BUCKET_THRESHOLD = 4;
@@ -15,7 +19,6 @@ public class BucketIntegerSort {
             bucketCounters = new int[MAX_BUCKETS];
         }
 
-        int maxBucket = 0;
         int bucketRangeTwoPower;
         long rem;
 
@@ -29,7 +32,6 @@ public class BucketIntegerSort {
         while( (1<<bucketRangeTwoPower) < bucketRange ) {
             bucketRangeTwoPower++;
         }
-        //System.out.println("[INFO] Attempting bucket sort");
 
         if (buckets > auxArr.length || buckets > MAX_BUCKETS) {
             System.out.println("[INFO] Bucket sort failed: Too many buckets. Falling back to radix sort");

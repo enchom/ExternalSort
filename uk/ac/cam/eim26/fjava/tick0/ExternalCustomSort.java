@@ -1,11 +1,16 @@
-//TODO - MAKE THIS WORK EVEN IF TEST DATA IS UNKNOWN
 package uk.ac.cam.eim26.fjava.tick0;
 
-import java.io.*; //TODO - split (in all files)
-import java.net.ResponseCache;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Custom external sort. Tailored for very specific files that start with a small number of very small or
+ * very large integers and continue with large segments of either perfectly sorted or perfectly reversed disjoint
+ * bits.
+ */
 public class ExternalCustomSort implements ExternalSortBase {
     private File firstFile;
     private File secondFile;

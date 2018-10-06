@@ -7,14 +7,22 @@
 
 package uk.ac.cam.eim26.fjava.tick0;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.DataInputStream;
+import java.io.BufferedInputStream;
+import java.io.EOFException;
+import java.io.DataOutputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
 /**
- * The root class of the project
+ * The root of the project
  */
 public class ExternalSort {
     private static long startTime;

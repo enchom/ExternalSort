@@ -88,8 +88,6 @@ public class ExternalMergeSort implements ExternalSortBase {
             currentPointers.set(minIndex, currentPointers.get(minIndex) + 1);
             pq.popTop();
         }
-
-        return;
     }
 
     private void writeBytes(BufferedOutputStream outStream, int block) throws IOException {
