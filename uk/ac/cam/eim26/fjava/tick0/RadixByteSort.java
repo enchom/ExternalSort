@@ -1,7 +1,5 @@
 package uk.ac.cam.eim26.fjava.tick0;
 
-import static uk.ac.cam.eim26.fjava.tick0.PartialByteUtil.byteSwap;
-
 /**
  * Radix sort that is replaced with heapsort once blocks are small enough
  */
@@ -61,7 +59,7 @@ public class RadixByteSort {
             }
 
             if (blockPointer[val] != cur) {
-                byteSwap(arr, blockPointer[val], cur, rad);
+                ByteUtil.byteSwap(arr, blockPointer[val], cur);
             } else {
                 cur++;
             }
@@ -89,36 +87,6 @@ public class RadixByteSort {
     }
 
     public static byte[] sortByteArray(byte[] arr, int len) {
-        ///Check for perfect reflection
-        boolean fullySorted = true;
-        for (int i = 0; i < len / 2; i++) {
-            if (ByteUtil.isSmaller(arr, len - i - 1, i)) {
-                byteSwap(arr, i, len - i - 1, 0);
-            } else {
-                fullySorted = false;
-                break;
-            }
-        }
-
-        if (fullySorted) {
-            System.out.println("INVERSE SORTING");
-            return arr;
-        }
-
-        //Check for perfect sort
-        fullySorted = true;
-        for (int i = 1; i < len; i++) {
-            if (ByteUtil.isSmaller(arr, i, i - 1)) {
-                fullySorted = false;
-                break;
-            }
-        }
-
-        if (fullySorted) {
-            System.out.println("STRAIGHT SORTING");
-            return arr;
-        }
-
         return sortByteArray(arr, len, 0);
     }
 }

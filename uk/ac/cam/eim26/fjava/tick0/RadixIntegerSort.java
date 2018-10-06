@@ -1,7 +1,5 @@
 package uk.ac.cam.eim26.fjava.tick0;
 
-import static uk.ac.cam.eim26.fjava.tick0.PartialByteUtil.byteSwap;
-
 public class RadixIntegerSort {
     private static int[] counting = new int[256];
     private static int[] blockBegin = new int[256];

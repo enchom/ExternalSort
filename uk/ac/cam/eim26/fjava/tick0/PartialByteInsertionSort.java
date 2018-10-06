@@ -1,8 +1,5 @@
 package uk.ac.cam.eim26.fjava.tick0;
 
-import static uk.ac.cam.eim26.fjava.tick0.PartialByteUtil.byteSwap;
-import static uk.ac.cam.eim26.fjava.tick0.PartialByteUtil.isSmaller;
-
 /**
  * An insertion sort working on a subarray of consecutive elements
  */

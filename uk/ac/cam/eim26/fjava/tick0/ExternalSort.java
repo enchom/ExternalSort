@@ -17,7 +17,7 @@ import java.util.Random;
  * The root class of the project
  */
 public class ExternalSort {
-        private static long startTime;
+    private static long startTime;
     private static ExternalSortBase externalSortStrategy;
 
     public static void sort(String f1, String f2) throws Exception {
@@ -155,29 +155,19 @@ public class ExternalSort {
         return;
     }
 
-    public static void normalMain() throws Exception {
-        String f1 = "test_specialA.dat";
-        String f2 = "test_specialB.dat";
+    public static void main(String[] args) throws Exception {
+        //generateFile();
+        generateRandomFile();
 
         startTime = System.nanoTime();
 
         System.out.println("Total mem = " + Runtime.getRuntime().totalMemory());
 
-        sort(f1, f2);
+        sort(args[0], args[1]);
 
         long duration = System.nanoTime() - startTime;
 
-        System.out.println("The checksum is: " + checkSum(f1));
+        System.out.println("The checksum is: " + checkSum(args[0]));
         System.out.println("Total time = " + (double)duration / 1000000.0);
-    }
-
-    public static void main(String[] args) throws Exception {
-        //String f1 = args[0];
-        //String f2 = args[1];
-
-        //generateFile();
-        generateRandomFile();
-
-        normalMain();
     }
 }

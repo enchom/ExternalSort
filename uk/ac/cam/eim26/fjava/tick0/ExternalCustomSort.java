@@ -114,7 +114,8 @@ public class ExternalCustomSort implements ExternalSortBase {
                     }
 
                     for (int j = 0; j < (len/4) / 2; j++) {
-                        PartialByteUtil.byteSwap(arr, j, (len/4) - j - 1, 0);
+                        ByteUtil.byteSwap(arr, j, (len/4) - j - 1);
+                        ///PartialByteUtil.byteSwap(arr, j, (len/4) - j - 1, 0);
                     }
 
                     randomAccessFile.seek(4 * rightPointer - len);
