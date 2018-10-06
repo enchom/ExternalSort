@@ -1,12 +1,6 @@
 package uk.ac.cam.eim26.fjava.tick0;
 
-import java.io.File;
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.RandomAccessFile;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 
 //TODO - clean up to make it look like a proper separated class
@@ -14,20 +8,14 @@ public class ExternalMergeSort implements ExternalSortBase {
     private File firstFile;
     private File secondFile;
 
-    private ArrayList<BufferedInputStream> streamsToMerge;
+    private ArrayList<DataInputStream> streamsToMerge;
     private ArrayList<Integer> blockOffsets;
     private ArrayList<Integer> blockEndings;
     private ArrayList<Integer> currentPointers;
     private ArrayList<Integer> currentIntegers;
-
     private byte[] arr;
-
     private int blocks = 0;
-
     private byte[][] byteCache;
-
-    private int bufferSize;
-    private int[] bufferMarks;
 
     private CustomPriorityQueue pq;
 
@@ -43,34 +31,21 @@ public class ExternalMergeSort implements ExternalSortBase {
         currentIntegers = new ArrayList<>();
     }
 
-    private void fillBuffer(int buf, int offset) throws IOException {
-        streamsToMerge.get(buf).read(arr, offset, bufferSize);
-        bufferMarks[buf] = 0;
-    }
-
     private int readNextInteger(int block) throws NoNumbersLeftException, IOException {
         if (currentPointers.get(block) > blockEndings.get(block)) {
             throw new NoNumbersLeftException();
         }
 
-        int offset = bufferSize * block;
+        int value = streamsToMerge.get(block).readInt();
 
-        if (bufferMarks[block] >= bufferSize) {
-            fillBuffer(block, offset);
-        }
-
-        byteCache[block][0] = arr[offset + bufferMarks[block]];
-        byteCache[block][1] = arr[offset + bufferMarks[block] + 1];
-        byteCache[block][2] = arr[offset + bufferMarks[block] + 2];
-        byteCache[block][3] = arr[offset + bufferMarks[block] + 3];
+        byteCache[block][0] = (byte)((value >> 24) & 0xff);
+        byteCache[block][1] = (byte)((value >> 16) & 0xff);
+        byteCache[block][2] = (byte)((value >> 8) & 0xff);
+        byteCache[block][3] = (byte)(value & 0xff);
 
         currentPointers.set(block, currentPointers.get(block) + 1);
-        bufferMarks[block] += 4;
 
-        return  ((byteCache[block][0] & 0xff) << 24) |
-                ((byteCache[block][1] & 0xff) << 16) |
-                ((byteCache[block][2] & 0xff) << 8) |
-                (byteCache[block][3] & 0xff);
+        return value;
 
     }
 
@@ -136,18 +111,13 @@ public class ExternalMergeSort implements ExternalSortBase {
         inputStream.close();
 
         //Second pass - merge results
-        bufferSize = 4 * (Resources.blockSize / blocks);
-        bufferMarks = new int[blocks];
         byteCache = new byte[blocks][4];
 
         for (int i = 0; i < blocks; i++) {
-            bufferMarks[i] = bufferSize + 1;
-        }
+            DataInputStream stream = new DataInputStream(new BufferedInputStream(new FileInputStream(secondFile)));
+            //BufferedInputStream stream = new BufferedInputStream( new FileInputStream(secondFile) );
 
-        for (int i = 0; i < blocks; i++) {
-            BufferedInputStream stream = new BufferedInputStream( new FileInputStream(secondFile) );
-
-            stream.skip(blockOffsets.get(i) * Integer.BYTES);
+            stream.skipBytes(blockOffsets.get(i) * 4);
 
             streamsToMerge.add(stream);
 
@@ -171,9 +141,9 @@ public class ExternalMergeSort implements ExternalSortBase {
         outputStream.close();
         randomAccessFile.close();
 
-        for (BufferedInputStream stream : streamsToMerge) {
-            stream.close();
-        }
+        //for (BufferedInputStream stream : streamsToMerge) {
+        //    stream.close();
+        //}
     }
 
     @Override
