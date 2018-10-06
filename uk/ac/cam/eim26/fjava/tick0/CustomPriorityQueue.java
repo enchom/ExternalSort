@@ -8,48 +8,43 @@ import java.util.List;
  * The class is expected to have very few elements and thus a built-in priority queue would most
  * likely perform worse (due to overhead)
  */
-
+@Deprecated
 public class CustomPriorityQueue {
     private int sz;
     private int[] heap;
     private int[] values;
 
     private void heapify(int ind) {
-        while(2 * ind + 1 < sz) {
+        while (2 * ind + 1 < sz) {
             if (2 * ind + 2 >= sz) {
-                if (values[ heap[ind] ] > values[ heap[2*ind+1] ]) {
+                if (values[heap[ind]] > values[heap[2 * ind + 1]]) {
                     int tmp = heap[ind];
-                    heap[ind] = heap[2*ind+1];
-                    heap[2*ind+1] = tmp;
+                    heap[ind] = heap[2 * ind + 1];
+                    heap[2 * ind + 1] = tmp;
 
                     ind = 2 * ind + 1;
-                }
-                else {
+                } else {
                     break;
                 }
-            }
-            else {
-                if (values[ heap[2*ind+1] ] < values[ heap[2*ind+2] ]) {
-                    if (values[ heap[2*ind+1] ] < values[ heap[ind] ]) {
+            } else {
+                if (values[heap[2 * ind + 1]] < values[heap[2 * ind + 2]]) {
+                    if (values[heap[2 * ind + 1]] < values[heap[ind]]) {
                         int tmp = heap[ind];
-                        heap[ind] = heap[2*ind+1];
-                        heap[2*ind+1] = tmp;
+                        heap[ind] = heap[2 * ind + 1];
+                        heap[2 * ind + 1] = tmp;
 
                         ind = 2 * ind + 1;
-                    }
-                    else {
+                    } else {
                         break;
                     }
-                }
-                else {
-                    if (values[ heap[2*ind+2] ] < values[ heap[ind] ]) {
+                } else {
+                    if (values[heap[2 * ind + 2]] < values[heap[ind]]) {
                         int tmp = heap[ind];
-                        heap[ind] = heap[2*ind+2];
-                        heap[2*ind+2] = tmp;
+                        heap[ind] = heap[2 * ind + 2];
+                        heap[2 * ind + 2] = tmp;
 
                         ind = 2 * ind + 2;
-                    }
-                    else {
+                    } else {
                         break;
                     }
                 }
@@ -93,7 +88,7 @@ public class CustomPriorityQueue {
      * Replaces the top element of the priority queue and reorders it accordingly
      */
     public void replaceTop(int value) {
-        values[ heap[0] ] = value;
+        values[heap[0]] = value;
 
         heapify(0);
     }

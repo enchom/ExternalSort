@@ -10,9 +10,10 @@ import java.io.FileOutputStream;
 /**
  * External counting sort strategy. Used only when all numbers fall inside a relatively small interval.
  */
+@Deprecated
 public class ExternalCountingSort implements ExternalSortBase {
     private File firstFile;
-    private int[] counting;
+    private byte[] arr;
 
     @Override
     public void setFiles(String f1, String f2) {
@@ -21,19 +22,20 @@ public class ExternalCountingSort implements ExternalSortBase {
 
     @Override
     public void sort() throws Exception {
-        InputStream inputStream = new FileInputStream(firstFile);
+        arr = Resources.arr;
 
-        counting = new int[Resources.maxValue - Resources.minValue + 1];
+        InputStream inputStream = new FileInputStream(firstFile);
+        int[] counting = new int[Resources.maxValue - Resources.minValue + 1];
 
         while (true) {
-            int len = inputStream.read(Resources.arr);
+            int len = inputStream.read(arr);
 
             if (len == -1) {
                 break;
             }
 
             for (int i = 0; i < len; i += 4) {
-                counting[ ByteUtil.bytesToInteger(Resources.arr, i / 4) - Resources.minValue ]++;
+                counting[ByteUtil.bytesToInteger(arr, i / 4) - Resources.minValue]++;
             }
         }
 
@@ -45,21 +47,21 @@ public class ExternalCountingSort implements ExternalSortBase {
 
         for (int i = Resources.minValue; i <= Resources.maxValue; i++) {
             for (int j = 1; j <= counting[i - Resources.minValue]; j++) {
-                Resources.arr[ptr] = (byte)(i >> 24);
-                Resources.arr[ptr+1] = (byte)((i >> 16) & (0xff));
-                Resources.arr[ptr+2] = (byte)((i >> 8) & (0xff));
-                Resources.arr[ptr+3] = (byte)(i & 0xff);
+                arr[ptr] = (byte) (i >> 24);
+                arr[ptr + 1] = (byte) ((i >> 16) & (0xff));
+                arr[ptr + 2] = (byte) ((i >> 8) & (0xff));
+                arr[ptr + 3] = (byte) (i & 0xff);
                 ptr += 4;
 
-                if (ptr == Resources.arr.length) {
-                    outputStream.write(Resources.arr);
+                if (ptr == arr.length) {
+                    outputStream.write(arr);
                     ptr = 0;
                 }
             }
         }
 
         if (ptr > 0) {
-            outputStream.write(Resources.arr, 0, ptr);
+            outputStream.write(arr, 0, ptr);
         }
 
         outputStream.close();

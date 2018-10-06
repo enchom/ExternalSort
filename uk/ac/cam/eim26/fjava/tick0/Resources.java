@@ -52,17 +52,17 @@ public class Resources {
 
     public static void convertToIntegers(int len) {
         for (int i = 0; i < len; i++) {
-            integerArr[i] = ( ((arr[i*4] & 0xff) << 24) | ((arr[i*4+1] & 0xff) << 16) |
-                                 ((arr[i*4+2] & 0xff) << 8) | (arr[i*4+3] & 0xff) );
+            integerArr[i] = (((arr[i * 4] & 0xff) << 24) | ((arr[i * 4 + 1] & 0xff) << 16) |
+                    ((arr[i * 4 + 2] & 0xff) << 8) | (arr[i * 4 + 3] & 0xff));
         }
     }
 
     public static void convertToBytes(int len) {
-        for (int i = 0; i < 4*len; i += 4) {
-            arr[i] = (byte)((integerArr[i>>2]>>>24)&0xff);
-            arr[i+1] = (byte)((integerArr[i>>2]>>>16)&0xff);
-            arr[i+2] = (byte)((integerArr[i>>2]>>>8)&0xff);
-            arr[i+3] = (byte)(integerArr[i>>2]&0xff);
+        for (int i = 0; i < 4 * len; i += 4) {
+            arr[i] = (byte) ((integerArr[i >> 2] >>> 24) & 0xff);
+            arr[i + 1] = (byte) ((integerArr[i >> 2] >>> 16) & 0xff);
+            arr[i + 2] = (byte) ((integerArr[i >> 2] >>> 8) & 0xff);
+            arr[i + 3] = (byte) (integerArr[i >> 2] & 0xff);
         }
     }
 
@@ -104,8 +104,8 @@ public class Resources {
                     int firstByte = arr[i] & 0xff;
                     Resources.count[firstByte]++;
 
-                    val = ( ((arr[i] & 0xff) << 24) | ((arr[i+1] & 0xff) << 16) |
-                            ((arr[i+2] & 0xff) << 8) | (arr[i+3] & 0xff) );
+                    val = (((arr[i] & 0xff) << 24) | ((arr[i + 1] & 0xff) << 16) |
+                            ((arr[i + 2] & 0xff) << 8) | (arr[i + 3] & 0xff));
 
                     minValue = Math.min(minValue, val);
                     maxValue = Math.max(maxValue, val);
@@ -116,18 +116,16 @@ public class Resources {
                         if (passedCorners) {
                             if (!cornerNumber(val)) {
                                 if (leftEnds.size() <= 5) {
-                                    if ( Math.abs((long)val - (long)lastNumber) <= BLOCK_SEPPARATOR ) {
+                                    if (Math.abs((long) val - (long) lastNumber) <= BLOCK_SEPPARATOR) {
                                         smallValue = Math.min(smallValue, val);
                                         largeValue = Math.max(largeValue, val);
 
                                         if (val > lastNumber) {
                                             isReversed = false;
-                                        }
-                                        else if (val < lastNumber) {
+                                        } else if (val < lastNumber) {
                                             isSorted = false;
                                         }
-                                    }
-                                    else {
+                                    } else {
                                         leftEnds.add(index);
                                         sorted.add(isSorted);
                                         reversed.add(isReversed);
@@ -141,20 +139,17 @@ public class Resources {
                                         largeValue = val;
                                     }
                                 }
-                            }
-                            else {
+                            } else {
                                 specialStructure = false;
                             }
-                        }
-                        else {
+                        } else {
                             if (cornerNumber(val)) {
                                 cornerCases.add(val);
 
                                 if (cornerCases.size() > CORNER_LIMIT_COUNT || cornerCases.size() > blockSize) {
                                     specialStructure = false;
                                 }
-                            }
-                            else {
+                            } else {
                                 passedCorners = true;
                                 isSorted = true;
                                 isReversed = true;
@@ -169,8 +164,7 @@ public class Resources {
                     lastNumber = val;
                     index++;
                 }
-            }
-            else if (countingSortStructure) {
+            } else if (countingSortStructure) {
                 for (int i = 0; i < len; i += 4) {
                     Resources.count[arr[i] & 0xff]++;
 
@@ -180,14 +174,13 @@ public class Resources {
                     minValue = Math.min(minValue, val);
                     maxValue = Math.max(maxValue, val);
                 }
-            }
-            else {
+            } else {
                 for (int i = 0; i < len; i += 4) {
                     Resources.count[arr[i] & 0xff]++;
                 }
             }
 
-            if ( (long)maxValue - (long)minValue >= Resources.blockSize / 4 ) {
+            if ((long) maxValue - (long) minValue >= Resources.blockSize / 4) {
                 countingSortStructure = false;
             }
         }
@@ -198,7 +191,7 @@ public class Resources {
         smallestValue.add(smallValue);
         largestValue.add(largeValue);
 
-        System.out.println("MAIN PART IS " + (System.nanoTime() - saveTime)/1000000 + "ms");
+        System.out.println("MAIN PART IS " + (System.nanoTime() - saveTime) / 1000000 + "ms");
 
         /*for (int i = 0; i < 256; i++) {
             if (auxMaxInd[i] != 0) {
@@ -221,10 +214,9 @@ public class Resources {
 
             for (int i = 0; i < leftEnds.size() - 1; i++) {
                 System.out.println("Interval from " + leftEnds.get(i) + " to " + leftEnds.get(i + 1) +
-                                    " with values in the range [" + smallestValue.get(i) + "; " + largestValue.get(i) + "]");
+                        " with values in the range [" + smallestValue.get(i) + "; " + largestValue.get(i) + "]");
             }
-        }
-        else {
+        } else {
             for (int i = 0; i < leftEnds.size() - 1; i++) {
                 if (leftEnds.get(i + 1) - leftEnds.get(i) > blockSize && !sorted.get(i) && !reversed.get(i)) {
                     specialStructure = false;

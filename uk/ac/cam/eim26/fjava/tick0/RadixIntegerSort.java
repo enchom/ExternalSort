@@ -98,7 +98,7 @@ public class RadixIntegerSort {
         recSolve(arr, start, R, rad + 1);
     }
 
-    public static int[] sortIntArray(int[] arr, int len, int rad) {
+    public static void sortIntArray(int[] arr, int len, int rad) {
         if (counting == null) {
             counting = new int[256];
         }
@@ -110,10 +110,9 @@ public class RadixIntegerSort {
         }
 
         recSolve(arr, 0, len - 1, rad);
-        return arr;
     }
 
-    public static int[] sortIntArray(int[] arr, int len) {
-        return sortIntArray(arr, len, 0);
+    public static void sortIntArray(int[] arr, int len) {
+        sortIntArray(arr, len, 0);
     }
 }
