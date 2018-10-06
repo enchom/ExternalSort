@@ -1,6 +1,7 @@
 package uk.ac.cam.eim26.fjava.tick0;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Random;
 
 public class LightweightInternalRadixSort implements ExternalSortBase {
@@ -56,7 +57,8 @@ public class LightweightInternalRadixSort implements ExternalSortBase {
             countingSort(minValue, maxValue);
         }
         else {
-            arr = RadixIntegerSort.sortIntArray(arr, len);
+            //arr = RadixIntegerSort.sortIntArray(arr, len);
+            Arrays.sort(arr);
         }
 
         inputStream.close();
