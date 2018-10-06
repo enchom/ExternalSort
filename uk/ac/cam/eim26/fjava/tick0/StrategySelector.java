@@ -3,11 +3,11 @@ package uk.ac.cam.eim26.fjava.tick0;
 import java.io.IOException;
 
 /**
- * A class that chooses the sorting strategy. Employs the Strategy design pattern.
+ * Chooses the sorting strategy. Employs the Strategy design pattern.
  */
 public class StrategySelector {
-    public static ExternalSortBase selectStrategy(String f1) throws IOException {
-        Resources.allocateVitalResources(f1);
+    public static ExternalSortBase selectStrategy(String dataFile) throws IOException {
+        Resources.allocateVitalResources(dataFile);
 
         if (Resources.totalSize >= 250000) {
             System.out.println("File size = " + Resources.totalSize * 4 + " bytes; = " + (Resources.totalSize / 250000) + "MB");
@@ -21,7 +21,7 @@ public class StrategySelector {
             return new InternalRadixSort();
         }
 
-        Resources.allocateResources(f1);
+        Resources.allocateResources(dataFile);
 
         if ( (long)Resources.maxValue - (long)Resources.minValue < Resources.blockSize / 4 )
         {
@@ -35,8 +35,6 @@ public class StrategySelector {
                 maxValue = Resources.count[i];
             }
         }
-
-        System.out.println("The maximum value is " + maxValue);
 
         if (Resources.specialStructure) {
             return new ExternalCustomSort();

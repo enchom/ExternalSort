@@ -1,9 +1,9 @@
 package uk.ac.cam.eim26.fjava.tick0;
 
 public class RadixIntegerSort {
-    private static int[] counting = new int[256];
-    private static int[] blockBegin = new int[256];
-    private static int[] blockPointer = new int[256];
+    private static int[] counting;
+    private static int[] blockBegin;
+    private static int[] blockPointer;
     private static final int THRESHOLD = (1 << 5);
 
     private static void integerInsertionSort(int[] arr, int L, int R) {
@@ -89,6 +89,16 @@ public class RadixIntegerSort {
     }
 
     public static int[] sortIntArray(int[] arr, int len, int rad) {
+        if (counting == null) {
+            counting = new int[256];
+        }
+        if (blockBegin == null) {
+            blockBegin = new int[256];
+        }
+        if (blockPointer == null) {
+            blockPointer = new int[256];
+        }
+
         recSolve(arr, 0, len - 1, rad);
         return arr;
     }

@@ -18,25 +18,25 @@ public class Resources {
     public static int[] integerArr;
     public static int[] secondIntegerArr;
 
-    public static int[] count = new int[256];
+    public static int[] count;
     public static long totalSize = 0;
 
     public static int minValue = Integer.MAX_VALUE;
     public static int maxValue = Integer.MIN_VALUE;
 
-    public static int[] lastValue = new int[256];
+    public static int[] lastValue;
 
     //public static int pairCount[][] = new int[256][256];
 
     //public static int auxMinInd[] = new int[256];
     //public static int auxMaxInd[] = new int[256];
 
-    public static ArrayList<Integer> leftEnds = new ArrayList<>();
-    public static ArrayList<Boolean> sorted = new ArrayList<>();
-    public static ArrayList<Boolean> reversed = new ArrayList<>();
-    public static ArrayList<Integer> smallestValue = new ArrayList<>();
-    public static ArrayList<Integer> largestValue = new ArrayList<>();
-    public static ArrayList<Integer> cornerCases = new ArrayList<>();
+    public static ArrayList<Integer> leftEnds;
+    public static ArrayList<Boolean> sorted;
+    public static ArrayList<Boolean> reversed;
+    public static ArrayList<Integer> smallestValue;
+    public static ArrayList<Integer> largestValue;
+    public static ArrayList<Integer> cornerCases;
     public static boolean passedCorners = false;
     public static int cornerEnding = 0;
 
@@ -70,6 +70,15 @@ public class Resources {
         int len;
         InputStream d = new FileInputStream(f);
         int val;
+
+        count = new int[256];
+        lastValue = new int[256];
+        leftEnds = new ArrayList<>();
+        sorted = new ArrayList<>();
+        reversed = new ArrayList<>();
+        smallestValue = new ArrayList<>();
+        largestValue = new ArrayList<>();
+        cornerCases = new ArrayList<>();
 
         for (int i = 0; i < 256; i++) {
             lastValue[i] = Integer.MIN_VALUE;

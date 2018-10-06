@@ -12,13 +12,16 @@ public class ExternalCustomSort implements ExternalSortBase {
 
     private byte[] arr;
 
-    private ArrayList<Integer> smallPart = new ArrayList<>();
-    private ArrayList<Integer> bigPart = new ArrayList<>();
+    private ArrayList<Integer> smallPart;
+    private ArrayList<Integer> bigPart;
 
     @Override
     public void setFiles(String f1, String f2) {
         firstFile = new File(f1);
         secondFile = new File(f2);
+
+        smallPart = new ArrayList<>();
+        bigPart = new ArrayList<>();
     }
 
     @Override

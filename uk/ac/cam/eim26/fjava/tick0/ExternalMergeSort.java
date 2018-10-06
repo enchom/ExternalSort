@@ -8,11 +8,11 @@ public class ExternalMergeSort implements ExternalSortBase {
     private File firstFile;
     private File secondFile;
 
-    private ArrayList<BufferedInputStream> streamsToMerge = new ArrayList<>();
-    private ArrayList<Integer> blockOffsets = new ArrayList<>();
-    private ArrayList<Integer> blockEndings = new ArrayList<>();
-    private ArrayList<Integer> currentPointers = new ArrayList<>();
-    private ArrayList<Integer> currentIntegers = new ArrayList<>();
+    private ArrayList<BufferedInputStream> streamsToMerge;
+    private ArrayList<Integer> blockOffsets;
+    private ArrayList<Integer> blockEndings;
+    private ArrayList<Integer> currentPointers;
+    private ArrayList<Integer> currentIntegers;
 
     private byte[] arr;
 
@@ -24,6 +24,18 @@ public class ExternalMergeSort implements ExternalSortBase {
     private int[] bufferMarks;
 
     private CustomPriorityQueue pq;
+
+    @Override
+    public void setFiles(String f1, String f2) {
+        firstFile = new File(f1);
+        secondFile = new File(f2);
+
+        streamsToMerge = new ArrayList<>();
+        blockOffsets = new ArrayList<>();
+        blockEndings = new ArrayList<>();
+        currentPointers = new ArrayList<>();
+        currentIntegers = new ArrayList<>();
+    }
 
     private void fillBuffer(int buf, int offset) throws IOException {
         streamsToMerge.get(buf).read(arr, offset, bufferSize);
@@ -82,12 +94,6 @@ public class ExternalMergeSort implements ExternalSortBase {
 
     private void writeBytes(BufferedOutputStream outStream, int block) throws IOException {
         outStream.write(byteCache[block]);
-    }
-
-    @Override
-    public void setFiles(String f1, String f2) {
-        firstFile = new File(f1);
-        secondFile = new File(f2);
     }
 
     @Override

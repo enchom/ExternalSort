@@ -13,18 +13,25 @@ public abstract class ExternalBucketSortBase implements ExternalSortBase {
     protected File firstFile;
     protected File secondFile;
 
-    protected ArrayList<Integer> blockOffsets = new ArrayList<>();
-    protected ArrayList<Integer> blockEndings = new ArrayList<>();
-    protected ArrayList<Integer> currentPointers = new ArrayList<>();
+    protected ArrayList<Integer> blockOffsets;
+    protected ArrayList<Integer> blockEndings;
+    protected ArrayList<Integer> currentPointers;
 
     protected byte[] arr;
-    protected BufferedOutputStream[] outputStreams = new BufferedOutputStream[256];
-    protected RandomAccessFile[] randomAccessFiles = new RandomAccessFile[256];
+    protected BufferedOutputStream[] outputStreams;
+    protected RandomAccessFile[] randomAccessFiles;
 
     @Override
     public void setFiles(String f1, String f2) {
         firstFile = new File(f1);
         secondFile = new File(f2);
+
+        outputStreams = new BufferedOutputStream[256];
+        randomAccessFiles = new RandomAccessFile[256];
+
+        blockOffsets = new ArrayList<>();
+        blockEndings = new ArrayList<>();
+        currentPointers = new ArrayList<>();
     }
 
     public void sortByFirstByte() throws IOException {

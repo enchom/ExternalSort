@@ -9,9 +9,6 @@ public class ByteUtil {
      * Compares two integer values in their 4-byte encoding. Indices given to the function are as if the
      * array is of integers and not bytes (i.e. the integer on index k is formed by the bytes on indices
      * [4k; 4k+3] in the byte array)
-     * @param arr The byte array containing the values to be compared
-     * @param a The index of the integer tested to be smaller.
-     * @param b The index of the integer tested to be larger or equal.
      * @return True if the first integer is smaller and false otherwise.
      */
     public static boolean isSmaller(byte[] arr, int a, int b) {
@@ -29,9 +26,6 @@ public class ByteUtil {
      * Swaps two integers in their 4-byte encoding. Indices given to the function are as if the
      * array is of integers and not bytes (i.e. the integer on index k is formed by the bytes on indices
      * [4k; 4k+3] in the byte array)
-     * @param arr The byte array containing the values to be swapped
-     * @param a The index of the first integer.
-     * @param b The index of the second integer.
      */
     public static void byteSwap(byte[] arr, int a, int b) {
         a <<= 2;
@@ -60,8 +54,6 @@ public class ByteUtil {
      * Converts an integer in its 4-byte encoding to an actual int type. Indices given to the function are as if the
      * array is of integers and not bytes (i.e. the integer on index k is formed by the bytes on indices
      * [4k; 4k+3] in the byte array)
-     * @param arr The byte array containing the value
-     * @param a The index of the integer to be converted
      * @return An int-type representation of the integer
      */
     public static int bytesToInteger(byte[] arr, int a) {

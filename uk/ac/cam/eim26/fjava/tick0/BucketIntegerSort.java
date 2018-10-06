@@ -4,43 +4,26 @@ public class BucketIntegerSort {
     private static final int MAX_BUCKETS = 10000;
     private static final int BUCKET_THRESHOLD = 4;
 
-    private static int[] bucketCounters = new int [MAX_BUCKETS];
-    private static int bucketRange;
-    private static int bucketSpace;
-    private static int buckets;
+    private static int[] bucketCounters;
 
     public static long sortTime = 0;
     public static long prepareTime = 0;
     public static long copyTime = 0;
 
-    private static void sortBucket(int bucket, int[] arr) {
-        int start = bucket * bucketSpace;
-        int swp;
-
-        for (int i = start + 1; i < bucketCounters[bucket]; i++) {
-            for (int j = i; j > start; j--) {
-                if (arr[j] < arr[j - 1]) {
-                    swp = arr[j];
-                    arr[j] = arr[j - 1];
-                    arr[j - 1] = swp;
-                }
-                else {
-                    break;
-                }
-            }
-        }
-    }
-
     public static int[] attemptBucketSort(int[] arr, int len, int rangeLeft, int rangeRight, int[] auxArr) {
+        if (bucketCounters == null) {
+            bucketCounters = new int[MAX_BUCKETS];
+        }
+
         int maxBucket = 0;
         int bucketRangeTwoPower;
         long rem;
 
         rem = System.nanoTime();
 
-        buckets = len / BUCKET_THRESHOLD;
-        bucketRange = (rangeRight - rangeLeft + 1) / buckets + 1;
-        bucketSpace = auxArr.length / buckets;
+        int buckets = len / BUCKET_THRESHOLD;
+        int bucketRange = (rangeRight - rangeLeft + 1) / buckets + 1;
+        int bucketSpace = auxArr.length / buckets;
 
         bucketRangeTwoPower = 0;
         while( (1<<bucketRangeTwoPower) < bucketRange ) {
