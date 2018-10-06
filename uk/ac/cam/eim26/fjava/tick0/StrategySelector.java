@@ -30,7 +30,7 @@ public class StrategySelector {
 
         return new ExternalMergeSort();
 
-        if ( (long)Resources.maxValue - (long)Resources.minValue < Resources.blockSize / 4 )
+        /*if ( (long)Resources.maxValue - (long)Resources.minValue < Resources.blockSize / 4 )
         {
             return new ExternalCountingSort();
         }
@@ -51,6 +51,6 @@ public class StrategySelector {
         }
         else {
             return new ExternalBucketSort();
-        }
+        }*/
     }
 }
