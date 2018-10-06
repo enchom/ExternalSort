@@ -16,6 +16,7 @@ import java.io.EOFException;
 import java.io.DataOutputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
+import java.io.File;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -30,6 +31,10 @@ public class ExternalSort {
 
     public static void sort(String f1, String f2) throws Exception {
         long myTime = System.nanoTime();
+
+        if ( (new File(f1)).length() <= 4 ) {
+            return;
+        }
 
         externalSortStrategy = StrategySelector.selectStrategy(f1);
 
