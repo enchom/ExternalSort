@@ -18,7 +18,8 @@ public class StrategySelector {
 
         //Return early to avoid pointless resource allocation
         if (Resources.totalSize <= Resources.blockSize) {
-            return new InternalRadixSort();
+            //return new InternalRadixSort();
+            return new LightweightInternalRadixSort();
         }
 
         Resources.allocateResources(dataFile);
