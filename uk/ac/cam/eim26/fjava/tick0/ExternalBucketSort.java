@@ -106,9 +106,7 @@ public class ExternalBucketSort implements ExternalSortBase {
             }
 
             Resources.convertToIntegers(len);
-            Resources.integerArr =
-                    BucketIntegerSort.attemptBucketSort(Resources.integerArr, len, minVal, maxVal,
-                            Resources.secondIntegerArr);
+            BucketIntegerSort.attemptBucketSort(Resources.integerArr, len, minVal, maxVal, Resources.secondIntegerArr);
             Resources.convertToBytes(len);
 
             firstFileStream.write(arr, 0, len * 4);

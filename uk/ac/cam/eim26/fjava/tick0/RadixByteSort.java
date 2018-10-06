@@ -91,7 +91,7 @@ public class RadixByteSort {
         recSolve(arr, start, R, rad + 1);
     }
 
-    public static byte[] sortByteArray(byte[] arr, int len, int rad) {
+    public static void sortByteArray(byte[] arr, int len, int rad) {
         if (counting == null) {
             counting = new int[256];
         }
@@ -103,10 +103,9 @@ public class RadixByteSort {
         }
 
         recSolve(arr, 0, len - 1, rad);
-        return arr;
     }
 
-    public static byte[] sortByteArray(byte[] arr, int len) {
-        return sortByteArray(arr, len, 0);
+    public static void sortByteArray(byte[] arr, int len) {
+        sortByteArray(arr, len, 0);
     }
 }

@@ -11,7 +11,7 @@ public class BucketIntegerSort {
 
     private static int[] bucketCounters;
 
-    public static int[] attemptBucketSort(int[] arr, int len, int rangeLeft, int rangeRight, int[] auxArr) {
+    public static void attemptBucketSort(int[] arr, int len, int rangeLeft, int rangeRight, int[] auxArr) {
         if (bucketCounters == null) {
             bucketCounters = new int[MAX_BUCKETS];
         }
@@ -28,7 +28,8 @@ public class BucketIntegerSort {
         }
 
         if (buckets > auxArr.length || buckets > MAX_BUCKETS) {
-            return RadixIntegerSort.sortIntArray(arr, len);
+            RadixIntegerSort.sortIntArray(arr, len);
+            return;
         }
 
         for (int i = 0; i < buckets; i++) {
@@ -50,7 +51,8 @@ public class BucketIntegerSort {
             auxArr[ind + 1] = val;
 
             if (bucketCounters[b] >= (b + 1) * bucketSpace) {
-                return RadixIntegerSort.sortIntArray(arr, len);
+                RadixIntegerSort.sortIntArray(arr, len);
+                return;
             }
 
             bucketCounters[b]++;
@@ -61,7 +63,5 @@ public class BucketIntegerSort {
             System.arraycopy(auxArr, i * bucketSpace, arr, ptr, bucketCounters[i] - i * bucketSpace);
             ptr += bucketCounters[i] - i * bucketSpace;
         }
-
-        return arr;
     }
 }

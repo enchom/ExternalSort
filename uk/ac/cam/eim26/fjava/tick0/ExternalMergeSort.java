@@ -121,7 +121,7 @@ public class ExternalMergeSort implements ExternalSortBase {
             blocks++;
 
             localTime = System.nanoTime();
-            arr = RadixByteSort.sortByteArray(arr, len / 4);
+            RadixByteSort.sortByteArray(arr, len / 4);
             T2 += System.nanoTime() - localTime;
 
             blockOffsets.add((blocks - 1) * Resources.blockSize);
