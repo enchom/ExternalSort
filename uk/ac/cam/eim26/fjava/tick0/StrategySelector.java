@@ -22,7 +22,7 @@ public class StrategySelector {
 
         Resources.allocateResources(dataFile);
 
-        if ( (long)Resources.maxValue - (long)Resources.minValue < Resources.blockSize / 4 ) {
+        if ((long) Resources.maxValue - (long) Resources.minValue < Resources.blockSize / 4) {
             return new ExternalCountingSort();
         }
 
@@ -40,8 +40,7 @@ public class StrategySelector {
 
         if (maxValue > Resources.blockSize) {
             return new ExternalMergeSort();
-        }
-        else {
+        } else {
             return new ExternalBucketSort();
         }
     }
