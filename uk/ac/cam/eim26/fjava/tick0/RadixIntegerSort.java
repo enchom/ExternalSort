@@ -1,5 +1,10 @@
 package uk.ac.cam.eim26.fjava.tick0;
 
+/**
+ * Radix sort for in-memory data. Uses insertion sort when blocks become small.
+ * Essentially identical to {@link RadixByteSort} but operates on integers stored in int-type variables.
+ */
+@Deprecated
 public class RadixIntegerSort {
     private static int[] counting;
     private static int[] blockBegin;
@@ -15,8 +20,7 @@ public class RadixIntegerSort {
                     swapVar = arr[j];
                     arr[j] = arr[j - 1];
                     arr[j - 1] = swapVar;
-                }
-                else {
+                } else {
                     break;
                 }
             }
@@ -38,7 +42,7 @@ public class RadixIntegerSort {
         }
 
         for (int i = L; i <= R; i++) {
-            int bit = (arr[i]>>>shift)&0xff;
+            int bit = (arr[i] >>> shift) & 0xff;
 
             if (rad == 0) {
                 bit ^= 128;
@@ -67,7 +71,7 @@ public class RadixIntegerSort {
                 continue;
             }
 
-            val = (arr[cur]>>>shift)&0xff;
+            val = (arr[cur] >>> shift) & 0xff;
 
             if (rad == 0) {
                 val ^= 128;
@@ -75,8 +79,8 @@ public class RadixIntegerSort {
 
             if (blockPointer[val] != cur) {
                 swapVar = arr[cur];
-                arr[cur] = arr[ blockPointer[val] ];
-                arr[ blockPointer[val] ] = swapVar;
+                arr[cur] = arr[blockPointer[val]];
+                arr[blockPointer[val]] = swapVar;
             } else {
                 cur++;
             }
@@ -90,7 +94,7 @@ public class RadixIntegerSort {
 
         int start = L;
         for (int i = L + 1; i <= R; i++) {
-            if ( ((arr[i]>>>shift)&0xff) != ((arr[i-1]>>>shift)&0xff) ) {
+            if (((arr[i] >>> shift) & 0xff) != ((arr[i - 1] >>> shift) & 0xff)) {
                 recSolve(arr, start, i - 1, rad + 1);
                 start = i;
             }

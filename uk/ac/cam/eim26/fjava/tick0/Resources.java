@@ -1,17 +1,15 @@
 package uk.ac.cam.eim26.fjava.tick0;
 
-//TODO - Experiment with blockSize formula
-//TODO - Remove Resources. class reference
-
-import java.io.*;
+import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
- * This class simulates global state across all classes in order to reduce memory and
- * pointless argument passing.
+ * This class is used as global state across all classes in order to reduce memory and pointless argument passing.
+ * It also computes a large amount of metadata to be used by various sorting strategies.
  */
+@Deprecated
 public class Resources {
     public static int blockSize;
     public static byte[] arr;
@@ -26,23 +24,20 @@ public class Resources {
 
     public static int[] lastValue;
 
-    //public static int pairCount[][] = new int[256][256];
-
-    //public static int auxMinInd[] = new int[256];
-    //public static int auxMaxInd[] = new int[256];
-
     public static ArrayList<Integer> leftEnds;
     public static ArrayList<Boolean> sorted;
     public static ArrayList<Boolean> reversed;
     public static ArrayList<Integer> smallestValue;
     public static ArrayList<Integer> largestValue;
-    public static ArrayList<Integer> cornerCases;
     public static boolean passedCorners = false;
     public static int cornerEnding = 0;
 
+    public static final double MEMORY_USAGE_FRACTION = 0.6;
+    public static final int BLOCK_SIZE_PART = 6;
     public static final int CORNER_LIMIT_COUNT = 100000;
-    public static final long MAX_PAD = 100000;
     public static final long BLOCK_SEPPARATOR = 20000000;
+    public static final int SPECIAL_STRUCTURE_GROUPS_LIMIT = 5;
+    public static final long MAX_PAD = 100000;
     public static boolean specialStructure = true;
     public static boolean countingSortStructure = true;
 
@@ -66,9 +61,9 @@ public class Resources {
         }
     }
 
-    public static void computeCount(String f) throws IOException {
+    public static void computeMetadata(String f) throws IOException {
         int len;
-        InputStream d = new FileInputStream(f);
+        FileInputStream inputStream = new FileInputStream(f);
         int val;
 
         count = new int[256];
@@ -78,7 +73,6 @@ public class Resources {
         reversed = new ArrayList<>();
         smallestValue = new ArrayList<>();
         largestValue = new ArrayList<>();
-        cornerCases = new ArrayList<>();
 
         for (int i = 0; i < 256; i++) {
             lastValue[i] = Integer.MIN_VALUE;
@@ -88,10 +82,10 @@ public class Resources {
         boolean isSorted = true, isReversed = true;
         int smallValue = 0, largeValue = 0;
         int index = 0;
+        int cornersCount = 0;
 
-        long saveTime = System.nanoTime();
         while (true) {
-            len = d.read(Resources.arr);
+            len = inputStream.read(arr);
 
             if (len == -1) {
                 break;
@@ -102,7 +96,7 @@ public class Resources {
             if (specialStructure) {
                 for (int i = 0; i < len; i += 4) {
                     int firstByte = arr[i] & 0xff;
-                    Resources.count[firstByte]++;
+                    count[firstByte]++;
 
                     val = (((arr[i] & 0xff) << 24) | ((arr[i + 1] & 0xff) << 16) |
                             ((arr[i + 2] & 0xff) << 8) | (arr[i + 3] & 0xff));
@@ -115,7 +109,7 @@ public class Resources {
                     if (specialStructure) {
                         if (passedCorners) {
                             if (!cornerNumber(val)) {
-                                if (leftEnds.size() <= 5) {
+                                if (leftEnds.size() <= SPECIAL_STRUCTURE_GROUPS_LIMIT) {
                                     if (Math.abs((long) val - (long) lastNumber) <= BLOCK_SEPPARATOR) {
                                         smallValue = Math.min(smallValue, val);
                                         largeValue = Math.max(largeValue, val);
@@ -144,9 +138,9 @@ public class Resources {
                             }
                         } else {
                             if (cornerNumber(val)) {
-                                cornerCases.add(val);
+                                cornersCount++;
 
-                                if (cornerCases.size() > CORNER_LIMIT_COUNT || cornerCases.size() > blockSize) {
+                                if (cornersCount > CORNER_LIMIT_COUNT || cornersCount > blockSize) {
                                     specialStructure = false;
                                 }
                             } else {
@@ -166,7 +160,7 @@ public class Resources {
                 }
             } else if (countingSortStructure) {
                 for (int i = 0; i < len; i += 4) {
-                    Resources.count[arr[i] & 0xff]++;
+                    count[arr[i] & 0xff]++;
 
                     val = (((arr[i] & 0xff) << 24) | ((arr[i + 1] & 0xff) << 16) |
                             ((arr[i + 2] & 0xff) << 8) | (arr[i + 3] & 0xff));
@@ -176,11 +170,11 @@ public class Resources {
                 }
             } else {
                 for (int i = 0; i < len; i += 4) {
-                    Resources.count[arr[i] & 0xff]++;
+                    count[arr[i] & 0xff]++;
                 }
             }
 
-            if ((long) maxValue - (long) minValue >= Resources.blockSize / 4) {
+            if ((long) maxValue - (long) minValue >= blockSize / 4) {
                 countingSortStructure = false;
             }
         }
@@ -191,36 +185,12 @@ public class Resources {
         smallestValue.add(smallValue);
         largestValue.add(largeValue);
 
-        System.out.println("MAIN PART IS " + (System.nanoTime() - saveTime) / 1000000 + "ms");
-
-        /*for (int i = 0; i < 256; i++) {
-            if (auxMaxInd[i] != 0) {
-                //System.out.println("Range for bit " + i + " is [" + auxMinInd[i] + "; " + auxMaxInd[i] + "]");
-            }
-        }*/
-
-        for (int i = 0; i < 256; i++) {
-            if (count[i] > 0) {
-                //System.out.println("Byte group " + i + " has naturely_sorted status = " + naturelySorted[i]);
-                //System.out.println("It also has " + count[i] + " members in the range [" + minVals[i] + ", " + maxVals[i] + "]");
-                //System.out.println("Average value = " + (averageValue[i] / count[i]));
-                //System.out.println();
-            }
-        }
-
-        if (leftEnds.size() > 5) {
+        if (leftEnds.size() > SPECIAL_STRUCTURE_GROUPS_LIMIT) {
             specialStructure = false;
-            System.out.println("[REASON] Too many left ends");
-
-            for (int i = 0; i < leftEnds.size() - 1; i++) {
-                System.out.println("Interval from " + leftEnds.get(i) + " to " + leftEnds.get(i + 1) +
-                        " with values in the range [" + smallestValue.get(i) + "; " + largestValue.get(i) + "]");
-            }
         } else {
             for (int i = 0; i < leftEnds.size() - 1; i++) {
                 if (leftEnds.get(i + 1) - leftEnds.get(i) > blockSize && !sorted.get(i) && !reversed.get(i)) {
                     specialStructure = false;
-                    System.out.println("[REASON] Too big unsorted/unreversed interval");
                     break;
                 }
 
@@ -237,8 +207,6 @@ public class Resources {
                         continue;
                     }
 
-
-                    System.out.println("[REASON] Interval intersection");
                     specialStructure = false;
                     break;
                 }
@@ -249,30 +217,30 @@ public class Resources {
             }
         }
 
-        System.out.println("Value range " + minValue + " to " + maxValue + " with length " + (maxValue - minValue));
-
-        d.close();
+        inputStream.close();
     }
 
+    /**
+     * Computes a lot of metadata that may be used by only some of the sorting strategies.
+     */
     public static void allocateResources(String f) throws IOException {
         blockSize /= 3;
         arr = new byte[4 * blockSize];
         integerArr = new int[blockSize];
         secondIntegerArr = new int[blockSize];
 
-        computeCount(f);
+        computeMetadata(f);
     }
 
+    /**
+     * Computes metadata that will be used by all sorting strategies.
+     */
     public static void allocateVitalResources(String f) {
         long maxMemory = Runtime.getRuntime().maxMemory();
-        long usableMemory = (maxMemory / 10) * 6;
+        long usableMemory = (long) ((double) maxMemory * MEMORY_USAGE_FRACTION);
 
         totalSize = (new File(f)).length() / 4;
 
-        //System.out.println("Memory = " + maxMemory + " i.e. " + ((double) (maxMemory) / 1000000.0) + "MB");
-
-        blockSize = (int) (usableMemory / 6);
-
-        //System.out.println("Block size = " + blockSize);
+        blockSize = (int) (usableMemory / BLOCK_SIZE_PART);
     }
 }

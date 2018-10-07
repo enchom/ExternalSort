@@ -1,7 +1,16 @@
 package uk.ac.cam.eim26.fjava.tick0;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.RandomAccessFile;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 
+/**
+ * External sort using internal radix sort. If the numbers fall into a relatively small interval counting sort is
+ * used instead of radix for better efficiency. Usable only when the whole file fits in RAM.
+ */
+@Deprecated
 public class InternalRadixSort implements ExternalSortBase {
     private int[] countingSortArr;
     private File firstFile;
@@ -19,10 +28,10 @@ public class InternalRadixSort implements ExternalSortBase {
 
         for (int i = minValue; i <= maxValue; i++) {
             for (int j = 1; j <= countingSortArr[i - minValue]; j++) {
-                Resources.arr[ptr] = (byte)(i >> 24);
-                Resources.arr[ptr+1] = (byte)((i >> 16) & (0xff));
-                Resources.arr[ptr+2] = (byte)((i >> 8) & (0xff));
-                Resources.arr[ptr+3] = (byte)(i & 0xff);
+                Resources.arr[ptr] = (byte) (i >> 24);
+                Resources.arr[ptr + 1] = (byte) ((i >> 16) & (0xff));
+                Resources.arr[ptr + 2] = (byte) ((i >> 8) & (0xff));
+                Resources.arr[ptr + 3] = (byte) (i & 0xff);
                 ptr += 4;
             }
         }
@@ -39,7 +48,7 @@ public class InternalRadixSort implements ExternalSortBase {
     public void sort() throws Exception {
         Resources.arr = new byte[(int) Resources.totalSize * 4];
 
-        InputStream inputStream = new FileInputStream(firstFile);
+        FileInputStream inputStream = new FileInputStream(firstFile);
         int len = inputStream.read(Resources.arr);
         int minValue = Integer.MAX_VALUE;
         int maxValue = Integer.MIN_VALUE;
@@ -55,12 +64,9 @@ public class InternalRadixSort implements ExternalSortBase {
             maxValue = Math.max(maxValue, value);
         }
 
-        System.out.println("Difference is " + ((long)maxValue-(long)minValue));
-
-        if ( (long)maxValue - (long)minValue < Resources.blockSize / 4 ) {
+        if ((long) maxValue - (long) minValue < Resources.blockSize / 4) {
             countingSort(minValue, maxValue);
-        }
-        else {
+        } else {
             RadixByteSort.sortByteArray(Resources.arr, len / 4);
         }
 

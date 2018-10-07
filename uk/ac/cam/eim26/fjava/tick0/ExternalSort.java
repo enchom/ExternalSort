@@ -33,7 +33,7 @@ public class ExternalSort {
 
         long myTime = System.nanoTime();
 
-        if ( (new File(f1)).length() <= 4 ) {
+        if ((new File(f1)).length() <= 4) {
             return;
         }
 
@@ -63,7 +63,7 @@ public class ExternalSort {
             while (ds.read(b) != -1) ;
 
             String computed = "";
-            for(byte v : md.digest())
+            for (byte v : md.digest())
                 computed += byteToHex(v);
 
             return computed;

@@ -64,7 +64,7 @@ public class ExternalMergeSort implements ExternalSortBase {
      * Writes the smallest value to the given output stream and replaces it with the next smallest one in the
      * priority queue.
      */
-    private boolean writeNextValue(BufferedOutputStream outputStream) throws NoNumbersLeftException, IOException {
+    private boolean writeNextValue(BufferedOutputStream outputStream) throws IOException {
         if (pq.empty()) {
             return false;
         }
@@ -92,7 +92,7 @@ public class ExternalMergeSort implements ExternalSortBase {
     }
 
     @Override
-    public void sort() throws IOException, NoNumbersLeftException {
+    public void sort() throws IOException {
         arr = Resources.arr;
 
         int len = 0;
@@ -114,7 +114,6 @@ public class ExternalMergeSort implements ExternalSortBase {
             Resources.convertToIntegers(len / 4);
             RadixIntegerSort.sortIntArray(Resources.integerArr, len / 4);
             Resources.convertToBytes(len / 4);
-            RadixByteSort.sortByteArray(arr, len / 4);
 
             blockOffsets.add((blocks - 1) * Resources.blockSize);
             blockEndings.add((blocks - 1) * Resources.blockSize + (len / 4));
@@ -143,7 +142,7 @@ public class ExternalMergeSort implements ExternalSortBase {
         outputStream = new BufferedOutputStream(new FileOutputStream(randomAccessFile.getFD()));
         pq = new CustomPriorityQueue(blocks, currentIntegers);
 
-        while (writeNextValue(outputStream));
+        while (writeNextValue(outputStream)) ;
 
         outputStream.close();
         randomAccessFile.close();

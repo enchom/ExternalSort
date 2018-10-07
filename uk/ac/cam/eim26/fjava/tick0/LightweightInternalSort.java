@@ -6,7 +6,12 @@ import java.io.FileInputStream;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 
-public class LightweightInternalRadixSort implements ExternalSortBase {
+/**
+ * External sort using internal insertion sort. More lightweight than {@link InternalRadixSort} but usable only for
+ * very small files.
+ */
+@Deprecated
+public class LightweightInternalSort implements ExternalSortBase {
     private File firstFile;
     private int[] arr;
 
@@ -17,10 +22,10 @@ public class LightweightInternalRadixSort implements ExternalSortBase {
 
     @Override
     public void sort() throws Exception {
-        arr = new int[(int)Resources.totalSize];
+        arr = new int[(int) Resources.totalSize];
 
         DataInputStream inputStream = new DataInputStream(new FileInputStream(firstFile));
-        int len = (int)Resources.totalSize;
+        int len = (int) Resources.totalSize;
         int swp;
 
         for (int i = 0; i < len; i++) {
@@ -31,8 +36,7 @@ public class LightweightInternalRadixSort implements ExternalSortBase {
                     swp = arr[j];
                     arr[j] = arr[j + 1];
                     arr[j + 1] = swp;
-                }
-                else {
+                } else {
                     break;
                 }
             }

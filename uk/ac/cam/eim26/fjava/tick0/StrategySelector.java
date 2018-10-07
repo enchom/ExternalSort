@@ -5,23 +5,18 @@ import java.io.IOException;
 /**
  * Chooses the sorting strategy. Employs the Strategy design pattern.
  */
+@Deprecated
 public class StrategySelector {
+    private static final int LIGHTWEIGHT_INTERNAL_THRESHOLD = 100;
+
     public static ExternalSortBase selectStrategy(String dataFile) throws IOException {
         Resources.allocateVitalResources(dataFile);
 
-        if (Resources.totalSize >= 250000) {
-            System.out.println("File size = " + Resources.totalSize * 4 + " bytes; = " + (Resources.totalSize / 250000) + "MB");
-        }
-        else {
-            System.out.println("File size = " + Resources.totalSize * 4 + " bytes; = " + (Resources.totalSize / 250) + "KB");
-        }
-
         //Return early to avoid pointless resource allocation
         if (Resources.totalSize <= Resources.blockSize) {
-            if (Resources.totalSize <= 100) {
-                return new LightweightInternalRadixSort();
-            }
-            else {
+            if (Resources.totalSize <= LIGHTWEIGHT_INTERNAL_THRESHOLD) {
+                return new LightweightInternalSort();
+            } else {
                 return new InternalRadixSort();
             }
         }
@@ -30,9 +25,12 @@ public class StrategySelector {
 
         return new ExternalMergeSort();
 
-        /*if ( (long)Resources.maxValue - (long)Resources.minValue < Resources.blockSize / 4 )
-        {
+        /*if ( (long)Resources.maxValue - (long)Resources.minValue < Resources.blockSize / 4 ) {
             return new ExternalCountingSort();
+        }
+
+        if (Resources.specialStructure) {
+            return new ExternalCustomSort();
         }
 
         int maxValue = 0;
@@ -43,10 +41,7 @@ public class StrategySelector {
             }
         }
 
-        if (Resources.specialStructure) {
-            return new ExternalCustomSort();
-        }
-        else if (maxValue > Resources.blockSize) {
+        if (maxValue > Resources.blockSize) {
             return new ExternalMergeSort();
         }
         else {
