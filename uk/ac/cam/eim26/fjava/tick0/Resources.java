@@ -9,7 +9,6 @@ import java.util.ArrayList;
  * This class is used as global state across all classes in order to reduce memory and pointless argument passing.
  * It also computes a large amount of metadata to be used by various sorting strategies.
  */
-@Deprecated
 public class Resources {
     public static int blockSize;
     public static byte[] arr;

@@ -11,7 +11,6 @@ import java.util.Collections;
  * very large integers and continue with large segments of either perfectly sorted or perfectly reversed disjoint
  * bits.
  */
-@Deprecated
 public class ExternalCustomSort implements ExternalSortBase {
     private File firstFile;
     private File secondFile;

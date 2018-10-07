@@ -10,7 +10,6 @@ import java.io.FileOutputStream;
  * External sort using internal insertion sort. More lightweight than {@link InternalRadixSort} but usable only for
  * very small files.
  */
-@Deprecated
 public class LightweightInternalSort implements ExternalSortBase {
     private File firstFile;
     private int[] arr;

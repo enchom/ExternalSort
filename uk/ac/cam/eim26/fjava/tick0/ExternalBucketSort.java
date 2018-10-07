@@ -11,7 +11,6 @@ import java.io.FileOutputStream;
 /**
  * External bucket sort that groups numbers in buckets based on their first byte. Similar to radix sort.
  */
-@Deprecated
 public class ExternalBucketSort implements ExternalSortBase {
     private File firstFile;
     private File secondFile;

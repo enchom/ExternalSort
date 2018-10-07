@@ -1,10 +1,9 @@
 package uk.ac.cam.eim26.fjava.tick0;
 
 /**
- * Bucket sort working on integer array. Tries to use at most 10000 buckets due to memory constraints and falls
- * back to integer radix sort if that's not possible.
+ * Bucket sort working on an internal integer array. Tries to use at most 10000 buckets due to memory constraints and
+ * falls back to {@link RadixIntegerSort} if that's not possible.
  */
-@Deprecated
 public class BucketIntegerSort {
     private static final int MAX_BUCKETS = 10000;
     private static final int BUCKET_THRESHOLD = 4;

@@ -10,7 +10,6 @@ import java.io.FileOutputStream;
 /**
  * External counting sort strategy. Used only when all numbers fall inside a relatively small interval.
  */
-@Deprecated
 public class ExternalCountingSort implements ExternalSortBase {
     private File firstFile;
     private byte[] arr;

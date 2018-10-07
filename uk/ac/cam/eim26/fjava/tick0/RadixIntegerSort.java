@@ -4,7 +4,6 @@ package uk.ac.cam.eim26.fjava.tick0;
  * Radix sort for in-memory data. Uses insertion sort when blocks become small.
  * Essentially identical to {@link RadixByteSort} but operates on integers stored in int-type variables.
  */
-@Deprecated
 public class RadixIntegerSort {
     private static int[] counting;
     private static int[] blockBegin;

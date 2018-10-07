@@ -10,7 +10,6 @@ import java.io.FileOutputStream;
  * External sort using internal radix sort. If the numbers fall into a relatively small interval counting sort is
  * used instead of radix for better efficiency. Usable only when the whole file fits in RAM.
  */
-@Deprecated
 public class InternalRadixSort implements ExternalSortBase {
     private int[] countingSortArr;
     private File firstFile;
@@ -35,8 +34,6 @@ public class InternalRadixSort implements ExternalSortBase {
                 ptr += 4;
             }
         }
-
-        return;
     }
 
     @Override

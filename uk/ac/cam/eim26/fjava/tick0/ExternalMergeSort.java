@@ -15,7 +15,6 @@ import java.util.ArrayList;
  * sorted using radix sort internally. K-way merge is used to merge all blocks in a single step so as to reduce
  * passes over files and hence I/O.
  */
-@Deprecated
 public class ExternalMergeSort implements ExternalSortBase {
     private File firstFile;
     private File secondFile;

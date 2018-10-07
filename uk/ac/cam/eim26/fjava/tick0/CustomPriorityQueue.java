@@ -8,7 +8,6 @@ import java.util.List;
  * The class is expected to have very few elements and thus a built-in priority queue would most
  * likely perform worse (due to overhead)
  */
-@Deprecated
 public class CustomPriorityQueue {
     private int sz;
     private int[] heap;

@@ -5,7 +5,6 @@ import java.io.IOException;
 /**
  * Chooses the sorting strategy. Employs the Strategy design pattern.
  */
-@Deprecated
 public class StrategySelector {
     private static final int LIGHTWEIGHT_INTERNAL_THRESHOLD = 100;
 
@@ -23,9 +22,7 @@ public class StrategySelector {
 
         Resources.allocateResources(dataFile);
 
-        return new ExternalMergeSort();
-
-        /*if ( (long)Resources.maxValue - (long)Resources.minValue < Resources.blockSize / 4 ) {
+        if ( (long)Resources.maxValue - (long)Resources.minValue < Resources.blockSize / 4 ) {
             return new ExternalCountingSort();
         }
 
@@ -46,6 +43,6 @@ public class StrategySelector {
         }
         else {
             return new ExternalBucketSort();
-        }*/
+        }
     }
 }

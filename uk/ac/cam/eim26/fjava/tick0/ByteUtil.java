@@ -3,7 +3,6 @@ package uk.ac.cam.eim26.fjava.tick0;
 /**
  * Stateless class the provides utility functions for manipulating integers in 4-byte format.
  */
-@Deprecated
 public class ByteUtil {
     /**
      * Compares two integer values in their 4-byte encoding. Indices given to the function are as if the

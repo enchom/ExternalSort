@@ -1,26 +1,12 @@
-/**
- * THIS SUBMISSION IS WORK-IN-PROGRESS. IT DOES NOT COMPLY WITH THE REQUIRED
- * STYLE GUIDE AND IT MAY INCLUDE UNUSED CODE, BAD STRUCTURE OR GENERALLY BAD DESIGN.
- */
-
-//TODO: Add JavaDoc
-
 package uk.ac.cam.eim26.fjava.tick0;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.DataInputStream;
-import java.io.BufferedInputStream;
-import java.io.EOFException;
-import java.io.DataOutputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
 import java.io.File;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Random;
 
 /**
  * The root of the project
@@ -29,22 +15,15 @@ public class ExternalSort {
 
 
     public static void sort(String f1, String f2) throws Exception {
-        ExternalSortBase externalSortStrategy;
-
-        long myTime = System.nanoTime();
-
         if ((new File(f1)).length() <= 4) {
             return;
         }
 
+        ExternalSortBase externalSortStrategy;
         externalSortStrategy = StrategySelector.selectStrategy(f1);
         System.out.println("Chosen strategy = " + externalSortStrategy.getStrategy());
         externalSortStrategy.setFiles(f1, f2);
         externalSortStrategy.sort();
-
-        long myTotalTime = (System.nanoTime() - myTime) / 1000000;
-
-        System.out.println("MY MEASURE OF TIME IS " + myTotalTime + "ms");
     }
 
     private static String byteToHex(byte b) {
