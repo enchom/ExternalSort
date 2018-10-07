@@ -21,7 +21,6 @@ public class ExternalSort {
 
         ExternalSortBase externalSortStrategy;
         externalSortStrategy = StrategySelector.selectStrategy(f1);
-        System.out.println("Chosen strategy = " + externalSortStrategy.getStrategy());
         externalSortStrategy.setFiles(f1, f2);
         externalSortStrategy.sort();
     }
